@@ -1,5 +1,5 @@
 {
-  "name": "api",
+  "name": "auth-service",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -29,10 +29,12 @@
     "@nestjs/passport": "^11.0.5",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
+    "bcrypt": "^5.1.1",
     "amqplib": "^0.10.4",
     "amqp-connection-manager": "^4.1.14",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "@repo/database": "workspace:*"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
@@ -46,6 +48,7 @@
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.7",
     "@types/supertest": "^6.0.2",
+    "@types/bcrypt": "^5.0.2",
     "@types/passport-jwt": "^4.0.1",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
