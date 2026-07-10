@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { vi } from 'vitest';
 import { AppController } from './app.controller';
 import { AuthService } from './auth/auth.service';
 import { UsersService } from './users/users.service';
@@ -14,39 +15,39 @@ describe('AppController', () => {
   let authService: AuthService;
 
   const mockUsersService = {
-    create: jest.fn().mockImplementation((dto) => Promise.resolve({ id: 'user-id', ...dto })),
-    findOne: jest.fn(),
+    create: vi.fn().mockImplementation((dto) => Promise.resolve({ id: 'user-id', ...dto })),
+    findOne: vi.fn(),
   };
 
   const mockAuthService = {
-    validateUser: jest.fn(),
-    login: jest.fn().mockResolvedValue({ access_token: 'mocked_jwt_token' }),
+    validateUser: vi.fn(),
+    login: vi.fn().mockResolvedValue({ access_token: 'mocked_jwt_token' }),
   };
 
   const mockTownsService = {
-    create: jest.fn().mockImplementation((dto) => Promise.resolve({ id: 'town-id', ...dto })),
-    findAll: jest.fn().mockResolvedValue([{ id: 'town-id', name: 'Townsville' }]),
+    create: vi.fn().mockImplementation((dto) => Promise.resolve({ id: 'town-id', ...dto })),
+    findAll: vi.fn().mockResolvedValue([{ id: 'town-id', name: 'Townsville' }]),
   };
 
   const mockPropertiesService = {
-    create: jest.fn().mockImplementation((dto) => Promise.resolve({ id: 'property-id', ...dto })),
-    findAll: jest.fn().mockResolvedValue([]),
-    findOne: jest.fn(),
+    create: vi.fn().mockImplementation((dto) => Promise.resolve({ id: 'property-id', ...dto })),
+    findAll: vi.fn().mockResolvedValue([]),
+    findOne: vi.fn(),
   };
 
   const mockBookingsService = {
-    create: jest.fn().mockImplementation((dto) => Promise.resolve({ id: 'booking-id', ...dto })),
-    findByUser: jest.fn(),
+    create: vi.fn().mockImplementation((dto) => Promise.resolve({ id: 'booking-id', ...dto })),
+    findByUser: vi.fn(),
   };
 
   const mockProductsService = {
-    create: jest.fn().mockImplementation((dto) => Promise.resolve({ id: 'product-id', ...dto })),
-    findAll: jest.fn().mockResolvedValue([]),
+    create: vi.fn().mockImplementation((dto) => Promise.resolve({ id: 'product-id', ...dto })),
+    findAll: vi.fn().mockResolvedValue([]),
   };
 
   const mockOrdersService = {
-    create: jest.fn().mockImplementation((dto) => Promise.resolve({ id: 'order-id', ...dto })),
-    findByUser: jest.fn(),
+    create: vi.fn().mockImplementation((dto) => Promise.resolve({ id: 'order-id', ...dto })),
+    findByUser: vi.fn(),
   };
 
   beforeEach(async () => {
