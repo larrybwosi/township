@@ -1,13 +1,32 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import "tailwindcss";
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@theme inline {
+  --font-sans: "Inter", "Inter Fallback", system-ui, sans-serif;
+  --font-mono: "Geist Mono", monospace;
+
+  /* Brand color: deep civic blue */
+  --color-primary: #1a3a5c;
+  --color-primary-hover: #14304d;
+  --color-primary-light: #e8f0f8;
+
+  /* Accent: warm amber — welcoming, energetic */
+  --color-accent: #e8890c;
+  --color-accent-hover: #cf7a0a;
+  --color-accent-light: #fef6e7;
+
+  /* Neutrals */
+  --color-background: #f7f8fa;
+  --color-surface: #ffffff;
+  --color-border: #e2e6ea;
+  --color-muted: #6b7280;
+  --color-foreground: #111827;
+  --color-foreground-secondary: #374151;
+
+  /* Dark surface for footer / hero overlay */
+  --color-dark: #0d2238;
+  --color-dark-surface: #112b45;
+
+  --radius: 0.5rem;
 }
 
 html,
@@ -17,8 +36,9 @@ body {
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
 }
 
 * {
@@ -32,19 +52,7 @@ a {
   text-decoration: none;
 }
 
-.imgDark {
-  display: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-
-  .imgLight {
-    display: none;
-  }
-  .imgDark {
-    display: unset;
-  }
+::selection {
+  background-color: var(--color-primary);
+  color: #fff;
 }
