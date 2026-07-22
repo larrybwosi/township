@@ -1,3 +1,5 @@
+"use client";
+
 import { Calendar, MapPin, ArrowRight, Clock, Users } from "lucide-react";
 
 const events = [
@@ -91,7 +93,6 @@ export default function Events() {
           {/* Featured event — large */}
           <article className="lg:col-span-2 group bg-[var(--color-background)] border border-[var(--color-border)] rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
             <div className="relative h-56 sm:h-72 overflow-hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={events[0].image}
                 alt={events[0].title}
@@ -148,8 +149,7 @@ export default function Events() {
                 key={event.id}
                 className="group flex gap-4 bg-[var(--color-background)] border border-[var(--color-border)] rounded-xl p-4 hover:shadow-md hover:border-[var(--color-primary)]/20 hover:-translate-y-0.5 transition-all duration-200"
               >
-                <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
                   <img
                     src={event.image}
                     alt={event.title}
