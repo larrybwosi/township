@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Users, Building, MapPin, Calendar, TrendingUp, Award } from "lucide-react";
 
 const stats = [
@@ -109,12 +108,11 @@ export default function About() {
           {/* Right: Images */}
           <div className="relative hidden lg:block">
             <div className="relative rounded-2xl overflow-hidden aspect-[4/3]">
-              <Image
-                src="/placeholder.svg?height=600&width=800"
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=800&q=80"
                 alt="Township town centre aerial view"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="w-full h-full object-cover"
               />
             </div>
             {/* Floating mini card */}
