@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import {
   GraduationCap,
   Stethoscope,
@@ -31,7 +30,7 @@ const institutions = [
     address: "1 University Drive, North Campus",
     phone: "+1 (555) 200-0100",
     hours: "Mon–Fri: 7:30am – 5:00pm",
-    image: "/placeholder.svg?height=400&width=600",
+    image: "https://images.unsplash.com/photo-1562774053-701939374585?w=600&q=80",
     tags: ["University", "Research", "Student Services"],
     featured: true,
   },
@@ -44,7 +43,7 @@ const institutions = [
     address: "45 Tech Avenue, East District",
     phone: "+1 (555) 200-0200",
     hours: "Mon–Fri: 8:00am – 4:30pm",
-    image: "/placeholder.svg?height=400&width=600",
+    image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&q=80",
     tags: ["College", "Engineering", "Vocational"],
     featured: false,
   },
@@ -57,7 +56,7 @@ const institutions = [
     address: "12 Oak Lane, Central Township",
     phone: "+1 (555) 200-0300",
     hours: "Mon–Fri: 7:00am – 3:00pm",
-    image: "/placeholder.svg?height=400&width=600",
+    image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=80",
     tags: ["Secondary", "Academy"],
     featured: false,
   },
@@ -70,7 +69,7 @@ const institutions = [
     address: "Hospital Road, Medical Quarter",
     phone: "+1 (555) 200-0911",
     hours: "24 Hours / 7 Days",
-    image: "/placeholder.svg?height=400&width=600",
+    image: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=600&q=80",
     tags: ["Emergency", "Specialist Care", "In-Patient"],
     featured: true,
   },
@@ -83,7 +82,7 @@ const institutions = [
     address: "22 Main Street, Town Centre",
     phone: "+1 (555) 200-0500",
     hours: "Mon–Sat: 8:00am – 6:00pm",
-    image: "/placeholder.svg?height=400&width=600",
+    image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=600&q=80",
     tags: ["Primary Care", "Free Services", "Vaccinations"],
     featured: false,
   },
@@ -96,7 +95,7 @@ const institutions = [
     address: "City Hall Square, Township Centre",
     phone: "+1 (555) 200-0001",
     hours: "Mon–Fri: 8:00am – 4:00pm",
-    image: "/placeholder.svg?height=400&width=600",
+    image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80",
     tags: ["Permits", "Licensing", "ID Documents"],
     featured: false,
   },
@@ -170,12 +169,11 @@ export default function Institutions() {
             >
               {/* Image */}
               <div className="relative h-44 overflow-hidden bg-[var(--color-background)]">
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={inst.image}
                   alt={`${inst.name} building`}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 {/* Category chip */}
                 <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 shadow-sm">

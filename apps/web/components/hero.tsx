@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Search, ArrowRight, GraduationCap, Building2, MapPin } from "lucide-react";
 
 const quickLinks = [
@@ -29,13 +28,12 @@ export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden" aria-label="Welcome to Township">
       {/* Background image */}
-      <Image
-        src="/placeholder.svg?height=1080&width=1920"
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1920&q=80"
         alt="Aerial view of Township"
-        fill
-        priority
-        className="object-cover"
-        sizes="100vw"
+        className="absolute inset-0 w-full h-full object-cover"
+        aria-hidden="true"
       />
 
       {/* Dark overlay */}

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Calendar, MapPin, ArrowRight, Clock, Users } from "lucide-react";
 
 const events = [
@@ -10,7 +9,7 @@ const events = [
     time: "10:00 AM – 10:00 PM",
     location: "Civic Park, Town Centre",
     attendees: "5,000+",
-    image: "/placeholder.svg?height=400&width=600",
+    image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=700&q=80",
     desc: "Three days of music, food, traditional crafts, and performances celebrating the heritage and diversity of our community.",
     featured: true,
   },
@@ -22,7 +21,7 @@ const events = [
     time: "9:00 AM – 3:00 PM",
     location: "Township University, Main Campus",
     attendees: "1,200+",
-    image: "/placeholder.svg?height=400&width=600",
+    image: "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=600&q=80",
     desc: "Prospective students and families are invited to tour the campus, meet faculty, and learn about programmes.",
     featured: false,
   },
@@ -34,7 +33,7 @@ const events = [
     time: "7:00 AM – 1:00 PM",
     location: "Market Square, Central Township",
     attendees: "800+",
-    image: "/placeholder.svg?height=400&width=600",
+    image: "https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=600&q=80",
     desc: "Weekly market showcasing fresh seasonal produce, homemade goods, and handcrafted items from local producers.",
     featured: false,
   },
@@ -46,7 +45,7 @@ const events = [
     time: "6:30 AM",
     location: "Starting at Riverside Park",
     attendees: "2,500+",
-    image: "/placeholder.svg?height=400&width=600",
+    image: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=600&q=80",
     desc: "Annual running event winding through the town's scenic routes. Open to all skill levels with a fun run option.",
     featured: false,
   },
@@ -92,12 +91,11 @@ export default function Events() {
           {/* Featured event — large */}
           <article className="lg:col-span-2 group bg-[var(--color-background)] border border-[var(--color-border)] rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
             <div className="relative h-56 sm:h-72 overflow-hidden">
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={events[0].image}
                 alt={events[0].title}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-700"
-                sizes="(max-width: 1024px) 100vw, 66vw"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute top-4 left-4 flex items-center gap-2">
                 <span className={`px-3 py-1 rounded-full text-xs font-semibold ${categoryColors[events[0].category]}`}>
@@ -151,12 +149,11 @@ export default function Events() {
                 className="group flex gap-4 bg-[var(--color-background)] border border-[var(--color-border)] rounded-xl p-4 hover:shadow-md hover:border-[var(--color-primary)]/20 hover:-translate-y-0.5 transition-all duration-200"
               >
                 <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={event.image}
                     alt={event.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    sizes="80px"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
                 <div className="flex-1 min-w-0">
