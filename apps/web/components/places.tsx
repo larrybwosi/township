@@ -149,42 +149,44 @@ export default function Places() {
         {/* Bento grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {/* Featured large card */}
-          <article className="md:col-span-2 lg:col-span-2 group relative rounded-2xl overflow-hidden bg-[var(--color-background)] border border-[var(--color-border)] hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 min-h-[340px]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={places[0].image}
-              alt={places[0].name}
-              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-            />
-            <div
-              className="absolute inset-0"
-              style={{ background: "linear-gradient(to top, rgba(13,34,56,0.85) 0%, rgba(13,34,56,0.2) 60%, transparent 100%)" }}
-              aria-hidden="true"
-            />
-            <div className="absolute bottom-0 left-0 right-0 p-6">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-sm text-white text-xs font-medium px-2.5 py-1 rounded-full">
-                  <UtensilsCrossed className="w-3 h-3" aria-hidden="true" />
-                  {places[0].category}
-                </span>
-                <span className="inline-flex items-center gap-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-300 text-xs font-medium px-2.5 py-1 rounded-full">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" aria-hidden="true" />
-                  Open Now
-                </span>
+          {places[0] && (
+            <article className="md:col-span-2 lg:col-span-2 group relative rounded-2xl overflow-hidden bg-[var(--color-background)] border border-[var(--color-border)] hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 min-h-[340px]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={places[0].image}
+                alt={places[0].name}
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <div
+                className="absolute inset-0"
+                style={{ background: "linear-gradient(to top, rgba(13,34,56,0.85) 0%, rgba(13,34,56,0.2) 60%, transparent 100%)" }}
+                aria-hidden="true"
+              />
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-sm text-white text-xs font-medium px-2.5 py-1 rounded-full">
+                    <UtensilsCrossed className="w-3 h-3" aria-hidden="true" />
+                    {places[0].category}
+                  </span>
+                  <span className="inline-flex items-center gap-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-300 text-xs font-medium px-2.5 py-1 rounded-full">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" aria-hidden="true" />
+                    Open Now
+                  </span>
+                </div>
+                <h3 className="text-white font-bold text-xl mb-1 leading-tight">
+                  {places[0].name}
+                </h3>
+                <p className="text-white/70 text-sm leading-relaxed mb-3 line-clamp-2">
+                  {places[0].desc}
+                </p>
+                <div className="flex items-center gap-3">
+                  <StarRating rating={places[0].rating} />
+                  <span className="text-white font-semibold text-sm">{places[0].rating}</span>
+                  <span className="text-white/50 text-xs">({places[0].reviews.toLocaleString()} reviews)</span>
+                </div>
               </div>
-              <h3 className="text-white font-bold text-xl mb-1 leading-tight">
-                {places[0].name}
-              </h3>
-              <p className="text-white/70 text-sm leading-relaxed mb-3 line-clamp-2">
-                {places[0].desc}
-              </p>
-              <div className="flex items-center gap-3">
-                <StarRating rating={places[0].rating} />
-                <span className="text-white font-semibold text-sm">{places[0].rating}</span>
-                <span className="text-white/50 text-xs">({places[0].reviews.toLocaleString()} reviews)</span>
-              </div>
-            </div>
-          </article>
+            </article>
+          )}
 
           {/* Small cards */}
           {places.slice(1, 6).map((place) => (
