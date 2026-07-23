@@ -42,7 +42,7 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[var(--color-dark)]" aria-label="Site footer">
+    <footer className="bg-dark" aria-label="Site footer">
       {/* Newsletter banner */}
       <div className="border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -67,12 +67,12 @@ export default function Footer() {
                 id="footer-email"
                 type="email"
                 placeholder="Enter your email address"
-                className="flex-1 px-4 py-3 bg-white/10 border border-white/15 rounded-lg text-white placeholder-white/30 text-sm focus:outline-none focus:border-[var(--color-accent)] transition-colors duration-150"
+                className="flex-1 px-4 py-3 bg-white/10 border border-white/15 rounded-lg text-white placeholder-white/30 text-sm focus:outline-none focus:border-accent transition-colors duration-150"
                 required
               />
               <button
                 type="submit"
-                className="flex items-center justify-center gap-2 px-5 py-3 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white text-sm font-semibold rounded-lg transition-colors duration-150 flex-shrink-0"
+                className="flex items-center justify-center gap-2 px-5 py-3 bg-accent hover:bg-accent-hover text-white text-sm font-semibold rounded-lg transition-colors duration-150 shrink-0"
               >
                 Subscribe
                 <ArrowRight className="w-4 h-4" aria-hidden="true" />
@@ -88,7 +88,7 @@ export default function Footer() {
           {/* Brand column */}
           <div className="lg:col-span-1">
             <a href="#" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-md bg-[var(--color-accent)] flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 rounded-md bg-accent flex items-center justify-center shrink-0">
                 <MapPin className="w-4 h-4 text-white" aria-hidden="true" />
               </div>
               <div className="flex flex-col leading-none">
@@ -105,18 +105,18 @@ export default function Footer() {
                 href="tel:+15552000001"
                 className="flex items-center gap-2.5 text-white/50 hover:text-white text-sm transition-colors duration-150"
               >
-                <Phone className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
+                <Phone className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
                 +1 (555) 200-0001
               </a>
               <a
                 href="mailto:info@township.gov"
                 className="flex items-center gap-2.5 text-white/50 hover:text-white text-sm transition-colors duration-150"
               >
-                <Mail className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
+                <Mail className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
                 info@township.gov
               </a>
               <div className="flex items-start gap-2.5 text-white/50 text-sm">
-                <MapPin className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                <MapPin className="w-3.5 h-3.5 shrink-0 mt-0.5" aria-hidden="true" />
                 City Hall Square, Township Centre
               </div>
             </div>
@@ -157,7 +157,7 @@ export default function Footer() {
                 key={label}
                 href={href}
                 aria-label={label}
-                className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-white/50 hover:bg-[var(--color-accent)] hover:text-white transition-all duration-150"
+                className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-white/50 hover:bg-accent hover:text-white transition-all duration-150"
               >
                 <Icon className="w-4 h-4" aria-hidden="true" />
               </a>

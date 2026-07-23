@@ -57,7 +57,7 @@ export default function Hero() {
         <div className="max-w-3xl">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 mb-6">
-            <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-pulse" aria-hidden="true" />
+            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" aria-hidden="true" />
             <span className="text-white/80 text-xs font-medium uppercase tracking-widest">
               Official City Portal
             </span>
@@ -66,7 +66,7 @@ export default function Hero() {
           {/* Headline */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight text-balance mb-6">
             Welcome to{" "}
-            <span className="text-[var(--color-accent)]">Township</span>
+            <span className="text-accent">Township</span>
           </h1>
 
           <p className="text-lg sm:text-xl text-white/70 leading-relaxed mb-8 max-w-2xl text-pretty">
@@ -85,12 +85,12 @@ export default function Hero() {
               <input
                 type="text"
                 placeholder="Search places, institutions, services..."
-                className="w-full pl-11 pr-4 py-3.5 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 text-sm focus:outline-none focus:border-[var(--color-accent)] focus:bg-white/15 transition-colors duration-150 backdrop-blur-sm"
+                className="w-full pl-11 pr-4 py-3.5 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 text-sm focus:outline-none focus:border-accent focus:bg-white/15 transition-colors duration-150 backdrop-blur-sm"
                 aria-label="Search"
               />
             </div>
             <button
-              className="flex items-center justify-center gap-2 px-6 py-3.5 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white font-semibold text-sm rounded-lg transition-colors duration-150 flex-shrink-0"
+              className="flex items-center justify-center gap-2 px-6 py-3.5 bg-accent hover:bg-accent-hover text-white font-semibold text-sm rounded-lg transition-colors duration-150 shrink-0"
               aria-label="Search"
             >
               Search
@@ -106,12 +106,12 @@ export default function Hero() {
                 href={href}
                 className={`group flex items-center gap-3 p-4 rounded-xl border transition-all duration-200 ${
                   accent
-                    ? "bg-[var(--color-accent)] border-[var(--color-accent)] hover:bg-[var(--color-accent-hover)]"
+                    ? "bg-accent border-accent hover:bg-accent-hover"
                     : "bg-white/10 border-white/15 hover:bg-white/15 hover:border-white/30"
                 } backdrop-blur-sm`}
               >
                 <div
-                  className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                  className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
                     accent ? "bg-white/20" : "bg-white/10"
                   }`}
                 >
@@ -136,7 +136,7 @@ export default function Hero() {
             Scroll to explore
           </span>
           <div className="w-5 h-8 border border-white/20 rounded-full flex items-start justify-center pt-1.5">
-            <div className="w-1 h-2 bg-[var(--color-accent)] rounded-full animate-bounce" aria-hidden="true" />
+            <div className="w-1 h-2 bg-accent rounded-full animate-bounce" aria-hidden="true" />
           </div>
         </div>
       </div>

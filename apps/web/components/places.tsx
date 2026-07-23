@@ -96,7 +96,7 @@ function StarRating({ rating }: { rating: number }) {
       {[1, 2, 3, 4, 5].map((i) => (
         <Star
           key={i}
-          className={`w-3 h-3 ${i <= Math.round(rating) ? "fill-[var(--color-accent)] text-[var(--color-accent)]" : "text-gray-300"}`}
+          className={`w-3 h-3 ${i <= Math.round(rating) ? "fill-accent text-accent" : "text-gray-300"}`}
           aria-hidden="true"
         />
       ))}
@@ -106,26 +106,26 @@ function StarRating({ rating }: { rating: number }) {
 
 export default function Places() {
   return (
-    <section id="places" className="py-20 lg:py-28 bg-[var(--color-surface)]">
+    <section id="places" className="py-20 lg:py-28 bg-surface">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
           <div>
-            <span className="inline-flex items-center gap-2 text-[var(--color-accent)] text-sm font-semibold uppercase tracking-widest mb-3">
-              <span className="w-6 h-0.5 bg-[var(--color-accent)]" aria-hidden="true" />
+            <span className="inline-flex items-center gap-2 text-accent text-sm font-semibold uppercase tracking-widest mb-3">
+              <span className="w-6 h-0.5 bg-accent" aria-hidden="true" />
               Explore Township
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-[var(--color-foreground)] text-balance leading-tight">
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground text-balance leading-tight">
               Places worth visiting
             </h2>
-            <p className="text-[var(--color-muted)] mt-3 max-w-xl text-base leading-relaxed text-pretty">
+            <p className="text-muted mt-3 max-w-xl text-base leading-relaxed text-pretty">
               Discover the best dining, shopping, parks, and entertainment that our
               town has to offer — handpicked for students and locals.
             </p>
           </div>
           <a
             href="#"
-            className="flex-shrink-0 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-primary)] hover:text-[var(--color-accent)] transition-colors duration-150"
+            className="shrink-0 inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-accent transition-colors duration-150"
           >
             See all places
             <ArrowRight className="w-4 h-4" aria-hidden="true" />
@@ -150,7 +150,7 @@ export default function Places() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {/* Featured large card */}
           {places[0] && (
-            <article className="md:col-span-2 lg:col-span-2 group relative rounded-2xl overflow-hidden bg-[var(--color-background)] border border-[var(--color-border)] hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 min-h-[340px]">
+            <article className="md:col-span-2 lg:col-span-2 group relative rounded-2xl overflow-hidden bg-background border border-border hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 min-h-[340px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={places[0].image}
@@ -192,7 +192,7 @@ export default function Places() {
           {places.slice(1, 6).map((place) => (
             <article
               key={place.id}
-              className="group relative rounded-2xl overflow-hidden bg-[var(--color-background)] border border-[var(--color-border)] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 min-h-[220px]"
+              className="group relative rounded-2xl overflow-hidden bg-background border border-border hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 min-h-[220px]"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -233,7 +233,7 @@ export default function Places() {
         <div className="flex justify-center mt-10">
           <a
             href="#"
-            className="inline-flex items-center gap-2 px-8 py-3.5 bg-[var(--color-primary)] text-white text-sm font-semibold rounded-lg hover:bg-[var(--color-primary-hover)] transition-colors duration-150 shadow-md shadow-[var(--color-primary)]/20"
+            className="inline-flex items-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-hover transition-colors duration-150 shadow-md shadow-(--color-primary)/20"
           >
             Explore All Places
             <ArrowRight className="w-4 h-4" aria-hidden="true" />
