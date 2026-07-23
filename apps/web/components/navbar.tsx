@@ -147,9 +147,13 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Menu */}
-      {mobileOpen && (
-        <div className="lg:hidden bg-[var(--color-dark)] border-t border-white/10">
-          <nav className="max-w-7xl mx-auto px-4 py-4 flex flex-col gap-1" aria-label="Mobile navigation">
+      <div
+        className={`lg:hidden bg-[var(--color-dark)] border-t border-white/10 transition-all duration-300 ease-in-out overflow-hidden ${
+          mobileOpen ? "max-h-[500px] opacity-100 py-4" : "max-h-0 opacity-0 py-0 pointer-events-none"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4">
+          <nav className="flex flex-col gap-1" aria-label="Mobile navigation">
             {navLinks.map((link) => (
               <div key={link.label}>
                 {link.children ? (
@@ -201,7 +205,7 @@ export default function Navbar() {
             </div>
           </nav>
         </div>
-      )}
+      </div>
     </header>
   );
 }

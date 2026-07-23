@@ -91,56 +91,60 @@ export default function Events() {
         {/* Events layout */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Featured event — large */}
-          <article className="lg:col-span-2 group bg-[var(--color-background)] border border-[var(--color-border)] rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
-            <div className="relative h-56 sm:h-72 overflow-hidden">
-              <img
-                src={events[0].image}
-                alt={events[0].title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-              />
-              <div className="absolute top-4 left-4 flex items-center gap-2">
-                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${categoryColors[events[0].category]}`}>
-                  {events[0].category}
-                </span>
-                <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[var(--color-accent)] text-white">
-                  Featured
-                </span>
-              </div>
-            </div>
-            <div className="p-6">
-              <h3 className="text-[var(--color-foreground)] font-bold text-xl leading-tight mb-2">
-                {events[0].title}
-              </h3>
-              <p className="text-[var(--color-muted)] text-sm leading-relaxed mb-5">
-                {events[0].desc}
-              </p>
-              <div className="flex flex-wrap gap-4 mb-5">
-                <div className="flex items-center gap-2 text-[var(--color-muted)] text-sm">
-                  <Calendar className="w-4 h-4" aria-hidden="true" />
-                  {events[0].date}
-                </div>
-                <div className="flex items-center gap-2 text-[var(--color-muted)] text-sm">
-                  <Clock className="w-4 h-4" aria-hidden="true" />
-                  {events[0].time}
-                </div>
-                <div className="flex items-center gap-2 text-[var(--color-muted)] text-sm">
-                  <MapPin className="w-4 h-4" aria-hidden="true" />
-                  {events[0].location}
-                </div>
-                <div className="flex items-center gap-2 text-[var(--color-muted)] text-sm">
-                  <Users className="w-4 h-4" aria-hidden="true" />
-                  {events[0].attendees} expected
+          {events[0] && (
+            <article className="lg:col-span-2 group bg-[var(--color-background)] border border-[var(--color-border)] rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
+              <div className="relative h-56 sm:h-72 overflow-hidden">
+                <img
+                  src={events[0].image}
+                  alt={events[0].title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute top-4 left-4 flex items-center gap-2">
+                  {events[0].category && (
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${categoryColors[events[0].category] || ""}`}>
+                      {events[0].category}
+                    </span>
+                  )}
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[var(--color-accent)] text-white">
+                    Featured
+                  </span>
                 </div>
               </div>
-              <a
-                href="#"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--color-primary)] text-white text-sm font-semibold rounded-lg hover:bg-[var(--color-primary-hover)] transition-colors duration-150"
-              >
-                View Event
-                <ArrowRight className="w-4 h-4" aria-hidden="true" />
-              </a>
-            </div>
-          </article>
+              <div className="p-6">
+                <h3 className="text-[var(--color-foreground)] font-bold text-xl leading-tight mb-2">
+                  {events[0].title}
+                </h3>
+                <p className="text-[var(--color-muted)] text-sm leading-relaxed mb-5">
+                  {events[0].desc}
+                </p>
+                <div className="flex flex-wrap gap-4 mb-5">
+                  <div className="flex items-center gap-2 text-[var(--color-muted)] text-sm">
+                    <Calendar className="w-4 h-4" aria-hidden="true" />
+                    {events[0].date}
+                  </div>
+                  <div className="flex items-center gap-2 text-[var(--color-muted)] text-sm">
+                    <Clock className="w-4 h-4" aria-hidden="true" />
+                    {events[0].time}
+                  </div>
+                  <div className="flex items-center gap-2 text-[var(--color-muted)] text-sm">
+                    <MapPin className="w-4 h-4" aria-hidden="true" />
+                    {events[0].location}
+                  </div>
+                  <div className="flex items-center gap-2 text-[var(--color-muted)] text-sm">
+                    <Users className="w-4 h-4" aria-hidden="true" />
+                    {events[0].attendees} expected
+                  </div>
+                </div>
+                <a
+                  href="#"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--color-primary)] text-white text-sm font-semibold rounded-lg hover:bg-[var(--color-primary-hover)] transition-colors duration-150"
+                >
+                  View Event
+                  <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                </a>
+              </div>
+            </article>
+          )}
 
           {/* Side events list */}
           <div className="flex flex-col gap-4">
