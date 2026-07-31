@@ -1,0 +1,257 @@
+"use client";
+
+import { useState } from "react";
+import Navbar from "../../../components/navbar";
+import Footer from "../../../components/footer";
+import {
+  Landmark,
+  MapPin,
+  Phone,
+  Clock,
+  Search,
+  Scale,
+  FileText,
+  FileCheck,
+  Globe,
+  Star,
+} from "lucide-react";
+
+const governmentOffices = [
+  {
+    id: 1,
+    name: "Township Municipal Hall",
+    type: "Local City Council",
+    desc: "The central office for permits, licenses, ID documents, property registry, and local administration services. Full online e-portal is also available.",
+    address: "City Hall Square, Township Centre",
+    phone: "+1 (555) 200-0001",
+    hours: "Mon–Fri: 8:00am – 4:00pm",
+    image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80",
+    tags: ["Permits", "Licensing", "ID Documents", "Registry", "e-Services"],
+    founded: "1910",
+    department: "City Administration",
+    website: "https://gov.township.org",
+    featured: true,
+    rating: 4.2,
+  },
+  {
+    id: 2,
+    name: "Public Library & Archives",
+    type: "Public Information Service",
+    desc: "A spacious public library housing over 120,000 physical volumes, digital catalogs, microfiche archives, and student studying rooms.",
+    address: "240 Library Lane, Arts District",
+    phone: "+1 (555) 200-0150",
+    hours: "Mon-Sat: 9:00am - 8:00pm, Sun: 1:00pm - 5:00pm",
+    image: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=80",
+    tags: ["Books", "Study Rooms", "History", "Free Wi-Fi", "Archives"],
+    founded: "1955",
+    department: "Education & Culture",
+    website: "https://library.township.org",
+    featured: false,
+    rating: 4.8,
+  },
+  {
+    id: 3,
+    name: "Central Post Office",
+    type: "Federal Postal Service",
+    desc: "National and international shipping, custom clearances, parcel collection lockers, and passport applications.",
+    address: "5 Post Street, Central District",
+    phone: "+1 (555) 200-0250",
+    hours: "Mon-Fri: 8:00am - 6:00pm, Sat: 9:00am - 12:00pm",
+    image: "https://images.unsplash.com/photo-1595182528770-3490795295c9?w=800&q=80",
+    tags: ["Postal", "Shipping", "Passports", "Lockers"],
+    founded: "1935",
+    department: "Communications",
+    website: "https://post.township.gov",
+    featured: false,
+    rating: 4.1,
+  },
+  {
+    id: 4,
+    name: "District Police Headquarters",
+    type: "Law Enforcement & Security",
+    desc: "Main branch for safety patrols, crime reporting, safety awareness sessions, and lost-and-found registry.",
+    address: "1 Justice Boulevard, East District",
+    phone: "+1 (555) 200-9999",
+    hours: "24 Hours / 7 Days",
+    image: "https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=800&q=80",
+    tags: ["Emergency", "Patrols", "Security", "Lost & Found"],
+    founded: "1950",
+    department: "Public Safety",
+    website: "https://safety.township.gov",
+    featured: true,
+    rating: 4.4,
+  },
+];
+
+export default function GovernmentPage() {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filtered = governmentOffices.filter(
+    (office) =>
+      office.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      office.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      office.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
+
+  return (
+    <>
+      <Navbar />
+      <main className="bg-background min-h-screen">
+        {/* Header Section */}
+        <div className="bg-[#0d2238] text-white pt-24 pb-16 lg:pt-32 lg:pb-24">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav className="text-white/60 text-sm mb-4" aria-label="Breadcrumb">
+              <a href="/" className="hover:text-white transition-colors">Home</a>
+              <span className="mx-2">/</span>
+              <a href="/institutions" className="hover:text-white transition-colors">Institutions</a>
+              <span className="mx-2">/</span>
+              <span className="text-white">Government Offices</span>
+            </nav>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2.5 bg-accent/20 rounded-lg text-purple-400">
+                <Landmark className="w-8 h-8" />
+              </div>
+              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
+                Government Offices
+              </h1>
+            </div>
+            <p className="text-white/70 max-w-2xl text-lg leading-relaxed">
+              Find municipal halls, district police branches, central postal facilities, and local libraries. Obtain permits, licenses, and official registrations.
+            </p>
+          </div>
+        </div>
+
+        {/* Search Bar Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex flex-col sm:flex-row gap-4 items-center justify-between border-b border-border pb-6 mb-8">
+            <h2 className="text-xl font-bold text-foreground">
+              Municipal Services ({filtered.length})
+            </h2>
+            <div className="relative w-full sm:w-80">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" aria-hidden="true" />
+              <input
+                type="text"
+                placeholder="Search municipal offices..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-4 py-2 rounded-md border border-border bg-surface text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors"
+              />
+            </div>
+          </div>
+
+          {/* Cards list */}
+          {filtered.length > 0 ? (
+            <div className="space-y-6">
+              {filtered.map((office) => (
+                <article
+                  key={office.id}
+                  className={`bg-surface rounded-xl border border-border overflow-hidden hover:shadow-lg transition-all duration-200 p-6 flex flex-col lg:flex-row gap-6 ${
+                    office.featured ? "ring-1 ring-purple-500/20 bg-purple-500/[0.01]" : ""
+                  }`}
+                >
+                  {/* Left Column: Image */}
+                  <div className="w-full lg:w-72 h-48 lg:h-auto shrink-0 relative rounded-lg overflow-hidden bg-background">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={office.image}
+                      alt={office.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    {office.featured && (
+                      <span className="absolute top-3 left-3 bg-purple-700 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded shadow">
+                        Official Facility
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Middle Column: Main Details */}
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-xs font-semibold text-purple-600 uppercase tracking-wider">
+                        {office.type}
+                      </span>
+                      <span className="text-muted">•</span>
+                      <div className="flex items-center gap-1 text-xs text-muted">
+                        <Star className="w-3.5 h-3.5 fill-accent text-accent" />
+                        <span className="font-semibold text-foreground">{office.rating}</span>
+                      </div>
+                    </div>
+                    <h3 className="text-xl font-bold text-foreground mb-2">{office.name}</h3>
+                    <p className="text-muted text-sm leading-relaxed mb-4">{office.desc}</p>
+
+                    {/* Meta stats */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 border-y border-border py-3 mb-4">
+                      <div className="flex items-center gap-2">
+                        <Scale className="w-4 h-4 text-purple-600 shrink-0" />
+                        <div className="text-xs">
+                          <p className="text-muted leading-none">Founded</p>
+                          <p className="font-semibold text-foreground mt-1">{office.founded}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <FileText className="w-4 h-4 text-purple-600 shrink-0" />
+                        <div className="text-xs">
+                          <p className="text-muted leading-none">Main Division</p>
+                          <p className="font-semibold text-foreground mt-1">{office.department}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 col-span-2 sm:col-span-1">
+                        <FileCheck className="w-4 h-4 text-purple-600 shrink-0" />
+                        <div className="text-xs">
+                          <p className="text-muted leading-none">Authority</p>
+                          <p className="font-semibold text-foreground mt-1">District</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Location/Hours details */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-muted mb-4">
+                      <div className="flex items-center gap-1.5">
+                        <MapPin className="w-4 h-4 text-muted shrink-0" />
+                        <span>{office.address}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <Clock className="w-4 h-4 text-muted shrink-0" />
+                        <span>{office.hours}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <Phone className="w-4 h-4 text-muted shrink-0" />
+                        <span>{office.phone}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <Globe className="w-4 h-4 text-primary shrink-0" />
+                        <a href={office.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
+                          {office.website.replace("https://", "")}
+                        </a>
+                      </div>
+                    </div>
+
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-1.5">
+                      {office.tags.map((tag) => (
+                        <span key={tag} className="px-2.5 py-0.5 bg-purple-50 text-purple-700 border border-purple-100 text-[11px] font-medium rounded-full">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 bg-surface rounded-xl border border-border">
+              <p className="text-muted text-base">No government offices found matching your search.</p>
+              <button
+                onClick={() => setSearchQuery("")}
+                className="mt-3 text-sm font-semibold text-primary hover:text-accent transition-colors duration-150"
+              >
+                Clear search
+              </button>
+            </div>
+          )}
+        </div>
+      </main>
+      <Footer />
+    </>
+  );
+}

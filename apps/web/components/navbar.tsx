@@ -6,34 +6,34 @@ import { Menu, X, MapPin, ChevronDown } from "lucide-react";
 const navLinks = [
   {
     label: "About",
-    href: "#about",
+    href: "/#about",
   },
   {
     label: "Institutions",
-    href: "#institutions",
+    href: "/institutions",
     children: [
-      { label: "Universities & Colleges", href: "#universities" },
-      { label: "Hospitals & Clinics", href: "#hospitals" },
-      { label: "Government Offices", href: "#government" },
+      { label: "Universities & Colleges", href: "/institutions/universities" },
+      { label: "Hospitals & Clinics", href: "/institutions/hospitals" },
+      { label: "Government Offices", href: "/institutions/government" },
     ],
   },
   {
     label: "Explore",
-    href: "#places",
+    href: "/explore",
     children: [
-      { label: "Dining & Restaurants", href: "#dining" },
-      { label: "Shopping", href: "#shopping" },
-      { label: "Parks & Recreation", href: "#parks" },
-      { label: "Accommodation", href: "#accommodation" },
+      { label: "Dining & Restaurants", href: "/explore/dining" },
+      { label: "Shopping", href: "/explore/shopping" },
+      { label: "Parks & Recreation", href: "/explore/parks" },
+      { label: "Accommodation", href: "/explore/accommodation" },
     ],
   },
   {
     label: "Services",
-    href: "#services",
+    href: "/#services",
   },
   {
     label: "Events",
-    href: "#events",
+    href: "/#events",
   },
 ];
 
@@ -63,7 +63,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2 group">
+          <a href="/" className="flex items-center gap-2 group">
             <div className="w-8 h-8 rounded-md bg-accent flex items-center justify-center shrink-0">
               <MapPin className="w-4 h-4 text-white" aria-hidden="true" />
             </div>
@@ -123,7 +123,7 @@ export default function Navbar() {
           {/* CTA */}
           <div className="hidden lg:flex items-center gap-3">
             <a
-              href="#guide"
+              href="/explore"
               className="px-5 py-2 text-sm font-semibold bg-accent text-white rounded-md hover:bg-accent-hover transition-colors duration-150"
             >
               Visitor Guide
@@ -196,7 +196,7 @@ export default function Navbar() {
             ))}
             <div className="mt-3 pt-3 border-t border-white/10">
               <a
-                href="#guide"
+                href="/explore"
                 onClick={() => setMobileOpen(false)}
                 className="block text-center px-5 py-2.5 text-sm font-semibold bg-accent text-white rounded-md hover:bg-accent-hover transition-colors duration-150"
               >
