@@ -1,0 +1,8 @@
+# Next.js local Git ignore rules
+.next/
+out/
+build/
+node_modules/
+.env*.local
+.vercel
+*.log

@@ -124,7 +124,7 @@ export default function Places() {
             </p>
           </div>
           <a
-            href="/explore"
+            href="#"
             className="shrink-0 inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-accent transition-colors duration-150"
           >
             See all places
@@ -232,7 +232,7 @@ export default function Places() {
         {/* CTA */}
         <div className="flex justify-center mt-10">
           <a
-            href="/explore"
+            href="#"
             className="inline-flex items-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-hover transition-colors duration-150 shadow-md shadow-(--color-primary)/20"
           >
             Explore All Places
