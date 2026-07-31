@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+
 "use client";
 
 import { Calendar, MapPin, ArrowRight, Clock, Users } from "lucide-react";
