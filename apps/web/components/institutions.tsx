@@ -128,7 +128,7 @@ export default function Institutions() {
             </p>
           </div>
           <a
-            href="#"
+            href="/institutions"
             className="shrink-0 inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-accent transition-colors duration-150"
           >
             View all institutions
@@ -235,7 +235,13 @@ export default function Institutions() {
                 </div>
 
                 <a
-                  href="#"
+                  href={
+                    inst.category === "education"
+                      ? "/institutions/universities"
+                      : inst.category === "health"
+                        ? "/institutions/hospitals"
+                        : "/institutions/government"
+                  }
                   className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-accent transition-colors duration-150 group-hover:gap-2.5"
                 >
                   View details

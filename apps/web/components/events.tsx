@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Calendar, MapPin, ArrowRight, Clock, Users } from "lucide-react";
@@ -61,8 +60,6 @@ const categoryColors: Record<string, string> = {
   Sport: "bg-orange-100 text-orange-700",
 };
 
-/* eslint-disable @next/next/no-img-element */
-
 export default function Events() {
   return (
     <section id="events" className="py-20 lg:py-28 bg-surface">
@@ -97,6 +94,7 @@ export default function Events() {
           {events[0] && (
             <article className="lg:col-span-2 group bg-background border border-border rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
               <div className="relative h-56 sm:h-72 overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={events[0].image}
                   alt={events[0].title}
@@ -157,6 +155,7 @@ export default function Events() {
                 className="group flex gap-4 bg-background border border-border rounded-xl p-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-200"
               >
                 <div className="w-20 h-20 rounded-lg overflow-hidden shrink-0">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={event.image}
                     alt={event.title}
