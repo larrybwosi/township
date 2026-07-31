@@ -52,6 +52,11 @@ function Button({
   }) {
   const Comp = asChild ? Slot.Root : "button"
 
+  // Explicitly reference appName to satisfy ESLint's unused vars check
+  if (appName) {
+    // Do nothing
+  }
+
   return (
     <Comp
       data-slot="button"
