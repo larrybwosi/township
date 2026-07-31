@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useMockData } from "../context/MockDataContext";
+import { useMockData, PropertyCategory } from "../context/MockDataContext";
 import { X, Plus, Info } from "lucide-react";
 
 interface AddPropertyModalProps {
@@ -39,6 +39,7 @@ export default function AddPropertyModal({ isOpen, onClose }: AddPropertyModalPr
   const [price, setPrice] = useState("150");
   const [address, setAddress] = useState("");
   const [townId, setTownId] = useState(towns[0]?.id || "");
+  const [category, setCategory] = useState<PropertyCategory>("house");
   const [imageUrl, setImageUrl] = useState(defaultImages[0]!);
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
   const [error, setError] = useState("");
@@ -73,6 +74,7 @@ export default function AddPropertyModal({ isOpen, onClose }: AddPropertyModalPr
         price: priceNum,
         address,
         townId,
+        category,
         imageUrl,
         amenities: selectedAmenities,
       });
@@ -86,6 +88,7 @@ export default function AddPropertyModal({ isOpen, onClose }: AddPropertyModalPr
         setPrice("150");
         setAddress("");
         setTownId(towns[0]?.id || "");
+        setCategory("house");
         setSelectedAmenities([]);
         onClose();
       }, 1500);
@@ -197,6 +200,25 @@ export default function AddPropertyModal({ isOpen, onClose }: AddPropertyModalPr
                       {t.name}
                     </option>
                   ))}
+                </select>
+              </div>
+
+              {/* Property Category selection */}
+              <div>
+                <label className="block text-xs font-bold text-foreground uppercase tracking-wider mb-1.5">
+                  Property Type / Category
+                </label>
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value as PropertyCategory)}
+                  className="w-full px-3.5 py-2 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                >
+                  <option value="house">House</option>
+                  <option value="apartment_single">Single Apartment House</option>
+                  <option value="apartment_building">Apartment Building (Multi-unit)</option>
+                  <option value="guesthouse">Guest House</option>
+                  <option value="motel">Motel</option>
+                  <option value="hotel">Hotel</option>
                 </select>
               </div>
 
