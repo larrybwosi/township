@@ -61,6 +61,8 @@ const categoryColors: Record<string, string> = {
   Sport: "bg-orange-100 text-orange-700",
 };
 
+/* eslint-disable @next/next/no-img-element */
+
 export default function Events() {
   return (
     <section id="events" className="py-20 lg:py-28 bg-surface">

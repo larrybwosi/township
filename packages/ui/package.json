@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./*": "./src/*.tsx",
-    "./globals.css": "./src/globals.css"
+    "./globals.css": "./src/styles/globals.css",
+    "./*": "./src/components/*.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
