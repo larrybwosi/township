@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import Navbar from "../../../components/navbar";
 import Footer from "../../../components/footer";
 import {
@@ -100,9 +101,9 @@ export default function ParksPage() {
         <div className="bg-[#0d2238] text-white pt-24 pb-16 lg:pt-32 lg:pb-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav className="text-white/60 text-sm mb-4" aria-label="Breadcrumb">
-              <a href="/" className="hover:text-white transition-colors">Home</a>
+              <Link href="/" className="hover:text-white transition-colors">Home</Link>
               <span className="mx-2">/</span>
-              <a href="/explore" className="hover:text-white transition-colors">Explore</a>
+              <Link href="/explore" className="hover:text-white transition-colors">Explore</Link>
               <span className="mx-2">/</span>
               <span className="text-white">Parks & Recreation</span>
             </nav>

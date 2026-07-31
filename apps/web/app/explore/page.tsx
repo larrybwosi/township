@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import Navbar from "../../components/navbar";
 import Footer from "../../components/footer";
 import {
@@ -10,7 +11,6 @@ import {
   ShoppingBag,
   TreePine,
   Hotel,
-  Coffee,
   Search,
 } from "lucide-react";
 
@@ -123,7 +123,7 @@ export default function ExploreLanding() {
         <div className="bg-[#0d2238] text-white pt-24 pb-16 lg:pt-32 lg:pb-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav className="text-white/60 text-sm mb-4" aria-label="Breadcrumb">
-              <a href="/" className="hover:text-white transition-colors">Home</a>
+              <Link href="/" className="hover:text-white transition-colors">Home</Link>
               <span className="mx-2">/</span>
               <span className="text-white">Explore</span>
             </nav>
@@ -178,7 +178,7 @@ export default function ExploreLanding() {
             <h2 className="text-xl font-bold text-foreground mb-4">Browse by Category</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {categories.slice(1).map(({ label, icon: Icon, link, color, bg }) => (
-                <a
+                <Link
                   key={label}
                   href={link}
                   className={`flex items-center justify-between p-4 rounded-xl border border-border bg-surface hover:shadow-md hover:border-primary/20 transition-all group`}
@@ -190,7 +190,7 @@ export default function ExploreLanding() {
                     <span className="font-bold text-foreground text-sm">{label}</span>
                   </div>
                   <ArrowRight className="w-4 h-4 text-muted group-hover:text-primary group-hover:translate-x-1 transition-all" aria-hidden="true" />
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -249,10 +249,10 @@ export default function ExploreLanding() {
                           </span>
                         ))}
                       </div>
-                      <a href={place.link} className="text-white text-xs font-bold flex items-center gap-1 hover:text-accent transition-colors">
+                      <Link href={place.link} className="text-white text-xs font-bold flex items-center gap-1 hover:text-accent transition-colors">
                         Explore
                         <ArrowRight className="w-3 h-3" />
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </article>
