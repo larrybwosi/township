@@ -6,38 +6,36 @@ import { Menu, X, MapPin, ChevronDown } from "lucide-react";
 const navLinks = [
   {
     label: "About",
-    href: "/#about",
+    href: "#about",
   },
   {
     label: "Institutions",
-    href: "/institutions",
+    href: "#institutions",
     children: [
-      { label: "Universities & Colleges", href: "/institutions/universities" },
-      { label: "Hospitals & Clinics", href: "/institutions/hospitals" },
-      { label: "Government Offices", href: "/institutions/government" },
+      { label: "Universities & Colleges", href: "#universities" },
+      { label: "Hospitals & Clinics", href: "#hospitals" },
+      { label: "Government Offices", href: "#government" },
     ],
   },
   {
     label: "Explore",
-    href: "/explore",
+    href: "#places",
     children: [
-      { label: "Dining & Restaurants", href: "/explore/dining" },
-      { label: "Shopping", href: "/explore/shopping" },
-      { label: "Parks & Recreation", href: "/explore/parks" },
-      { label: "Accommodation", href: "/explore/accommodation" },
+      { label: "Dining & Restaurants", href: "#dining" },
+      { label: "Shopping", href: "#shopping" },
+      { label: "Parks & Recreation", href: "#parks" },
+      { label: "Accommodation", href: "#accommodation" },
     ],
   },
   {
     label: "Services",
-    href: "/#services",
+    href: "#services",
   },
   {
     label: "Events",
-    href: "/#events",
+    href: "#events",
   },
 ];
-
-import Link from "next/link";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -65,7 +63,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
+          <a href="#" className="flex items-center gap-2 group">
             <div className="w-8 h-8 rounded-md bg-accent flex items-center justify-center shrink-0">
               <MapPin className="w-4 h-4 text-white" aria-hidden="true" />
             </div>
@@ -77,7 +75,7 @@ export default function Navbar() {
                 City Portal
               </span>
             </div>
-          </Link>
+          </a>
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
@@ -99,37 +97,37 @@ export default function Navbar() {
                   {openDropdown === link.label && (
                     <div className="absolute top-full left-0 mt-1 w-52 bg-surface rounded-lg shadow-xl border border-border py-1 z-10">
                       {link.children.map((child) => (
-                        <Link
+                        <a
                           key={child.label}
                           href={child.href}
                           className="block px-4 py-2.5 text-sm text-foreground-secondary hover:bg-primary-light hover:text-primary transition-colors duration-150"
                         >
                           {child.label}
-                        </Link>
+                        </a>
                       ))}
                     </div>
                   )}
                 </div>
               ) : (
-                <Link
+                <a
                   key={link.label}
                   href={link.href}
                   className="px-4 py-2 text-sm font-medium text-white/80 hover:text-white rounded-md hover:bg-white/10 transition-colors duration-150"
                 >
                   {link.label}
-                </Link>
+                </a>
               )
             )}
           </nav>
 
           {/* CTA */}
           <div className="hidden lg:flex items-center gap-3">
-            <Link
-              href="/explore"
+            <a
+              href="#guide"
               className="px-5 py-2 text-sm font-semibold bg-accent text-white rounded-md hover:bg-accent-hover transition-colors duration-150"
             >
               Visitor Guide
-            </Link>
+            </a>
           </div>
 
           {/* Mobile toggle */}
@@ -173,37 +171,37 @@ export default function Navbar() {
                     {openDropdown === link.label && (
                       <div className="ml-4 mt-1 flex flex-col gap-0.5 border-l-2 border-accent/40 pl-3">
                         {link.children.map((child) => (
-                          <Link
+                          <a
                             key={child.label}
                             href={child.href}
                             onClick={() => setMobileOpen(false)}
                             className="block py-2 text-sm text-white/60 hover:text-white transition-colors duration-150"
                           >
                             {child.label}
-                          </Link>
+                          </a>
                         ))}
                       </div>
                     )}
                   </>
                 ) : (
-                  <Link
+                  <a
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
                     className="block px-3 py-2.5 text-sm font-medium text-white/80 hover:text-white rounded-md hover:bg-white/10 transition-colors duration-150"
                   >
                     {link.label}
-                  </Link>
+                  </a>
                 )}
               </div>
             ))}
             <div className="mt-3 pt-3 border-t border-white/10">
-              <Link
-                href="/explore"
+              <a
+                href="#guide"
                 onClick={() => setMobileOpen(false)}
                 className="block text-center px-5 py-2.5 text-sm font-semibold bg-accent text-white rounded-md hover:bg-accent-hover transition-colors duration-150"
               >
                 Visitor Guide
-              </Link>
+              </a>
             </div>
           </nav>
         </div>
