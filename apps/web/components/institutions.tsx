@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   GraduationCap,
   Stethoscope,
@@ -10,6 +10,7 @@ import {
   Phone,
   Clock,
 } from "lucide-react";
+import { sanityClient, SanityInstitution } from "../lib/sanity";
 
 type Category = "all" | "education" | "health" | "government";
 
@@ -20,95 +21,31 @@ const categories: { id: Category; label: string; icon: React.ElementType }[] = [
   { id: "government", label: "Government", icon: Landmark },
 ];
 
-const institutions = [
-  {
-    id: 1,
-    category: "education" as Category,
-    name: "Township University",
-    type: "Public University",
-    desc: "The flagship university of the region offering undergraduate and postgraduate programmes across sciences, arts, and engineering.",
-    address: "1 University Drive, North Campus",
-    phone: "+1 (555) 200-0100",
-    hours: "Mon–Fri: 7:30am – 5:00pm",
-    image:
-      "https://images.unsplash.com/photo-1562774053-701939374585?w=600&q=80",
-    tags: ["University", "Research", "Student Services"],
-    featured: true,
-  },
-  {
-    id: 2,
-    category: "education" as Category,
-    name: "Township College of Technology",
-    type: "Technical College",
-    desc: "Specialising in applied sciences, engineering technology, and vocational programmes with strong industry partnerships.",
-    address: "45 Tech Avenue, East District",
-    phone: "+1 (555) 200-0200",
-    hours: "Mon–Fri: 8:00am – 4:30pm",
-    image:
-      "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&q=80",
-    tags: ["College", "Engineering", "Vocational"],
-    featured: false,
-  },
-  {
-    id: 3,
-    category: "education" as Category,
-    name: "St. Mary Academy",
-    type: "Secondary School",
-    desc: "A well-established secondary institution known for academic excellence and a broad extracurricular programme.",
-    address: "12 Oak Lane, Central Township",
-    phone: "+1 (555) 200-0300",
-    hours: "Mon–Fri: 7:00am – 3:00pm",
-    image:
-      "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=80",
-    tags: ["Secondary", "Academy"],
-    featured: false,
-  },
-  {
-    id: 4,
-    category: "health" as Category,
-    name: "Township General Hospital",
-    type: "Public Hospital",
-    desc: "The primary regional hospital providing emergency care, specialist services, and in-patient treatment for the entire district.",
-    address: "Hospital Road, Medical Quarter",
-    phone: "+1 (555) 200-0911",
-    hours: "24 Hours / 7 Days",
-    image:
-      "https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=600&q=80",
-    tags: ["Emergency", "Specialist Care", "In-Patient"],
-    featured: true,
-  },
-  {
-    id: 5,
-    category: "health" as Category,
-    name: "Wellness Community Clinic",
-    type: "Public Clinic",
-    desc: "Free and subsidised primary healthcare, vaccinations, and health screenings for residents and students.",
-    address: "22 Main Street, Town Centre",
-    phone: "+1 (555) 200-0500",
-    hours: "Mon–Sat: 8:00am – 6:00pm",
-    image:
-      "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=600&q=80",
-    tags: ["Primary Care", "Free Services", "Vaccinations"],
-    featured: false,
-  },
-  {
-    id: 6,
-    category: "government" as Category,
-    name: "Township Municipal Hall",
-    type: "Local Government",
-    desc: "The central office for permits, licenses, ID documents, and local government services. Online services available.",
-    address: "City Hall Square, Township Centre",
-    phone: "+1 (555) 200-0001",
-    hours: "Mon–Fri: 8:00am – 4:00pm",
-    image:
-      "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80",
-    tags: ["Permits", "Licensing", "ID Documents"],
-    featured: false,
-  },
-];
-
 export default function Institutions() {
   const [activeCategory, setActiveCategory] = useState<Category>("all");
+  const [institutions, setInstitutions] = useState<SanityInstitution[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchInstitutions() {
+      setIsLoading(true);
+      try {
+        const result = await sanityClient.fetch<SanityInstitution[]>(
+          '*[_type == "institution"]',
+        );
+        setInstitutions(result);
+      } catch (err) {
+        console.warn("Failed to fetch institutions from Sanity:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchInstitutions();
+  }, []);
+
+  if (isLoading) {
+    return <div className="py-20 bg-background animate-pulse" />;
+  }
 
   const filtered =
     activeCategory === "all"
@@ -171,7 +108,7 @@ export default function Institutions() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((inst) => (
             <article
-              key={inst.id}
+              key={inst._id}
               className={`group bg-surface rounded-xl border overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ${
                 inst.featured
                   ? "border-primary/25 ring-1 ring-primary/10"
@@ -255,7 +192,7 @@ export default function Institutions() {
 
                 {/* Tags */}
                 <div className="flex flex-wrap gap-1.5 mb-4">
-                  {inst.tags.map((tag) => (
+                  {inst.tags?.map((tag) => (
                     <span
                       key={tag}
                       className="px-2.5 py-0.5 bg-primary-light text-primary text-[11px] font-medium rounded-full"

@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import {
   Star,
   ArrowRight,
@@ -8,8 +11,9 @@ import {
   Coffee,
   Music,
 } from "lucide-react";
+import { sanityClient, SanityPlace } from "../lib/sanity";
 
-const categories = [
+const categoryMapping = [
   {
     icon: UtensilsCrossed,
     label: "Dining",
@@ -33,93 +37,6 @@ const categories = [
   { icon: Music, label: "Nightlife", color: "text-pink-600", bg: "bg-pink-50" },
 ];
 
-const places = [
-  {
-    id: 1,
-    name: "The Central Market",
-    category: "Dining",
-    categoryIcon: UtensilsCrossed,
-    rating: 4.8,
-    reviews: 1240,
-    desc: "A vibrant open-air market at the heart of town, offering fresh produce, street food, and artisan goods from local vendors.",
-    image:
-      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80",
-    tags: ["Street Food", "Local Produce", "Artisan"],
-    openNow: true,
-    span: "large",
-  },
-  {
-    id: 2,
-    name: "Riverside Walk & Park",
-    category: "Parks",
-    categoryIcon: TreePine,
-    rating: 4.9,
-    reviews: 890,
-    desc: "A beautiful riverside green space perfect for morning runs, picnics, and weekend relaxation.",
-    image:
-      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80",
-    tags: ["Outdoor", "Family-Friendly", "Free"],
-    openNow: true,
-    span: "small",
-  },
-  {
-    id: 3,
-    name: "Township Mall",
-    category: "Shopping",
-    categoryIcon: ShoppingBag,
-    rating: 4.5,
-    reviews: 2100,
-    desc: "The region's premier shopping destination with over 150 stores, a food court, and entertainment facilities.",
-    image:
-      "https://images.unsplash.com/photo-1567449303078-57ad995bd17a?w=600&q=80",
-    tags: ["Shopping", "Food Court", "Entertainment"],
-    openNow: true,
-    span: "small",
-  },
-  {
-    id: 4,
-    name: "Brewed — Specialty Coffee",
-    category: "Cafes",
-    categoryIcon: Coffee,
-    rating: 4.7,
-    reviews: 620,
-    desc: "A student favourite for its single-origin brews, strong Wi-Fi, and calm working atmosphere open from early morning.",
-    image:
-      "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=80",
-    tags: ["Coffee", "Wi-Fi", "Study Spot"],
-    openNow: true,
-    span: "small",
-  },
-  {
-    id: 5,
-    name: "The Grand Township Hotel",
-    category: "Stay",
-    categoryIcon: Hotel,
-    rating: 4.6,
-    reviews: 450,
-    desc: "Elegant accommodation steps from the university campus and town centre, ideal for visiting families and academic guests.",
-    image:
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80",
-    tags: ["4-Star", "Conference Rooms", "Family"],
-    openNow: false,
-    span: "small",
-  },
-  {
-    id: 6,
-    name: "Culture & Arts Quarter",
-    category: "Nightlife",
-    categoryIcon: Music,
-    rating: 4.6,
-    reviews: 380,
-    desc: "An after-dark hub of live music venues, independent cinemas, bars, and pop-up events that keep Township buzzing.",
-    image:
-      "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&q=80",
-    tags: ["Live Music", "Cinema", "Bars"],
-    openNow: true,
-    span: "small",
-  },
-];
-
 function StarRating({ rating }: { rating: number }) {
   return (
     <div
@@ -138,6 +55,33 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 export default function Places() {
+  const [places, setPlaces] = useState<SanityPlace[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchPlaces() {
+      setIsLoading(true);
+      try {
+        const result = await sanityClient.fetch<SanityPlace[]>(
+          '*[_type == "place"]',
+        );
+        setPlaces(result);
+      } catch (err) {
+        console.warn("Failed to fetch places from Sanity:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchPlaces();
+  }, []);
+
+  if (isLoading) {
+    return <div className="py-20 bg-surface animate-pulse" />;
+  }
+
+  const featuredLarge = places.find((p) => p.span === "large") || places[0];
+  const otherPlaces = places.filter((p) => p._id !== featuredLarge?._id);
+
   return (
     <section id="places" className="py-20 lg:py-28 bg-surface">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -171,7 +115,7 @@ export default function Places() {
           role="list"
           aria-label="Place categories"
         >
-          {categories.map(({ icon: Icon, label, color, bg }) => (
+          {categoryMapping.map(({ icon: Icon, label, color, bg }) => (
             <button
               key={label}
               role="listitem"
@@ -186,12 +130,12 @@ export default function Places() {
         {/* Bento grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {/* Featured large card */}
-          {places[0] && (
+          {featuredLarge && (
             <article className="md:col-span-2 lg:col-span-2 group relative rounded-2xl overflow-hidden bg-background border border-border hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 min-h-[340px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={places[0].image}
-                alt={places[0].name}
+                src={featuredLarge.image}
+                alt={featuredLarge.name}
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
               <div
@@ -206,29 +150,31 @@ export default function Places() {
                 <div className="flex items-center gap-2 mb-2">
                   <span className="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-sm text-white text-xs font-medium px-2.5 py-1 rounded-full">
                     <UtensilsCrossed className="w-3 h-3" aria-hidden="true" />
-                    {places[0].category}
+                    {featuredLarge.category}
                   </span>
-                  <span className="inline-flex items-center gap-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-300 text-xs font-medium px-2.5 py-1 rounded-full">
-                    <span
-                      className="w-1.5 h-1.5 rounded-full bg-emerald-400"
-                      aria-hidden="true"
-                    />
-                    Open Now
-                  </span>
+                  {featuredLarge.openNow && (
+                    <span className="inline-flex items-center gap-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-300 text-xs font-medium px-2.5 py-1 rounded-full">
+                      <span
+                        className="w-1.5 h-1.5 rounded-full bg-emerald-400"
+                        aria-hidden="true"
+                      />
+                      Open Now
+                    </span>
+                  )}
                 </div>
                 <h3 className="text-white font-bold text-xl mb-1 leading-tight">
-                  {places[0].name}
+                  {featuredLarge.name}
                 </h3>
                 <p className="text-white/70 text-sm leading-relaxed mb-3 line-clamp-2">
-                  {places[0].desc}
+                  {featuredLarge.desc}
                 </p>
                 <div className="flex items-center gap-3">
-                  <StarRating rating={places[0].rating} />
+                  <StarRating rating={featuredLarge.rating} />
                   <span className="text-white font-semibold text-sm">
-                    {places[0].rating}
+                    {featuredLarge.rating}
                   </span>
                   <span className="text-white/50 text-xs">
-                    ({places[0].reviews.toLocaleString()} reviews)
+                    ({featuredLarge.reviews?.toLocaleString()} reviews)
                   </span>
                 </div>
               </div>
@@ -236,9 +182,9 @@ export default function Places() {
           )}
 
           {/* Small cards */}
-          {places.slice(1, 6).map((place) => (
+          {otherPlaces.slice(0, 5).map((place) => (
             <article
-              key={place.id}
+              key={place._id}
               className="group relative rounded-2xl overflow-hidden bg-background border border-border hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 min-h-[220px]"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -284,7 +230,7 @@ export default function Places() {
         {/* CTA */}
         <div className="flex justify-center mt-10">
           <a
-            href="#"
+            href="/explore"
             className="inline-flex items-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-hover transition-colors duration-150 shadow-md shadow-(--color-primary)/20"
           >
             Explore All Places
