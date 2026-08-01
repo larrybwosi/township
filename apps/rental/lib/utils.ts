@@ -9,7 +9,10 @@ export function formatPrice(price: number): string {
  * Calculate the integer number of nights between check-in and check-out dates.
  * Returns 0 if either date is invalid, or if the start date is on or after the end date.
  */
-export function calculateNights(startDateStr: string, endDateStr: string): number {
+export function calculateNights(
+  startDateStr: string,
+  endDateStr: string,
+): number {
   if (!startDateStr || !endDateStr) return 0;
 
   const start = new Date(startDateStr);

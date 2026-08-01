@@ -1,23 +1,32 @@
 "use client";
 
-import { MapPin, Phone, Mail, Globe, MessageCircle, Camera, Play, ArrowRight } from "lucide-react";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Globe,
+  MessageCircle,
+  Camera,
+  Play,
+  ArrowRight,
+} from "lucide-react";
 
 const footerLinks = {
-  "Explore": [
+  Explore: [
     { label: "About Township", href: "#about" },
     { label: "Places of Interest", href: "#places" },
     { label: "Events Calendar", href: "#events" },
     { label: "Dining & Restaurants", href: "#" },
     { label: "Parks & Recreation", href: "#" },
   ],
-  "Institutions": [
+  Institutions: [
     { label: "Universities & Colleges", href: "#institutions" },
     { label: "Hospitals & Clinics", href: "#institutions" },
     { label: "Government Offices", href: "#institutions" },
     { label: "Schools & Academies", href: "#" },
     { label: "Research Centres", href: "#" },
   ],
-  "Services": [
+  Services: [
     { label: "Public Transport", href: "#services" },
     { label: "Free Wi-Fi Zones", href: "#services" },
     { label: "Libraries", href: "#services" },
@@ -52,8 +61,8 @@ export default function Footer() {
                 Stay informed about Township
               </h3>
               <p className="text-white/50 text-sm max-w-md leading-relaxed">
-                Subscribe to our newsletter for weekly updates on events, new services,
-                and important community announcements.
+                Subscribe to our newsletter for weekly updates on events, new
+                services, and important community announcements.
               </p>
             </div>
             <form
@@ -92,12 +101,17 @@ export default function Footer() {
                 <MapPin className="w-4 h-4 text-white" aria-hidden="true" />
               </div>
               <div className="flex flex-col leading-none">
-                <span className="text-white font-bold text-lg tracking-tight">Township</span>
-                <span className="text-white/40 text-[10px] uppercase tracking-widest font-medium">City Portal</span>
+                <span className="text-white font-bold text-lg tracking-tight">
+                  Township
+                </span>
+                <span className="text-white/40 text-[10px] uppercase tracking-widest font-medium">
+                  City Portal
+                </span>
               </div>
             </a>
             <p className="text-white/50 text-sm leading-relaxed mb-6">
-              Your official guide to everything Township — designed for students, locals, and visitors alike.
+              Your official guide to everything Township — designed for
+              students, locals, and visitors alike.
             </p>
             {/* Contact */}
             <div className="flex flex-col gap-3">
@@ -116,7 +130,10 @@ export default function Footer() {
                 info@township.gov
               </a>
               <div className="flex items-start gap-2.5 text-white/50 text-sm">
-                <MapPin className="w-3.5 h-3.5 shrink-0 mt-0.5" aria-hidden="true" />
+                <MapPin
+                  className="w-3.5 h-3.5 shrink-0 mt-0.5"
+                  aria-hidden="true"
+                />
                 City Hall Square, Township Centre
               </div>
             </div>
@@ -149,7 +166,8 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-white/30 text-sm">
-            &copy; {new Date().getFullYear()} Township City Portal. All rights reserved.
+            &copy; {new Date().getFullYear()} Township City Portal. All rights
+            reserved.
           </p>
           <div className="flex items-center gap-3">
             {socials.map(({ icon: Icon, label, href }) => (
@@ -164,13 +182,22 @@ export default function Footer() {
             ))}
           </div>
           <div className="flex items-center gap-5">
-            <a href="#" className="text-white/30 hover:text-white/60 text-xs transition-colors duration-150">
+            <a
+              href="#"
+              className="text-white/30 hover:text-white/60 text-xs transition-colors duration-150"
+            >
               Privacy Policy
             </a>
-            <a href="#" className="text-white/30 hover:text-white/60 text-xs transition-colors duration-150">
+            <a
+              href="#"
+              className="text-white/30 hover:text-white/60 text-xs transition-colors duration-150"
+            >
               Terms of Use
             </a>
-            <a href="#" className="text-white/30 hover:text-white/60 text-xs transition-colors duration-150">
+            <a
+              href="#"
+              className="text-white/30 hover:text-white/60 text-xs transition-colors duration-150"
+            >
               Accessibility
             </a>
           </div>

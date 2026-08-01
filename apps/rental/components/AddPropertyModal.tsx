@@ -31,7 +31,10 @@ const availableAmenities = [
   "Infinity Pool Access",
 ];
 
-export default function AddPropertyModal({ isOpen, onClose }: AddPropertyModalProps) {
+export default function AddPropertyModal({
+  isOpen,
+  onClose,
+}: AddPropertyModalProps) {
   const { towns, addProperty, activeUser } = useMockData();
 
   const [title, setTitle] = useState("");
@@ -49,7 +52,9 @@ export default function AddPropertyModal({ isOpen, onClose }: AddPropertyModalPr
 
   const handleAmenityToggle = (amenity: string) => {
     setSelectedAmenities((prev) =>
-      prev.includes(amenity) ? prev.filter((a) => a !== amenity) : [...prev, amenity]
+      prev.includes(amenity)
+        ? prev.filter((a) => a !== amenity)
+        : [...prev, amenity],
     );
   };
 
@@ -59,7 +64,9 @@ export default function AddPropertyModal({ isOpen, onClose }: AddPropertyModalPr
 
     if (!title.trim()) return setError("Property title is required.");
     if (!description.trim() || description.length < 15) {
-      return setError("Please provide a description of at least 15 characters.");
+      return setError(
+        "Please provide a description of at least 15 characters.",
+      );
     }
     if (!address.trim()) return setError("Property address is required.");
     const priceNum = parseFloat(price);
@@ -93,23 +100,33 @@ export default function AddPropertyModal({ isOpen, onClose }: AddPropertyModalPr
         onClose();
       }, 1500);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "An unexpected error occurred.");
+      setError(
+        err instanceof Error ? err.message : "An unexpected error occurred.",
+      );
     }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-xs" onClick={onClose} />
+      <div
+        className="fixed inset-0 bg-black/60 backdrop-blur-xs"
+        onClick={onClose}
+      />
 
       {/* Modal Container */}
       <div className="bg-surface rounded-xl shadow-2xl border border-border w-full max-w-2xl max-h-[90vh] flex flex-col relative z-10 animate-in fade-in zoom-in-95 duration-200">
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-border">
           <div>
-            <h3 className="text-lg font-bold text-foreground">List a New Property</h3>
+            <h3 className="text-lg font-bold text-foreground">
+              List a New Property
+            </h3>
             <p className="text-xs text-muted">
-              Listing as <span className="font-semibold text-primary">{activeUser.name}</span>
+              Listing as{" "}
+              <span className="font-semibold text-primary">
+                {activeUser.name}
+              </span>
             </p>
           </div>
           <button
@@ -127,11 +144,19 @@ export default function AddPropertyModal({ isOpen, onClose }: AddPropertyModalPr
             <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center text-green-600 mb-4">
               <Plus className="w-10 h-10 rotate-45" />
             </div>
-            <h3 className="text-xl font-bold text-foreground mb-1">Property Listed!</h3>
-            <p className="text-sm text-muted">Your property was added successfully and is now live on the Portal.</p>
+            <h3 className="text-xl font-bold text-foreground mb-1">
+              Property Listed!
+            </h3>
+            <p className="text-sm text-muted">
+              Your property was added successfully and is now live on the
+              Portal.
+            </p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-4">
+          <form
+            onSubmit={handleSubmit}
+            className="flex-1 overflow-y-auto p-6 space-y-4"
+          >
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-800 text-sm p-3.5 rounded-lg font-medium flex items-center gap-2">
                 <Info className="w-4 h-4 shrink-0 text-red-600" />
@@ -210,12 +235,18 @@ export default function AddPropertyModal({ isOpen, onClose }: AddPropertyModalPr
                 </label>
                 <select
                   value={category}
-                  onChange={(e) => setCategory(e.target.value as PropertyCategory)}
+                  onChange={(e) =>
+                    setCategory(e.target.value as PropertyCategory)
+                  }
                   className="w-full px-3.5 py-2 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                 >
                   <option value="house">House</option>
-                  <option value="apartment_single">Single Apartment House</option>
-                  <option value="apartment_building">Apartment Building (Multi-unit)</option>
+                  <option value="apartment_single">
+                    Single Apartment House
+                  </option>
+                  <option value="apartment_building">
+                    Apartment Building (Multi-unit)
+                  </option>
                   <option value="guesthouse">Guest House</option>
                   <option value="motel">Motel</option>
                   <option value="hotel">Hotel</option>
@@ -249,7 +280,9 @@ export default function AddPropertyModal({ isOpen, onClose }: AddPropertyModalPr
                       type="button"
                       onClick={() => setImageUrl(img)}
                       className={`relative w-20 h-14 rounded-lg overflow-hidden shrink-0 border-2 transition ${
-                        imageUrl === img ? "border-accent scale-95 shadow-md" : "border-transparent opacity-70 hover:opacity-100"
+                        imageUrl === img
+                          ? "border-accent scale-95 shadow-md"
+                          : "border-transparent opacity-70 hover:opacity-100"
                       }`}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -291,7 +324,9 @@ export default function AddPropertyModal({ isOpen, onClose }: AddPropertyModalPr
                         }`}
                       >
                         <span>{amenity}</span>
-                        {checked && <span className="text-accent font-bold">✓</span>}
+                        {checked && (
+                          <span className="text-accent font-bold">✓</span>
+                        )}
                       </button>
                     );
                   })}

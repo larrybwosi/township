@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Calendar, MapPin, ArrowRight, Clock, Users } from "lucide-react";
@@ -12,7 +11,8 @@ const events = [
     time: "10:00 AM – 10:00 PM",
     location: "Civic Park, Town Centre",
     attendees: "5,000+",
-    image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=700&q=80",
+    image:
+      "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=700&q=80",
     desc: "Three days of music, food, traditional crafts, and performances celebrating the heritage and diversity of our community.",
     featured: true,
   },
@@ -24,7 +24,8 @@ const events = [
     time: "9:00 AM – 3:00 PM",
     location: "Township University, Main Campus",
     attendees: "1,200+",
-    image: "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=600&q=80",
     desc: "Prospective students and families are invited to tour the campus, meet faculty, and learn about programmes.",
     featured: false,
   },
@@ -36,7 +37,8 @@ const events = [
     time: "7:00 AM – 1:00 PM",
     location: "Market Square, Central Township",
     attendees: "800+",
-    image: "https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=600&q=80",
     desc: "Weekly market showcasing fresh seasonal produce, homemade goods, and handcrafted items from local producers.",
     featured: false,
   },
@@ -48,7 +50,8 @@ const events = [
     time: "6:30 AM",
     location: "Starting at Riverside Park",
     attendees: "2,500+",
-    image: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=600&q=80",
     desc: "Annual running event winding through the town's scenic routes. Open to all skill levels with a fun run option.",
     featured: false,
   },
@@ -78,8 +81,8 @@ export default function Events() {
               What&apos;s happening in Township
             </h2>
             <p className="text-muted mt-3 max-w-xl text-base leading-relaxed text-pretty">
-              From cultural festivals to sports days — stay connected to the pulse
-              of our community with the latest events calendar.
+              From cultural festivals to sports days — stay connected to the
+              pulse of our community with the latest events calendar.
             </p>
           </div>
           <a
@@ -104,7 +107,9 @@ export default function Events() {
                 />
                 <div className="absolute top-4 left-4 flex items-center gap-2">
                   {events[0].category && (
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${categoryColors[events[0].category] || ""}`}>
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${categoryColors[events[0].category] || ""}`}
+                    >
                       {events[0].category}
                     </span>
                   )}
@@ -164,7 +169,9 @@ export default function Events() {
                   />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold mb-1.5 ${categoryColors[event.category]}`}>
+                  <span
+                    className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold mb-1.5 ${categoryColors[event.category]}`}
+                  >
                     {event.category}
                   </span>
                   <h3 className="text-foreground font-semibold text-sm leading-tight mb-2 line-clamp-2">
@@ -172,7 +179,10 @@ export default function Events() {
                   </h3>
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-1.5 text-muted text-xs">
-                      <Calendar className="w-3 h-3 shrink-0" aria-hidden="true" />
+                      <Calendar
+                        className="w-3 h-3 shrink-0"
+                        aria-hidden="true"
+                      />
                       {event.date}
                     </div>
                     <div className="flex items-center gap-1.5 text-muted text-xs">

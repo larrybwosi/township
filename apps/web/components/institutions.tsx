@@ -30,7 +30,8 @@ const institutions = [
     address: "1 University Drive, North Campus",
     phone: "+1 (555) 200-0100",
     hours: "Mon–Fri: 7:30am – 5:00pm",
-    image: "https://images.unsplash.com/photo-1562774053-701939374585?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1562774053-701939374585?w=600&q=80",
     tags: ["University", "Research", "Student Services"],
     featured: true,
   },
@@ -43,7 +44,8 @@ const institutions = [
     address: "45 Tech Avenue, East District",
     phone: "+1 (555) 200-0200",
     hours: "Mon–Fri: 8:00am – 4:30pm",
-    image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&q=80",
     tags: ["College", "Engineering", "Vocational"],
     featured: false,
   },
@@ -56,7 +58,8 @@ const institutions = [
     address: "12 Oak Lane, Central Township",
     phone: "+1 (555) 200-0300",
     hours: "Mon–Fri: 7:00am – 3:00pm",
-    image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=80",
     tags: ["Secondary", "Academy"],
     featured: false,
   },
@@ -69,7 +72,8 @@ const institutions = [
     address: "Hospital Road, Medical Quarter",
     phone: "+1 (555) 200-0911",
     hours: "24 Hours / 7 Days",
-    image: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=600&q=80",
     tags: ["Emergency", "Specialist Care", "In-Patient"],
     featured: true,
   },
@@ -82,7 +86,8 @@ const institutions = [
     address: "22 Main Street, Town Centre",
     phone: "+1 (555) 200-0500",
     hours: "Mon–Sat: 8:00am – 6:00pm",
-    image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=600&q=80",
     tags: ["Primary Care", "Free Services", "Vaccinations"],
     featured: false,
   },
@@ -95,7 +100,8 @@ const institutions = [
     address: "City Hall Square, Township Centre",
     phone: "+1 (555) 200-0001",
     hours: "Mon–Fri: 8:00am – 4:00pm",
-    image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80",
     tags: ["Permits", "Licensing", "ID Documents"],
     featured: false,
   },
@@ -123,8 +129,9 @@ export default function Institutions() {
               Key institutions in Township
             </h2>
             <p className="text-muted mt-3 max-w-xl text-base leading-relaxed text-pretty">
-              From universities to hospitals and government offices — find contact
-              details, hours, and directions for every major institution.
+              From universities to hospitals and government offices — find
+              contact details, hours, and directions for every major
+              institution.
             </p>
           </div>
           <a
@@ -137,7 +144,11 @@ export default function Institutions() {
         </div>
 
         {/* Category filter tabs */}
-        <div className="flex flex-wrap gap-2 mb-8" role="tablist" aria-label="Institution categories">
+        <div
+          className="flex flex-wrap gap-2 mb-8"
+          role="tablist"
+          aria-label="Institution categories"
+        >
           {categories.map(({ id, label, icon: Icon }) => (
             <button
               key={id}
@@ -178,13 +189,22 @@ export default function Institutions() {
                 {/* Category chip */}
                 <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 shadow-sm">
                   {inst.category === "education" && (
-                    <GraduationCap className="w-3 h-3 text-primary" aria-hidden="true" />
+                    <GraduationCap
+                      className="w-3 h-3 text-primary"
+                      aria-hidden="true"
+                    />
                   )}
                   {inst.category === "health" && (
-                    <Stethoscope className="w-3 h-3 text-emerald-600" aria-hidden="true" />
+                    <Stethoscope
+                      className="w-3 h-3 text-emerald-600"
+                      aria-hidden="true"
+                    />
                   )}
                   {inst.category === "government" && (
-                    <Landmark className="w-3 h-3 text-purple-600" aria-hidden="true" />
+                    <Landmark
+                      className="w-3 h-3 text-purple-600"
+                      aria-hidden="true"
+                    />
                   )}
                   <span className="text-[10px] font-semibold text-foreground uppercase tracking-wider">
                     {inst.type}
@@ -209,15 +229,26 @@ export default function Institutions() {
                 {/* Meta */}
                 <div className="flex flex-col gap-2 mb-4">
                   <div className="flex items-start gap-2">
-                    <MapPin className="w-3.5 h-3.5 text-muted shrink-0 mt-0.5" aria-hidden="true" />
-                    <span className="text-muted text-xs leading-tight">{inst.address}</span>
+                    <MapPin
+                      className="w-3.5 h-3.5 text-muted shrink-0 mt-0.5"
+                      aria-hidden="true"
+                    />
+                    <span className="text-muted text-xs leading-tight">
+                      {inst.address}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Phone className="w-3.5 h-3.5 text-muted shrink-0" aria-hidden="true" />
+                    <Phone
+                      className="w-3.5 h-3.5 text-muted shrink-0"
+                      aria-hidden="true"
+                    />
                     <span className="text-muted text-xs">{inst.phone}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Clock className="w-3.5 h-3.5 text-muted shrink-0" aria-hidden="true" />
+                    <Clock
+                      className="w-3.5 h-3.5 text-muted shrink-0"
+                      aria-hidden="true"
+                    />
                     <span className="text-muted text-xs">{inst.hours}</span>
                   </div>
                 </div>

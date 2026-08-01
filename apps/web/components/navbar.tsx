@@ -55,9 +55,7 @@ export default function Navbar() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-dark shadow-lg shadow-black/20"
-          : "bg-transparent"
+        isScrolled ? "bg-dark shadow-lg shadow-black/20" : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -78,7 +76,10 @@ export default function Navbar() {
           </a>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
+          <nav
+            className="hidden lg:flex items-center gap-1"
+            aria-label="Main navigation"
+          >
             {navLinks.map((link) =>
               link.children ? (
                 <div key={link.label} className="relative">
@@ -116,7 +117,7 @@ export default function Navbar() {
                 >
                   {link.label}
                 </a>
-              )
+              ),
             )}
           </nav>
 
@@ -149,7 +150,9 @@ export default function Navbar() {
       {/* Mobile Menu */}
       <div
         className={`lg:hidden bg-dark border-t border-white/10 transition-all duration-300 ease-in-out overflow-hidden ${
-          mobileOpen ? "max-h-[500px] opacity-100 py-4" : "max-h-0 opacity-0 py-0 pointer-events-none"
+          mobileOpen
+            ? "max-h-[500px] opacity-100 py-4"
+            : "max-h-0 opacity-0 py-0 pointer-events-none"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4">

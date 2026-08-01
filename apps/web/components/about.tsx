@@ -1,4 +1,11 @@
-import { Users, Building, MapPin, Calendar, TrendingUp, Award } from "lucide-react";
+import {
+  Users,
+  Building,
+  MapPin,
+  Calendar,
+  TrendingUp,
+  Award,
+} from "lucide-react";
 
 const stats = [
   {
@@ -49,7 +56,6 @@ export default function About() {
   return (
     <section id="about" className="py-20 lg:py-28 bg-surface">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
         {/* Section header */}
         <div className="flex flex-col items-start mb-12">
           <span className="inline-flex items-center gap-2 text-accent text-sm font-semibold uppercase tracking-widest mb-3">
@@ -66,16 +72,16 @@ export default function About() {
           {/* Left: Text */}
           <div>
             <p className="text-muted text-base leading-relaxed mb-6">
-              Township is more than a place — it&apos;s a living community shaped by
-              decades of growth, culture, and collective ambition. Home to leading
-              universities, bustling markets, top healthcare facilities, and a rich
-              calendar of cultural events, our town has become a destination for
-              students, professionals, and families.
+              Township is more than a place — it&apos;s a living community
+              shaped by decades of growth, culture, and collective ambition.
+              Home to leading universities, bustling markets, top healthcare
+              facilities, and a rich calendar of cultural events, our town has
+              become a destination for students, professionals, and families.
             </p>
             <p className="text-muted text-base leading-relaxed mb-8">
-              Whether you&apos;re enrolling at one of our institutions, setting up home
-              for the first time, or simply exploring — this portal is your front door
-              to everything Township has to offer.
+              Whether you&apos;re enrolling at one of our institutions, setting
+              up home for the first time, or simply exploring — this portal is
+              your front door to everything Township has to offer.
             </p>
 
             {/* Highlights */}
@@ -89,9 +95,7 @@ export default function About() {
                     <h3 className="text-foreground font-semibold text-sm mb-1">
                       {title}
                     </h3>
-                    <p className="text-muted text-sm leading-relaxed">
-                      {desc}
-                    </p>
+                    <p className="text-muted text-sm leading-relaxed">{desc}</p>
                   </div>
                 </div>
               ))}
@@ -140,7 +144,10 @@ export default function About() {
               className="relative bg-background border border-border rounded-xl p-6 hover:border-primary/30 hover:shadow-md transition-all duration-200 group"
             >
               <div className="w-10 h-10 rounded-lg bg-primary-light flex items-center justify-center mb-4 group-hover:bg-primary transition-colors duration-200">
-                <Icon className="w-5 h-5 text-primary group-hover:text-white transition-colors duration-200" aria-hidden="true" />
+                <Icon
+                  className="w-5 h-5 text-primary group-hover:text-white transition-colors duration-200"
+                  aria-hidden="true"
+                />
               </div>
               <p className="text-2xl sm:text-3xl font-bold text-foreground leading-none mb-1">
                 {value}

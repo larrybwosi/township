@@ -8,7 +8,7 @@ WORKDIR /app
 
 # Pruning stage to isolate only files needed for the Web app
 FROM base AS pruner
-RUN pnpm add -g turbo@2.10.4
+RUN npm install -g turbo@2.10.4
 COPY . .
 RUN turbo prune web --docker
 

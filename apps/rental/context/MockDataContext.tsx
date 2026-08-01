@@ -18,7 +18,13 @@ export interface Town {
   description: string;
 }
 
-export type PropertyCategory = "house" | "apartment_single" | "apartment_building" | "guesthouse" | "motel" | "hotel";
+export type PropertyCategory =
+  | "house"
+  | "apartment_single"
+  | "apartment_building"
+  | "guesthouse"
+  | "motel"
+  | "hotel";
 
 export interface PropertyUnit {
   id: string;
@@ -74,27 +80,38 @@ interface MockDataContextType {
   reviews: Review[];
   isLoading: boolean;
   setRole: (role: UserRole) => void;
-  addProperty: (property: Omit<Property, "id" | "createdAt" | "ownerId">) => Property;
+  addProperty: (
+    property: Omit<Property, "id" | "createdAt" | "ownerId">,
+  ) => Property;
   bookProperty: (
     propertyId: string,
     startDate: string,
     endDate: string,
-    unitId?: string
+    unitId?: string,
   ) => { success: boolean; message: string; booking?: Booking };
   addReview: (propertyId: string, rating: number, comment: string) => void;
   deleteProperty: (propertyId: string) => void;
   cancelBooking: (bookingId: string) => void;
 }
 
-const MockDataContext = createContext<MockDataContextType | undefined>(undefined);
+const MockDataContext = createContext<MockDataContextType | undefined>(
+  undefined,
+);
 
 const initialUsers: MockUser[] = [
   { id: "u-1", name: "John Doe", email: "john@township.com", role: "CUSTOMER" },
-  { id: "u-2", name: "Alice Smith", email: "alice@township.com", role: "HOMEOWNER" },
+  {
+    id: "u-2",
+    name: "Alice Smith",
+    email: "alice@township.com",
+    role: "HOMEOWNER",
+  },
   { id: "u-3", name: "Bob Jones", email: "bob@township.com", role: "ADMIN" },
 ];
 
-export const MockDataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const MockDataProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [activeUser, setActiveUser] = useState<MockUser>(initialUsers[0]!);
   const [properties, setProperties] = useState<Property[]>([]);
   const [towns, setTowns] = useState<Town[]>([]);
@@ -107,15 +124,18 @@ export const MockDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     async function loadSanityContent() {
       setIsLoading(true);
       try {
-        const fetchedTowns = await sanityClient.fetch<SanityTown[]>('*[_type == "town"]');
-        const fetchedProperties = await sanityClient.fetch<SanityProperty[]>('*[_type == "property"]');
+        const fetchedTowns =
+          await sanityClient.fetch<SanityTown[]>('*[_type == "town"]');
+        const fetchedProperties = await sanityClient.fetch<SanityProperty[]>(
+          '*[_type == "property"]',
+        );
 
         setTowns(
           fetchedTowns.map((t) => ({
             id: t.id,
             name: t.name,
             description: t.description,
-          }))
+          })),
         );
 
         setProperties(
@@ -138,7 +158,7 @@ export const MockDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
               rooms: u.rooms,
               description: u.description,
             })),
-          }))
+          })),
         );
 
         // Seeding some initial bookings & reviews that align with p-1, etc.
@@ -162,7 +182,8 @@ export const MockDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             userId: "u-1",
             userName: "John Doe",
             rating: 5,
-            comment: "Absolutely breathtaking! The cabin is beautifully maintained and the dock was perfect for afternoon swimming. Will definitely come back!",
+            comment:
+              "Absolutely breathtaking! The cabin is beautifully maintained and the dock was perfect for afternoon swimming. Will definitely come back!",
             createdAt: "2025-02-15T16:00:00.000Z",
           },
           {
@@ -171,7 +192,8 @@ export const MockDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             userId: "u-3",
             userName: "Bob Jones",
             rating: 4,
-            comment: "Lovely place, great location. Kitchen was super equipped. Wifi was slightly slow but the lake views make up for it completely.",
+            comment:
+              "Lovely place, great location. Kitchen was super equipped. Wifi was slightly slow but the lake views make up for it completely.",
             createdAt: "2025-02-18T14:30:00.000Z",
           },
           {
@@ -180,7 +202,8 @@ export const MockDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             userId: "u-1",
             userName: "John Doe",
             rating: 5,
-            comment: "Sensational townhouse view! The design is incredibly clean and the neighborhood is lovely.",
+            comment:
+              "Sensational townhouse view! The design is incredibly clean and the neighborhood is lovely.",
             createdAt: "2025-02-20T11:00:00.000Z",
           },
           {
@@ -189,7 +212,8 @@ export const MockDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             userId: "u-1",
             userName: "John Doe",
             rating: 5,
-            comment: "Unbelievable cabin. The wood fire was incredibly cozy and soaking in the outdoor hot tub under the star-filled redwood canopy was magic.",
+            comment:
+              "Unbelievable cabin. The wood fire was incredibly cozy and soaking in the outdoor hot tub under the star-filled redwood canopy was magic.",
             createdAt: "2025-02-22T21:10:00.000Z",
           },
         ]);
@@ -208,7 +232,9 @@ export const MockDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setActiveUser(user);
   };
 
-  const addProperty = (newProp: Omit<Property, "id" | "createdAt" | "ownerId">) => {
+  const addProperty = (
+    newProp: Omit<Property, "id" | "createdAt" | "ownerId">,
+  ) => {
     const property: Property = {
       ...newProp,
       id: `p-${Date.now()}`,
@@ -219,7 +245,12 @@ export const MockDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return property;
   };
 
-  const bookProperty = (propertyId: string, startDate: string, endDate: string, unitId?: string) => {
+  const bookProperty = (
+    propertyId: string,
+    startDate: string,
+    endDate: string,
+    unitId?: string,
+  ) => {
     const targetProp = properties.find((p) => p.id === propertyId);
     if (!targetProp) {
       return { success: false, message: "Property not found." };
@@ -229,17 +260,26 @@ export const MockDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const end = new Date(endDate);
 
     if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-      return { success: false, message: "Please select valid check-in and check-out dates." };
+      return {
+        success: false,
+        message: "Please select valid check-in and check-out dates.",
+      };
     }
 
     if (start >= end) {
-      return { success: false, message: "Check-out date must be after check-in date." };
+      return {
+        success: false,
+        message: "Check-out date must be after check-in date.",
+      };
     }
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     if (start < today) {
-      return { success: false, message: "Check-in date cannot be in the past." };
+      return {
+        success: false,
+        message: "Check-in date cannot be in the past.",
+      };
     }
 
     // Check conflict (either same property-wide, or same unit)
@@ -255,7 +295,11 @@ export const MockDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     });
 
     if (hasConflict) {
-      return { success: false, message: "These dates are already booked. Please choose a different date range." };
+      return {
+        success: false,
+        message:
+          "These dates are already booked. Please choose a different date range.",
+      };
     }
 
     const diffTime = Math.abs(end.getTime() - start.getTime());
@@ -285,7 +329,11 @@ export const MockDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     };
 
     setBookings((prev) => [booking, ...prev]);
-    return { success: true, message: "Your booking was successfully confirmed!", booking };
+    return {
+      success: true,
+      message: "Your booking was successfully confirmed!",
+      booking,
+    };
   };
 
   const addReview = (propertyId: string, rating: number, comment: string) => {
@@ -309,7 +357,7 @@ export const MockDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const cancelBooking = (bookingId: string) => {
     setBookings((prev) =>
-      prev.map((b) => (b.id === bookingId ? { ...b, status: "CANCELLED" } : b))
+      prev.map((b) => (b.id === bookingId ? { ...b, status: "CANCELLED" } : b)),
     );
   };
 

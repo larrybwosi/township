@@ -1,10 +1,34 @@
-import { Star, ArrowRight, UtensilsCrossed, ShoppingBag, TreePine, Hotel, Coffee, Music } from "lucide-react";
+import {
+  Star,
+  ArrowRight,
+  UtensilsCrossed,
+  ShoppingBag,
+  TreePine,
+  Hotel,
+  Coffee,
+  Music,
+} from "lucide-react";
 
 const categories = [
-  { icon: UtensilsCrossed, label: "Dining", color: "text-orange-500", bg: "bg-orange-50" },
+  {
+    icon: UtensilsCrossed,
+    label: "Dining",
+    color: "text-orange-500",
+    bg: "bg-orange-50",
+  },
   { icon: Coffee, label: "Cafes", color: "text-amber-600", bg: "bg-amber-50" },
-  { icon: ShoppingBag, label: "Shopping", color: "text-blue-500", bg: "bg-blue-50" },
-  { icon: TreePine, label: "Parks", color: "text-emerald-600", bg: "bg-emerald-50" },
+  {
+    icon: ShoppingBag,
+    label: "Shopping",
+    color: "text-blue-500",
+    bg: "bg-blue-50",
+  },
+  {
+    icon: TreePine,
+    label: "Parks",
+    color: "text-emerald-600",
+    bg: "bg-emerald-50",
+  },
   { icon: Hotel, label: "Stay", color: "text-purple-600", bg: "bg-purple-50" },
   { icon: Music, label: "Nightlife", color: "text-pink-600", bg: "bg-pink-50" },
 ];
@@ -18,7 +42,8 @@ const places = [
     rating: 4.8,
     reviews: 1240,
     desc: "A vibrant open-air market at the heart of town, offering fresh produce, street food, and artisan goods from local vendors.",
-    image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80",
     tags: ["Street Food", "Local Produce", "Artisan"],
     openNow: true,
     span: "large",
@@ -31,7 +56,8 @@ const places = [
     rating: 4.9,
     reviews: 890,
     desc: "A beautiful riverside green space perfect for morning runs, picnics, and weekend relaxation.",
-    image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80",
     tags: ["Outdoor", "Family-Friendly", "Free"],
     openNow: true,
     span: "small",
@@ -44,7 +70,8 @@ const places = [
     rating: 4.5,
     reviews: 2100,
     desc: "The region's premier shopping destination with over 150 stores, a food court, and entertainment facilities.",
-    image: "https://images.unsplash.com/photo-1567449303078-57ad995bd17a?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1567449303078-57ad995bd17a?w=600&q=80",
     tags: ["Shopping", "Food Court", "Entertainment"],
     openNow: true,
     span: "small",
@@ -57,7 +84,8 @@ const places = [
     rating: 4.7,
     reviews: 620,
     desc: "A student favourite for its single-origin brews, strong Wi-Fi, and calm working atmosphere open from early morning.",
-    image: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=80",
     tags: ["Coffee", "Wi-Fi", "Study Spot"],
     openNow: true,
     span: "small",
@@ -70,7 +98,8 @@ const places = [
     rating: 4.6,
     reviews: 450,
     desc: "Elegant accommodation steps from the university campus and town centre, ideal for visiting families and academic guests.",
-    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80",
     tags: ["4-Star", "Conference Rooms", "Family"],
     openNow: false,
     span: "small",
@@ -83,7 +112,8 @@ const places = [
     rating: 4.6,
     reviews: 380,
     desc: "An after-dark hub of live music venues, independent cinemas, bars, and pop-up events that keep Township buzzing.",
-    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&q=80",
     tags: ["Live Music", "Cinema", "Bars"],
     openNow: true,
     span: "small",
@@ -92,7 +122,10 @@ const places = [
 
 function StarRating({ rating }: { rating: number }) {
   return (
-    <div className="flex items-center gap-0.5" aria-label={`Rating: ${rating} out of 5`}>
+    <div
+      className="flex items-center gap-0.5"
+      aria-label={`Rating: ${rating} out of 5`}
+    >
       {[1, 2, 3, 4, 5].map((i) => (
         <Star
           key={i}
@@ -119,8 +152,8 @@ export default function Places() {
               Places worth visiting
             </h2>
             <p className="text-muted mt-3 max-w-xl text-base leading-relaxed text-pretty">
-              Discover the best dining, shopping, parks, and entertainment that our
-              town has to offer — handpicked for students and locals.
+              Discover the best dining, shopping, parks, and entertainment that
+              our town has to offer — handpicked for students and locals.
             </p>
           </div>
           <a
@@ -133,7 +166,11 @@ export default function Places() {
         </div>
 
         {/* Category pills */}
-        <div className="flex flex-wrap gap-2 mb-10" role="list" aria-label="Place categories">
+        <div
+          className="flex flex-wrap gap-2 mb-10"
+          role="list"
+          aria-label="Place categories"
+        >
           {categories.map(({ icon: Icon, label, color, bg }) => (
             <button
               key={label}
@@ -159,7 +196,10 @@ export default function Places() {
               />
               <div
                 className="absolute inset-0"
-                style={{ background: "linear-gradient(to top, rgba(13,34,56,0.85) 0%, rgba(13,34,56,0.2) 60%, transparent 100%)" }}
+                style={{
+                  background:
+                    "linear-gradient(to top, rgba(13,34,56,0.85) 0%, rgba(13,34,56,0.2) 60%, transparent 100%)",
+                }}
                 aria-hidden="true"
               />
               <div className="absolute bottom-0 left-0 right-0 p-6">
@@ -169,7 +209,10 @@ export default function Places() {
                     {places[0].category}
                   </span>
                   <span className="inline-flex items-center gap-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-300 text-xs font-medium px-2.5 py-1 rounded-full">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" aria-hidden="true" />
+                    <span
+                      className="w-1.5 h-1.5 rounded-full bg-emerald-400"
+                      aria-hidden="true"
+                    />
                     Open Now
                   </span>
                 </div>
@@ -181,8 +224,12 @@ export default function Places() {
                 </p>
                 <div className="flex items-center gap-3">
                   <StarRating rating={places[0].rating} />
-                  <span className="text-white font-semibold text-sm">{places[0].rating}</span>
-                  <span className="text-white/50 text-xs">({places[0].reviews.toLocaleString()} reviews)</span>
+                  <span className="text-white font-semibold text-sm">
+                    {places[0].rating}
+                  </span>
+                  <span className="text-white/50 text-xs">
+                    ({places[0].reviews.toLocaleString()} reviews)
+                  </span>
                 </div>
               </div>
             </article>
@@ -202,7 +249,10 @@ export default function Places() {
               />
               <div
                 className="absolute inset-0"
-                style={{ background: "linear-gradient(to top, rgba(13,34,56,0.90) 0%, rgba(13,34,56,0.25) 55%, transparent 100%)" }}
+                style={{
+                  background:
+                    "linear-gradient(to top, rgba(13,34,56,0.90) 0%, rgba(13,34,56,0.25) 55%, transparent 100%)",
+                }}
                 aria-hidden="true"
               />
               <div className="absolute bottom-0 left-0 right-0 p-4">
@@ -222,7 +272,9 @@ export default function Places() {
                 <div className="flex items-center gap-2">
                   <StarRating rating={place.rating} />
                   <span className="text-white/70 text-xs">{place.rating}</span>
-                  <span className="text-white/40 text-xs">({place.reviews})</span>
+                  <span className="text-white/40 text-xs">
+                    ({place.reviews})
+                  </span>
                 </div>
               </div>
             </article>

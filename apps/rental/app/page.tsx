@@ -69,7 +69,8 @@ export default function BrowsePage() {
     const matchesCategory =
       selectedCategory === "all" ||
       (selectedCategory === "apartment"
-        ? (prop.category === "apartment_single" || prop.category === "apartment_building")
+        ? prop.category === "apartment_single" ||
+          prop.category === "apartment_building"
         : prop.category === selectedCategory);
 
     // Filter by price: if apartment building, compare with default base price
@@ -105,7 +106,8 @@ export default function BrowsePage() {
             Find the Perfect Rental Property in Our Gorgeous Towns
           </h1>
           <p className="text-white/75 text-sm md:text-base max-w-xl mx-auto">
-            Browse premium spaces curated dynamically from Sanity. Filter by Houses, Apartments, Guest Houses, Motels, and Hotels.
+            Browse premium spaces curated dynamically from Sanity. Filter by
+            Houses, Apartments, Guest Houses, Motels, and Hotels.
           </p>
 
           {/* Core Search and Filter bar */}
@@ -146,7 +148,9 @@ export default function BrowsePage() {
               <div className="md:col-span-3 flex flex-col justify-center px-2">
                 <div className="flex justify-between items-center text-xs text-muted mb-1 font-bold">
                   <span>MAX PRICE</span>
-                  <span className="text-primary font-bold">${maxPrice}/night</span>
+                  <span className="text-primary font-bold">
+                    ${maxPrice}/night
+                  </span>
                 </div>
                 <input
                   type="range"
@@ -164,7 +168,9 @@ export default function BrowsePage() {
                 <button
                   onClick={() => setShowFilters(!showFilters)}
                   className={`w-full h-10 flex items-center justify-center rounded-lg border transition ${
-                    showFilters ? "bg-accent/10 border-accent text-accent" : "bg-background border-border text-foreground-secondary hover:bg-muted/10"
+                    showFilters
+                      ? "bg-accent/10 border-accent text-accent"
+                      : "bg-background border-border text-foreground-secondary hover:bg-muted/10"
                   }`}
                   title="More Filters"
                 >
@@ -176,15 +182,32 @@ export default function BrowsePage() {
             {showFilters && (
               <div className="mt-3 bg-dark-surface border border-white/10 rounded-lg p-4 text-left grid grid-cols-1 sm:grid-cols-2 gap-4 animate-in fade-in duration-200">
                 <div>
-                  <h4 className="text-xs font-bold text-accent uppercase tracking-wider mb-2">Simulated Host Portal Controls</h4>
+                  <h4 className="text-xs font-bold text-accent uppercase tracking-wider mb-2">
+                    Simulated Host Portal Controls
+                  </h4>
                   <p className="text-xs text-white/70 leading-relaxed">
-                    You can list your own rental property directly in this portal! Switch your simulated role to <span className="text-white font-semibold">Homeowner</span> in the top right, then click the <span className="text-white font-semibold">List Property</span> button.
+                    You can list your own rental property directly in this
+                    portal! Switch your simulated role to{" "}
+                    <span className="text-white font-semibold">Homeowner</span>{" "}
+                    in the top right, then click the{" "}
+                    <span className="text-white font-semibold">
+                      List Property
+                    </span>{" "}
+                    button.
                   </p>
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-accent uppercase tracking-wider mb-2">Persistent Interactive State</h4>
+                  <h4 className="text-xs font-bold text-accent uppercase tracking-wider mb-2">
+                    Persistent Interactive State
+                  </h4>
                   <p className="text-xs text-white/70 leading-relaxed">
-                    Reservations made on individual property details persist dynamically in the session. You can manage and cancel bookings by clicking <span className="text-white font-semibold">My Bookings</span>.
+                    Reservations made on individual property details persist
+                    dynamically in the session. You can manage and cancel
+                    bookings by clicking{" "}
+                    <span className="text-white font-semibold">
+                      My Bookings
+                    </span>
+                    .
                   </p>
                 </div>
               </div>
@@ -210,7 +233,9 @@ export default function BrowsePage() {
                       : "bg-background text-foreground-secondary border-border hover:border-muted hover:bg-muted/5"
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isSelected ? "text-white animate-pulse" : "text-accent"}`} />
+                  <Icon
+                    className={`w-4 h-4 ${isSelected ? "text-white animate-pulse" : "text-accent"}`}
+                  />
                   <span>{cat.name}</span>
                 </button>
               );
@@ -223,9 +248,12 @@ export default function BrowsePage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-2xl font-black tracking-tight text-foreground">Available Properties</h2>
+            <h2 className="text-2xl font-black tracking-tight text-foreground">
+              Available Properties
+            </h2>
             <p className="text-sm text-muted">
-              Showing {filteredProperties.length} of {properties.length} vacation rentals
+              Showing {filteredProperties.length} of {properties.length}{" "}
+              vacation rentals
             </p>
           </div>
 
@@ -239,9 +267,12 @@ export default function BrowsePage() {
         {filteredProperties.length === 0 ? (
           <div className="text-center py-16 bg-surface border border-border rounded-xl shadow-xs">
             <Search className="w-12 h-12 text-muted/40 mx-auto mb-4" />
-            <h3 className="text-lg font-bold text-foreground mb-1">No matching properties found</h3>
+            <h3 className="text-lg font-bold text-foreground mb-1">
+              No matching properties found
+            </h3>
             <p className="text-sm text-muted max-w-sm mx-auto">
-              We could not find any rentals matching your criteria. Try loosening your price threshold or widening the search terms.
+              We could not find any rentals matching your criteria. Try
+              loosening your price threshold or widening the search terms.
             </p>
             <button
               onClick={() => {
@@ -294,10 +325,15 @@ export default function BrowsePage() {
                         {count > 0 ? (
                           <span className="flex items-center gap-1 font-bold text-amber-500">
                             <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                            {avg} <span className="font-normal text-muted">({count})</span>
+                            {avg}{" "}
+                            <span className="font-normal text-muted">
+                              ({count})
+                            </span>
                           </span>
                         ) : (
-                          <span className="text-muted/60 italic text-[11px]">New listing</span>
+                          <span className="text-muted/60 italic text-[11px]">
+                            New listing
+                          </span>
                         )}
                       </div>
 
@@ -348,7 +384,9 @@ export default function BrowsePage() {
                             ? `from $${Math.min(...prop.units.map((u) => u.price))}`
                             : `$${prop.price}`}
                         </span>
-                        <span className="text-[10px] text-muted font-bold block mt-0.5">PER NIGHT</span>
+                        <span className="text-[10px] text-muted font-bold block mt-0.5">
+                          PER NIGHT
+                        </span>
                       </div>
 
                       <Link
@@ -370,14 +408,25 @@ export default function BrowsePage() {
       {/* Footer */}
       <footer className="bg-dark text-white border-t border-white/5 py-8 mt-12">
         <div className="max-w-7xl mx-auto px-4 text-center space-y-2 text-white/50 text-xs">
-          <p className="font-semibold text-white/80">Township Rental Hub Portal</p>
-          <p>© {new Date().getFullYear()} Township Portal. Designed for seamless civic stays and vacation rentals.</p>
+          <p className="font-semibold text-white/80">
+            Township Rental Hub Portal
+          </p>
+          <p>
+            © {new Date().getFullYear()} Township Portal. Designed for seamless
+            civic stays and vacation rentals.
+          </p>
         </div>
       </footer>
 
       {/* Modals */}
-      <AddPropertyModal isOpen={isAddPropertyOpen} onClose={() => setIsAddPropertyOpen(false)} />
-      <MyBookingsModal isOpen={isMyBookingsOpen} onClose={() => setIsMyBookingsOpen(false)} />
+      <AddPropertyModal
+        isOpen={isAddPropertyOpen}
+        onClose={() => setIsAddPropertyOpen(false)}
+      />
+      <MyBookingsModal
+        isOpen={isMyBookingsOpen}
+        onClose={() => setIsMyBookingsOpen(false)}
+      />
     </>
   );
 }
