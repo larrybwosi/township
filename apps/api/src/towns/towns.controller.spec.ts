@@ -7,16 +7,16 @@ describe('TownsController', () => {
   let townsController: TownsController;
 
   const mockTownsService = {
-    create: vi.fn().mockImplementation((dto) => Promise.resolve({ id: 'town-id', ...dto })),
+    create: vi
+      .fn()
+      .mockImplementation((dto) => Promise.resolve({ id: 'town-id', ...dto })),
     findAll: vi.fn().mockResolvedValue([{ id: 'town-id', name: 'Townsville' }]),
   };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [TownsController],
-      providers: [
-        { provide: TownsService, useValue: mockTownsService },
-      ],
+      providers: [{ provide: TownsService, useValue: mockTownsService }],
     }).compile();
 
     townsController = module.get<TownsController>(TownsController);

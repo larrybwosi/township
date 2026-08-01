@@ -12,7 +12,13 @@ export const metadata: Metadata = {
   title: "Township Rental Hub — Find Your Next Home",
   description:
     "Browse, discover, and book perfect rental properties in our gorgeous towns. The ultimate rental finder and host portal.",
-  keywords: ["township", "rental properties", "apartments", "cabins", "booking"],
+  keywords: [
+    "township",
+    "rental properties",
+    "apartments",
+    "cabins",
+    "booking",
+  ],
 };
 
 export const viewport: Viewport = {
@@ -28,7 +34,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="bg-background scroll-smooth">
-      <body className={`${inter.className} antialiased text-foreground min-h-screen flex flex-col`}>
+      <body
+        className={`${inter.className} antialiased text-foreground min-h-screen flex flex-col`}
+      >
         <MockDataProvider>{children}</MockDataProvider>
       </body>
     </html>

@@ -11,7 +11,13 @@ export const metadata: Metadata = {
   title: "Township — Your City Guide",
   description:
     "Discover everything about our town — institutions, places of interest, local services and events. Your complete guide for students and locals alike.",
-  keywords: ["township", "city guide", "students", "local services", "institutions"],
+  keywords: [
+    "township",
+    "city guide",
+    "students",
+    "local services",
+    "institutions",
+  ],
 };
 
 export const viewport: Viewport = {
