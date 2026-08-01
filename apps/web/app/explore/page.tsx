@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "../../components/navbar";
 import Footer from "../../components/footer";
@@ -13,6 +13,7 @@ import {
   Hotel,
   Search,
 } from "lucide-react";
+import { sanityClient, SanityPlace } from "../../lib/sanity";
 
 type Category = "all" | "Dining" | "Shopping" | "Parks" | "Stay";
 
@@ -66,74 +67,6 @@ const categories: {
   },
 ];
 
-const places = [
-  {
-    id: 1,
-    name: "The Central Market",
-    category: "Dining" as Category,
-    rating: 4.8,
-    reviews: 1240,
-    desc: "A vibrant open-air market at the heart of town, offering fresh produce, street food, and artisan goods from local vendors.",
-    image:
-      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80",
-    tags: ["Street Food", "Local Produce", "Artisan"],
-    openNow: true,
-    link: "/explore/dining",
-  },
-  {
-    id: 2,
-    name: "Riverside Walk & Park",
-    category: "Parks" as Category,
-    rating: 4.9,
-    reviews: 890,
-    desc: "A beautiful riverside green space perfect for morning runs, picnics, and weekend relaxation.",
-    image:
-      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80",
-    tags: ["Outdoor", "Family-Friendly", "Free"],
-    openNow: true,
-    link: "/explore/parks",
-  },
-  {
-    id: 3,
-    name: "Township Mall",
-    category: "Shopping" as Category,
-    rating: 4.5,
-    reviews: 2100,
-    desc: "The region's premier shopping destination with over 150 stores, a food court, and entertainment facilities.",
-    image:
-      "https://images.unsplash.com/photo-1567449303078-57ad995bd17a?w=600&q=80",
-    tags: ["Shopping", "Food Court", "Entertainment"],
-    openNow: true,
-    link: "/explore/shopping",
-  },
-  {
-    id: 4,
-    name: "Brewed — Specialty Coffee",
-    category: "Dining" as Category,
-    rating: 4.7,
-    reviews: 620,
-    desc: "A student favourite for its single-origin brews, strong Wi-Fi, and calm working atmosphere open from early morning.",
-    image:
-      "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=80",
-    tags: ["Coffee", "Wi-Fi", "Study Spot"],
-    openNow: true,
-    link: "/explore/dining",
-  },
-  {
-    id: 5,
-    name: "The Grand Township Hotel",
-    category: "Stay" as Category,
-    rating: 4.6,
-    reviews: 450,
-    desc: "Elegant accommodation steps from the university campus and town centre, ideal for visiting families and academic guests.",
-    image:
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80",
-    tags: ["4-Star", "Conference Rooms", "Family"],
-    openNow: false,
-    link: "/explore/accommodation",
-  },
-];
-
 function StarRating({ rating }: { rating: number }) {
   return (
     <div
@@ -154,6 +87,40 @@ function StarRating({ rating }: { rating: number }) {
 export default function ExploreLanding() {
   const [activeCategory, setActiveCategory] = useState<Category>("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [places, setPlaces] = useState<SanityPlace[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchPlaces() {
+      setIsLoading(true);
+      try {
+        const result = await sanityClient.fetch<SanityPlace[]>(
+          '*[_type == "place"]',
+        );
+        setPlaces(result);
+      } catch (err) {
+        console.warn("Failed to fetch places on explore page from Sanity:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchPlaces();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <>
+        <Navbar />
+        <main className="bg-background min-h-screen pt-24 pb-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-pulse">
+            <div className="h-10 bg-gray-200 rounded w-1/4 mb-4" />
+            <div className="h-6 bg-gray-200 rounded w-1/2 mb-8" />
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
 
   const filtered = places.filter((place) => {
     const matchesCategory =
@@ -161,7 +128,7 @@ export default function ExploreLanding() {
     const matchesSearch =
       place.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       place.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      place.tags.some((tag) =>
+      place.tags?.some((tag) =>
         tag.toLowerCase().includes(searchQuery.toLowerCase()),
       ) ||
       place.category.toLowerCase().includes(searchQuery.toLowerCase());
@@ -275,7 +242,7 @@ export default function ExploreLanding() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filtered.map((place) => (
                 <article
-                  key={place.id}
+                  key={place._id}
                   className="group relative rounded-2xl overflow-hidden bg-background border border-border hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 min-h-[260px]"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -324,7 +291,7 @@ export default function ExploreLanding() {
                     </div>
                     <div className="mt-4 pt-3 border-t border-white/10 flex justify-between items-center">
                       <div className="flex gap-1">
-                        {place.tags.slice(0, 2).map((tag) => (
+                        {place.tags?.slice(0, 2).map((tag) => (
                           <span
                             key={tag}
                             className="text-white/50 text-[10px] bg-white/10 px-2 py-0.5 rounded"
@@ -334,7 +301,7 @@ export default function ExploreLanding() {
                         ))}
                       </div>
                       <Link
-                        href={place.link}
+                        href={place.link || "#"}
                         className="text-white text-xs font-bold flex items-center gap-1 hover:text-accent transition-colors"
                       >
                         Explore
