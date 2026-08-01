@@ -5,15 +5,29 @@ import { useMockData } from "../context/MockDataContext";
 import Navbar from "../components/Navbar";
 import AddPropertyModal from "../components/AddPropertyModal";
 import MyBookingsModal from "../components/MyBookingsModal";
-import { Search, MapPin, Star, SlidersHorizontal, ArrowRight, Shield } from "lucide-react";
+import {
+  Search,
+  MapPin,
+  Star,
+  SlidersHorizontal,
+  ArrowRight,
+  Shield,
+  Home,
+  Building,
+  Building2,
+  Tent,
+  Hotel,
+  Compass,
+} from "lucide-react";
 import Link from "next/link";
 
 export default function BrowsePage() {
-  const { properties, towns, reviews, activeUser } = useMockData();
+  const { properties, towns, reviews, activeUser, isLoading } = useMockData();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTown, setSelectedTown] = useState("");
-  const [maxPrice, setMaxPrice] = useState("500");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [maxPrice, setMaxPrice] = useState("600");
   const [showFilters, setShowFilters] = useState(false);
 
   // Modal Control States
@@ -31,6 +45,17 @@ export default function BrowsePage() {
     };
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-dark flex flex-col items-center justify-center space-y-4">
+        <div className="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin" />
+        <p className="text-sm text-white/70 font-bold tracking-widest uppercase animate-pulse">
+          Loading Sanity Content...
+        </p>
+      </div>
+    );
+  }
+
   // Filter Properties
   const filteredProperties = properties.filter((prop) => {
     const matchesSearch =
@@ -40,10 +65,27 @@ export default function BrowsePage() {
 
     const matchesTown = selectedTown === "" || prop.townId === selectedTown;
 
-    const matchesPrice = prop.price <= parseFloat(maxPrice || "500");
+    // Filter categories dynamically
+    const matchesCategory =
+      selectedCategory === "all" ||
+      (selectedCategory === "apartment"
+        ? (prop.category === "apartment_single" || prop.category === "apartment_building")
+        : prop.category === selectedCategory);
 
-    return matchesSearch && matchesTown && matchesPrice;
+    // Filter by price: if apartment building, compare with default base price
+    const matchesPrice = prop.price <= parseFloat(maxPrice || "600");
+
+    return matchesSearch && matchesTown && matchesCategory && matchesPrice;
   });
+
+  const categories = [
+    { id: "all", name: "All Stays", icon: Compass },
+    { id: "house", name: "Houses", icon: Home },
+    { id: "apartment", name: "Apartments", icon: Building },
+    { id: "guesthouse", name: "Guest Houses", icon: Tent },
+    { id: "motel", name: "Motels", icon: Building2 },
+    { id: "hotel", name: "Hotels", icon: Hotel },
+  ];
 
   return (
     <>
@@ -56,14 +98,14 @@ export default function BrowsePage() {
       <section className="bg-dark py-12 md:py-20 relative overflow-hidden text-white border-b border-white/5">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-dark-surface via-dark to-black opacity-85" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-4">
-          <span className="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-accent/20 text-accent inline-block border border-accent/20">
-            Township Portal Staycations
+          <span className="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-accent/20 text-accent inline-block border border-accent/20 animate-pulse">
+            Sanity.io Content Managed
           </span>
           <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight max-w-3xl mx-auto leading-tight">
             Find the Perfect Rental Property in Our Gorgeous Towns
           </h1>
           <p className="text-white/75 text-sm md:text-base max-w-xl mx-auto">
-            From modern lofts overlooking the Riverdale boardwalk to cozy woodland cabins in Oakwood. Discover homes vetted for quality and comfort.
+            Browse premium spaces curated dynamically from Sanity. Filter by Houses, Apartments, Guest Houses, Motels, and Hotels.
           </p>
 
           {/* Core Search and Filter bar */}
@@ -74,7 +116,7 @@ export default function BrowsePage() {
                 <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-muted" />
                 <input
                   type="text"
-                  placeholder="Search by keyword, address, or style..."
+                  placeholder="Search keyword, address, or style..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
@@ -109,7 +151,7 @@ export default function BrowsePage() {
                 <input
                   type="range"
                   min="50"
-                  max="500"
+                  max="600"
                   step="10"
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(e.target.value)}
@@ -151,6 +193,32 @@ export default function BrowsePage() {
         </div>
       </section>
 
+      {/* Category Navigation Bar */}
+      <div className="bg-surface border-b border-border py-4 sticky top-16 lg:top-20 z-30 shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto no-scrollbar pb-1">
+            {categories.map((cat) => {
+              const Icon = cat.icon;
+              const isSelected = selectedCategory === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setSelectedCategory(cat.id)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
+                    isSelected
+                      ? "bg-accent text-white border-accent shadow-sm scale-102"
+                      : "bg-background text-foreground-secondary border-border hover:border-muted hover:bg-muted/5"
+                  }`}
+                >
+                  <Icon className={`w-4 h-4 ${isSelected ? "text-white animate-pulse" : "text-accent"}`} />
+                  <span>{cat.name}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
       {/* Main Properties Section */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1">
         <div className="flex items-center justify-between mb-8">
@@ -179,7 +247,8 @@ export default function BrowsePage() {
               onClick={() => {
                 setSearchQuery("");
                 setSelectedTown("");
-                setMaxPrice("500");
+                setSelectedCategory("all");
+                setMaxPrice("600");
               }}
               className="mt-4 px-4 py-2 text-xs font-semibold bg-primary text-white rounded-md hover:bg-primary-hover transition"
             >
@@ -208,6 +277,9 @@ export default function BrowsePage() {
                     <div className="absolute top-3 left-3 bg-dark/85 backdrop-blur-xs px-2.5 py-1 rounded-full border border-white/10 text-[10px] uppercase font-bold tracking-wider text-white">
                       {town ? town.name : "Municipal"}
                     </div>
+                    <div className="absolute top-3 right-3 bg-accent px-2.5 py-1 rounded-full text-[10px] uppercase font-black tracking-wider text-white shadow-sm">
+                      {prop.category.replace("_", " ")}
+                    </div>
                   </div>
 
                   {/* Body Details */}
@@ -233,6 +305,17 @@ export default function BrowsePage() {
                       <h3 className="font-bold text-foreground text-lg leading-snug group-hover:text-primary transition-colors line-clamp-1">
                         {prop.title}
                       </h3>
+
+                      {/* Multi-unit indicator */}
+                      {prop.units && prop.units.length > 0 ? (
+                        <div className="text-[11px] font-extrabold text-accent bg-accent/5 px-2 py-0.5 rounded-md inline-block">
+                          ★ {prop.units.length} units listed in building
+                        </div>
+                      ) : (
+                        <div className="text-[11px] font-semibold text-muted">
+                          Single unit stay
+                        </div>
+                      )}
 
                       {/* Description */}
                       <p className="text-xs text-muted leading-relaxed line-clamp-2">
@@ -260,7 +343,11 @@ export default function BrowsePage() {
                     {/* Bottom CTA / Price */}
                     <div className="border-t border-border pt-4 flex items-center justify-between">
                       <div className="leading-none">
-                        <span className="text-lg font-black text-primary">${prop.price}</span>
+                        <span className="text-lg font-black text-primary">
+                          {prop.units && prop.units.length > 0
+                            ? `from $${Math.min(...prop.units.map((u) => u.price))}`
+                            : `$${prop.price}`}
+                        </span>
                         <span className="text-[10px] text-muted font-bold block mt-0.5">PER NIGHT</span>
                       </div>
 
