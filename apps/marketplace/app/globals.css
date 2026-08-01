@@ -1,0 +1,32 @@
+@import "tailwindcss";
+@source "../../../packages/ui/src/**/*.tsx";
+@import "@repo/ui/globals.css";
+
+@theme inline {
+  --font-sans: "Inter", "Inter Fallback", system-ui, sans-serif;
+  --font-mono: "Geist Mono", monospace;
+
+  /* Brand color: deep green marketplace theme */
+  --color-primary: #1b5e20;
+  --color-primary-hover: #124116;
+  --color-primary-light: #e8f5e9;
+
+  /* Accent: warm golden amber */
+  --color-accent: #e67e22;
+  --color-accent-hover: #d35400;
+  --color-accent-light: #fdf2e9;
+
+  /* Neutrals */
+  --color-background: #f7f8fa;
+  --color-surface: #ffffff;
+  --color-border: #e2e6ea;
+  --color-muted: #6b7280;
+  --color-foreground: #111827;
+  --color-foreground-secondary: #374151;
+
+  /* Dark surface for footer / hero overlay */
+  --color-dark: #0f2d11;
+  --color-dark-surface: #153d18;
+
+  --radius: 0.5rem;
+}
