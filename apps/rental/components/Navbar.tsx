@@ -10,12 +10,15 @@ interface NavbarProps {
   onOpenMyBookings?: () => void;
 }
 
-export default function Navbar({ onOpenAddProperty, onOpenMyBookings }: NavbarProps) {
+export default function Navbar({
+  onOpenAddProperty,
+  onOpenMyBookings,
+}: NavbarProps) {
   const { activeUser, setRole, bookings } = useMockData();
   const [showRoleDropdown, setShowRoleDropdown] = useState(false);
 
   const activeBookingsCount = bookings.filter(
-    (b) => b.userId === activeUser.id && b.status !== "CANCELLED"
+    (b) => b.userId === activeUser.id && b.status !== "CANCELLED",
   ).length;
 
   const handleRoleChange = (role: UserRole) => {
@@ -61,15 +64,16 @@ export default function Navbar({ onOpenAddProperty, onOpenMyBookings }: NavbarPr
             )}
 
             {/* List Property Button (Visible to HOMEOWNER/ADMIN) */}
-            {(activeUser.role === "HOMEOWNER" || activeUser.role === "ADMIN") && onOpenAddProperty && (
-              <button
-                onClick={onOpenAddProperty}
-                className="flex items-center gap-1.5 px-4 py-2 text-sm font-semibold bg-accent text-white rounded-md hover:bg-accent-hover transition shadow-sm"
-              >
-                <PlusCircle className="w-4 h-4" />
-                <span>List Property</span>
-              </button>
-            )}
+            {(activeUser.role === "HOMEOWNER" || activeUser.role === "ADMIN") &&
+              onOpenAddProperty && (
+                <button
+                  onClick={onOpenAddProperty}
+                  className="flex items-center gap-1.5 px-4 py-2 text-sm font-semibold bg-accent text-white rounded-md hover:bg-accent-hover transition shadow-sm"
+                >
+                  <PlusCircle className="w-4 h-4" />
+                  <span>List Property</span>
+                </button>
+              )}
 
             {/* Simulated User Selector Dropdown */}
             <div className="relative">
@@ -79,8 +83,12 @@ export default function Navbar({ onOpenAddProperty, onOpenMyBookings }: NavbarPr
               >
                 <User className="w-4 h-4 text-accent" />
                 <div className="text-left leading-none hidden sm:block">
-                  <p className="font-semibold text-xs text-white">{activeUser.name}</p>
-                  <p className="text-[10px] text-white/60 uppercase tracking-widest">{activeUser.role}</p>
+                  <p className="font-semibold text-xs text-white">
+                    {activeUser.name}
+                  </p>
+                  <p className="text-[10px] text-white/60 uppercase tracking-widest">
+                    {activeUser.role}
+                  </p>
                 </div>
               </button>
 
@@ -92,34 +100,48 @@ export default function Navbar({ onOpenAddProperty, onOpenMyBookings }: NavbarPr
                   />
                   <div className="absolute right-0 mt-2 w-56 bg-surface text-foreground rounded-lg shadow-xl border border-border py-1.5 z-40">
                     <div className="px-4 py-1 border-b border-border mb-1.5">
-                      <p className="text-xs font-semibold text-muted">Simulate Role / Session</p>
+                      <p className="text-xs font-semibold text-muted">
+                        Simulate Role / Session
+                      </p>
                     </div>
                     <button
                       onClick={() => handleRoleChange("CUSTOMER")}
                       className={`w-full text-left px-4 py-2 text-sm flex flex-col hover:bg-primary-light transition-colors ${
-                        activeUser.role === "CUSTOMER" ? "bg-primary-light/50 font-semibold text-primary" : "text-foreground-secondary"
+                        activeUser.role === "CUSTOMER"
+                          ? "bg-primary-light/50 font-semibold text-primary"
+                          : "text-foreground-secondary"
                       }`}
                     >
                       <span>John Doe (Customer/Renter)</span>
-                      <span className="text-[10px] text-muted">Browse and book properties</span>
+                      <span className="text-[10px] text-muted">
+                        Browse and book properties
+                      </span>
                     </button>
                     <button
                       onClick={() => handleRoleChange("HOMEOWNER")}
                       className={`w-full text-left px-4 py-2 text-sm flex flex-col hover:bg-primary-light transition-colors ${
-                        activeUser.role === "HOMEOWNER" ? "bg-primary-light/50 font-semibold text-primary" : "text-foreground-secondary"
+                        activeUser.role === "HOMEOWNER"
+                          ? "bg-primary-light/50 font-semibold text-primary"
+                          : "text-foreground-secondary"
                       }`}
                     >
                       <span>Alice Smith (Homeowner)</span>
-                      <span className="text-[10px] text-muted">Publish, manage & edit properties</span>
+                      <span className="text-[10px] text-muted">
+                        Publish, manage & edit properties
+                      </span>
                     </button>
                     <button
                       onClick={() => handleRoleChange("ADMIN")}
                       className={`w-full text-left px-4 py-2 text-sm flex flex-col hover:bg-primary-light transition-colors ${
-                        activeUser.role === "ADMIN" ? "bg-primary-light/50 font-semibold text-primary" : "text-foreground-secondary"
+                        activeUser.role === "ADMIN"
+                          ? "bg-primary-light/50 font-semibold text-primary"
+                          : "text-foreground-secondary"
                       }`}
                     >
                       <span>Bob Jones (Admin)</span>
-                      <span className="text-[10px] text-muted">Full administrative control</span>
+                      <span className="text-[10px] text-muted">
+                        Full administrative control
+                      </span>
                     </button>
                   </div>
                 </>

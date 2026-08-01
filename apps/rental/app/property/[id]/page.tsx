@@ -26,7 +26,8 @@ export default function PropertyDetailPage({ params }: PageProps) {
   const unwrappedParams = React.use(params);
   const propertyId = unwrappedParams.id;
 
-  const { properties, towns, reviews, bookProperty, addReview, activeUser } = useMockData();
+  const { properties, towns, reviews, bookProperty, addReview, activeUser } =
+    useMockData();
 
   // Modal controls
   const [isAddPropertyOpen, setIsAddPropertyOpen] = useState(false);
@@ -51,7 +52,11 @@ export default function PropertyDetailPage({ params }: PageProps) {
   // Initialize selected unit if multiple units are available
   useEffect(() => {
     const currentProperty = property;
-    if (currentProperty && currentProperty.units && currentProperty.units.length > 0) {
+    if (
+      currentProperty &&
+      currentProperty.units &&
+      currentProperty.units.length > 0
+    ) {
       const firstUnit = currentProperty.units[0];
       if (firstUnit) {
         setSelectedUnitId(firstUnit.id);
@@ -65,9 +70,12 @@ export default function PropertyDetailPage({ params }: PageProps) {
         <Navbar />
         <main className="flex-1 flex flex-col items-center justify-center p-8 text-center">
           <Info className="w-12 h-12 text-red-500 mb-3" />
-          <h2 className="text-xl font-bold text-foreground">Property Not Found</h2>
+          <h2 className="text-xl font-bold text-foreground">
+            Property Not Found
+          </h2>
           <p className="text-sm text-muted mt-1 max-w-sm">
-            We could not locate the rental listing you are looking for. It may have been deleted or the link is incorrect.
+            We could not locate the rental listing you are looking for. It may
+            have been deleted or the link is incorrect.
           </p>
           <Link
             href="/"
@@ -86,7 +94,12 @@ export default function PropertyDetailPage({ params }: PageProps) {
   const propertyReviews = reviews.filter((r) => r.propertyId === property.id);
   const averageRating =
     propertyReviews.length > 0
-      ? parseFloat((propertyReviews.reduce((sum, r) => sum + r.rating, 0) / propertyReviews.length).toFixed(1))
+      ? parseFloat(
+          (
+            propertyReviews.reduce((sum, r) => sum + r.rating, 0) /
+            propertyReviews.length
+          ).toFixed(1),
+        )
       : 0;
 
   // Selected unit details
@@ -122,7 +135,12 @@ export default function PropertyDetailPage({ params }: PageProps) {
       return setBookingError("Please pick both check-in and check-out dates.");
     }
 
-    const res = bookProperty(property.id, startDate, endDate, selectedUnitId || undefined);
+    const res = bookProperty(
+      property.id,
+      startDate,
+      endDate,
+      selectedUnitId || undefined,
+    );
     if (!res.success) {
       setBookingError(res.message);
     } else {
@@ -234,14 +252,18 @@ export default function PropertyDetailPage({ params }: PageProps) {
                       {averageRating} ({propertyReviews.length} Reviews)
                     </span>
                   ) : (
-                    <span className="text-muted/60 bg-muted/10 px-2 py-0.5 rounded-full">No ratings yet</span>
+                    <span className="text-muted/60 bg-muted/10 px-2 py-0.5 rounded-full">
+                      No ratings yet
+                    </span>
                   )}
                 </div>
               </div>
 
               {/* Description */}
               <div className="pt-4 border-t border-border">
-                <h3 className="text-sm font-bold text-foreground uppercase tracking-wider mb-2">About This Space</h3>
+                <h3 className="text-sm font-bold text-foreground uppercase tracking-wider mb-2">
+                  About This Space
+                </h3>
                 <p className="text-foreground-secondary text-sm leading-relaxed whitespace-pre-line">
                   {property.description}
                 </p>
@@ -279,12 +301,17 @@ export default function PropertyDetailPage({ params }: PageProps) {
                               )}
                             </div>
                             <p className="text-xs text-muted">
-                              {unit.rooms} room{unit.rooms > 1 ? "s" : ""} • {unit.description}
+                              {unit.rooms} room{unit.rooms > 1 ? "s" : ""} •{" "}
+                              {unit.description}
                             </p>
                           </div>
                           <div className="text-right">
-                            <span className="text-base font-black text-primary">${unit.price}</span>
-                            <span className="text-[10px] text-muted font-bold block">PER NIGHT</span>
+                            <span className="text-base font-black text-primary">
+                              ${unit.price}
+                            </span>
+                            <span className="text-[10px] text-muted font-bold block">
+                              PER NIGHT
+                            </span>
                           </div>
                         </button>
                       );
@@ -295,7 +322,9 @@ export default function PropertyDetailPage({ params }: PageProps) {
 
               {/* Amenities */}
               <div className="pt-6 border-t border-border">
-                <h3 className="text-sm font-bold text-foreground uppercase tracking-wider mb-3">Amenities & Perks</h3>
+                <h3 className="text-sm font-bold text-foreground uppercase tracking-wider mb-3">
+                  Amenities & Perks
+                </h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {property.amenities.map((amenity) => (
                     <div
@@ -311,7 +340,9 @@ export default function PropertyDetailPage({ params }: PageProps) {
 
               {/* Map Spotlight */}
               <div className="pt-6 border-t border-border space-y-3">
-                <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">Property Location</h3>
+                <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">
+                  Property Location
+                </h3>
                 <div className="relative overflow-hidden rounded-xl border border-border bg-muted">
                   <iframe
                     width="100%"
@@ -338,7 +369,8 @@ export default function PropertyDetailPage({ params }: PageProps) {
                       Neighborhood Spotlight: {town.name}
                     </h4>
                     <p className="text-xs text-foreground-secondary leading-relaxed">
-                      {town.description} Feel free to ask your simulated host for additional custom travel tips during your visit.
+                      {town.description} Feel free to ask your simulated host
+                      for additional custom travel tips during your visit.
                     </p>
                   </div>
                 </div>
@@ -363,7 +395,11 @@ export default function PropertyDetailPage({ params }: PageProps) {
                   Write a Guest Review
                 </h4>
                 <p className="text-xs text-muted">
-                  Logged in as <span className="font-semibold text-primary">{activeUser.name}</span>. Leave your feedback below.
+                  Logged in as{" "}
+                  <span className="font-semibold text-primary">
+                    {activeUser.name}
+                  </span>
+                  . Leave your feedback below.
                 </p>
 
                 {reviewSuccess && (
@@ -380,7 +416,9 @@ export default function PropertyDetailPage({ params }: PageProps) {
 
                 <form onSubmit={handleReviewSubmit} className="space-y-3">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-bold text-foreground-secondary">Star Rating:</span>
+                    <span className="text-xs font-bold text-foreground-secondary">
+                      Star Rating:
+                    </span>
                     <div className="flex items-center gap-1">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <button
@@ -429,15 +467,22 @@ export default function PropertyDetailPage({ params }: PageProps) {
               ) : (
                 <div className="space-y-4 pt-2">
                   {propertyReviews.map((rev) => (
-                    <div key={rev.id} className="border-b border-border/60 pb-4 last:border-0 last:pb-0">
+                    <div
+                      key={rev.id}
+                      className="border-b border-border/60 pb-4 last:border-0 last:pb-0"
+                    >
                       <div className="flex items-center justify-between mb-1">
-                        <span className="font-bold text-foreground text-sm">{rev.userName}</span>
+                        <span className="font-bold text-foreground text-sm">
+                          {rev.userName}
+                        </span>
                         <div className="flex items-center gap-1">
                           {Array.from({ length: 5 }).map((_, idx) => (
                             <Star
                               key={idx}
                               className={`w-3.5 h-3.5 ${
-                                idx < rev.rating ? "fill-amber-400 text-amber-400" : "text-muted/20"
+                                idx < rev.rating
+                                  ? "fill-amber-400 text-amber-400"
+                                  : "text-muted/20"
                               }`}
                             />
                           ))}
@@ -468,7 +513,9 @@ export default function PropertyDetailPage({ params }: PageProps) {
                   <span className="text-2xl font-black text-primary">
                     ${chosenUnit ? chosenUnit.price : property.price}
                   </span>
-                  <span className="text-[10px] text-muted font-bold ml-1.5">/ NIGHT</span>
+                  <span className="text-[10px] text-muted font-bold ml-1.5">
+                    / NIGHT
+                  </span>
                 </div>
                 <div className="text-xs font-bold text-muted flex items-center gap-1">
                   <Star className="w-4.5 h-4.5 text-amber-500 fill-amber-500" />
@@ -484,7 +531,8 @@ export default function PropertyDetailPage({ params }: PageProps) {
                     <span>Booking Confirmed!</span>
                   </div>
                   <p className="font-normal text-[11px] leading-relaxed text-green-700">
-                    Your dates are reserved. Access your bookings list in the navigation bar anytime to cancel.
+                    Your dates are reserved. Access your bookings list in the
+                    navigation bar anytime to cancel.
                   </p>
                 </div>
               )}
@@ -556,7 +604,8 @@ export default function PropertyDetailPage({ params }: PageProps) {
                   <div className="bg-background rounded-lg p-3 space-y-2 text-xs border border-border animate-in fade-in duration-200">
                     <div className="flex justify-between font-medium text-foreground-secondary">
                       <span>
-                        ${chosenUnit ? chosenUnit.price : property.price} x {calculatedNights} nights
+                        ${chosenUnit ? chosenUnit.price : property.price} x{" "}
+                        {calculatedNights} nights
                       </span>
                       <span>${subtotal}</span>
                     </div>
@@ -595,14 +644,25 @@ export default function PropertyDetailPage({ params }: PageProps) {
       {/* Footer */}
       <footer className="bg-dark text-white border-t border-white/5 py-8 mt-16">
         <div className="max-w-7xl mx-auto px-4 text-center space-y-2 text-white/50 text-xs">
-          <p className="font-semibold text-white/80">Township Rental Hub Portal</p>
-          <p>© {new Date().getFullYear()} Township Portal. Designed for seamless civic stays and vacation rentals.</p>
+          <p className="font-semibold text-white/80">
+            Township Rental Hub Portal
+          </p>
+          <p>
+            © {new Date().getFullYear()} Township Portal. Designed for seamless
+            civic stays and vacation rentals.
+          </p>
         </div>
       </footer>
 
       {/* Modals */}
-      <AddPropertyModal isOpen={isAddPropertyOpen} onClose={() => setIsAddPropertyOpen(false)} />
-      <MyBookingsModal isOpen={isMyBookingsOpen} onClose={() => setIsMyBookingsOpen(false)} />
+      <AddPropertyModal
+        isOpen={isAddPropertyOpen}
+        onClose={() => setIsAddPropertyOpen(false)}
+      />
+      <MyBookingsModal
+        isOpen={isMyBookingsOpen}
+        onClose={() => setIsMyBookingsOpen(false)}
+      />
     </>
   );
 }

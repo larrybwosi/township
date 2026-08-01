@@ -78,7 +78,8 @@ export default function Services() {
               Services available to every resident
             </h2>
             <p className="text-muted text-base leading-relaxed max-w-sm text-pretty">
-              From transport to utilities — find everything you need to navigate life in Township.
+              From transport to utilities — find everything you need to navigate
+              life in Township.
             </p>
           </div>
         </div>
@@ -91,18 +92,21 @@ export default function Services() {
               href={link}
               className="group bg-surface border border-border rounded-xl p-6 hover:shadow-lg hover:-translate-y-0.5 hover:border-primary/20 transition-all duration-200"
             >
-              <div className={`w-11 h-11 rounded-xl ${color} flex items-center justify-center mb-4`}>
+              <div
+                className={`w-11 h-11 rounded-xl ${color} flex items-center justify-center mb-4`}
+              >
                 <Icon className="w-5 h-5" aria-hidden="true" />
               </div>
               <h3 className="text-foreground font-bold text-base mb-2">
                 {title}
               </h3>
-              <p className="text-muted text-sm leading-relaxed mb-4">
-                {desc}
-              </p>
+              <p className="text-muted text-sm leading-relaxed mb-4">{desc}</p>
               <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary group-hover:text-accent transition-colors duration-150">
                 Learn more
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-150" aria-hidden="true" />
+                <ArrowRight
+                  className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-150"
+                  aria-hidden="true"
+                />
               </span>
             </a>
           ))}
@@ -122,8 +126,8 @@ export default function Services() {
               </h3>
               <p className="text-white/60 text-sm leading-relaxed mb-6">
                 We know settling into a new place can be overwhelming. This
-                guide walks you through the essential steps to get set up,
-                stay safe, and make the most of your time here.
+                guide walks you through the essential steps to get set up, stay
+                safe, and make the most of your time here.
               </p>
               <a
                 href="#"

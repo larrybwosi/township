@@ -33,7 +33,9 @@ describe("Rental App Utility Functions", () => {
 
   describe("formatUserGreeting", () => {
     it("should return custom host greetings", () => {
-      expect(formatUserGreeting("Alice", "HOMEOWNER")).toBe("Welcome back, Host Alice!");
+      expect(formatUserGreeting("Alice", "HOMEOWNER")).toBe(
+        "Welcome back, Host Alice!",
+      );
     });
 
     it("should return admin greetings", () => {
@@ -41,7 +43,9 @@ describe("Rental App Utility Functions", () => {
     });
 
     it("should return standard guest greetings", () => {
-      expect(formatUserGreeting("John", "CUSTOMER")).toBe("Hello, John! Find your perfect stay today.");
+      expect(formatUserGreeting("John", "CUSTOMER")).toBe(
+        "Hello, John! Find your perfect stay today.",
+      );
     });
   });
 });

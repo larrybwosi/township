@@ -8,7 +8,9 @@ describe('AuthController', () => {
   let authController: AuthController;
 
   const mockUsersService = {
-    create: vi.fn().mockImplementation((dto) => Promise.resolve({ id: 'user-id', ...dto })),
+    create: vi
+      .fn()
+      .mockImplementation((dto) => Promise.resolve({ id: 'user-id', ...dto })),
   };
 
   const mockAuthService = {
@@ -30,7 +32,11 @@ describe('AuthController', () => {
 
   describe('register', () => {
     it('should register a new user successfully', async () => {
-      const data = { email: 'test@example.com', password: 'password', name: 'Test User' };
+      const data = {
+        email: 'test@example.com',
+        password: 'password',
+        name: 'Test User',
+      };
       const result = await authController.register(data);
       expect(result).toEqual({ id: 'user-id', ...data });
       expect(mockUsersService.create).toHaveBeenCalledWith(data);
@@ -40,13 +46,20 @@ describe('AuthController', () => {
   describe('login', () => {
     it('should return token if validation succeeds', async () => {
       const credentials = { email: 'test@example.com', password: 'password' };
-      const mockUser = { id: 'user-id', email: 'test@example.com', role: 'CUSTOMER' };
+      const mockUser = {
+        id: 'user-id',
+        email: 'test@example.com',
+        role: 'CUSTOMER',
+      };
 
       mockAuthService.validateUser.mockResolvedValueOnce(mockUser);
 
       const result = await authController.login(credentials);
       expect(result).toEqual({ access_token: 'mocked_jwt_token' });
-      expect(mockAuthService.validateUser).toHaveBeenCalledWith(credentials.email, credentials.password);
+      expect(mockAuthService.validateUser).toHaveBeenCalledWith(
+        credentials.email,
+        credentials.password,
+      );
       expect(mockAuthService.login).toHaveBeenCalledWith(mockUser);
     });
 

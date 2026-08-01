@@ -1,4 +1,10 @@
-import { Search, ArrowRight, GraduationCap, Building2, MapPin } from "lucide-react";
+import {
+  Search,
+  ArrowRight,
+  GraduationCap,
+  Building2,
+  MapPin,
+} from "lucide-react";
 
 const quickLinks = [
   {
@@ -26,7 +32,10 @@ const quickLinks = [
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden" aria-label="Welcome to Township">
+    <section
+      className="relative min-h-screen flex items-center overflow-hidden"
+      aria-label="Welcome to Township"
+    >
       {/* Background image */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -57,7 +66,10 @@ export default function Hero() {
         <div className="max-w-3xl">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 mb-6">
-            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" aria-hidden="true" />
+            <span
+              className="w-2 h-2 rounded-full bg-accent animate-pulse"
+              aria-hidden="true"
+            />
             <span className="text-white/80 text-xs font-medium uppercase tracking-widest">
               Official City Portal
             </span>
@@ -65,13 +77,12 @@ export default function Hero() {
 
           {/* Headline */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight text-balance mb-6">
-            Welcome to{" "}
-            <span className="text-accent">Township</span>
+            Welcome to <span className="text-accent">Township</span>
           </h1>
 
           <p className="text-lg sm:text-xl text-white/70 leading-relaxed mb-8 max-w-2xl text-pretty">
-            Whether you&apos;re a student arriving for the first time or a
-            local looking to explore more — your complete guide to institutions,
+            Whether you&apos;re a student arriving for the first time or a local
+            looking to explore more — your complete guide to institutions,
             dining, services, and community life is right here.
           </p>
 
@@ -136,7 +147,10 @@ export default function Hero() {
             Scroll to explore
           </span>
           <div className="w-5 h-8 border border-white/20 rounded-full flex items-start justify-center pt-1.5">
-            <div className="w-1 h-2 bg-accent rounded-full animate-bounce" aria-hidden="true" />
+            <div
+              className="w-1 h-2 bg-accent rounded-full animate-bounce"
+              aria-hidden="true"
+            />
           </div>
         </div>
       </div>

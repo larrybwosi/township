@@ -38,7 +38,10 @@ export class OrdersService {
   async findByUser(userId: string) {
     return this.prisma.order.findMany({
       where: { userId },
-      include: { orderItems: { include: { product: true } }, transaction: true },
+      include: {
+        orderItems: { include: { product: true } },
+        transaction: true,
+      },
     });
   }
 }
