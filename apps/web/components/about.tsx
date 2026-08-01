@@ -1,9 +1,6 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import { Users, HelpCircle } from "lucide-react";
 import * as Icons from "lucide-react";
-import { sanityClient, SanityHomeAbout } from "../lib/sanity";
+import { SanityHomeAbout } from "../lib/sanity";
 import { resolveImageUrl } from "../sanity/lib/image";
 
 function getIcon(iconName: string): React.ElementType {
@@ -11,22 +8,8 @@ function getIcon(iconName: string): React.ElementType {
   return Icon || HelpCircle;
 }
 
-export default function About() {
-  const [data, setData] = useState<SanityHomeAbout | null>(null);
-
-  useEffect(() => {
-    async function fetchAbout() {
-      try {
-        const result = await sanityClient.fetch<SanityHomeAbout>(
-          '*[_type == "homeAbout"][0]',
-        );
-        setData(result);
-      } catch (err) {
-        console.warn("Failed to fetch about from Sanity:", err);
-      }
-    }
-    fetchAbout();
-  }, []);
+export default function About({ initialData }: { initialData: SanityHomeAbout }) {
+  const data = initialData;
 
   if (!data) {
     return <div className="py-20 bg-surface animate-pulse" />;

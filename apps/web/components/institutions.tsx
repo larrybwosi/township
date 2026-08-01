@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   GraduationCap,
   Stethoscope,
@@ -10,7 +10,7 @@ import {
   Phone,
   Clock,
 } from "lucide-react";
-import { sanityClient, SanityInstitution } from "../lib/sanity";
+import { SanityInstitution } from "../lib/sanity";
 
 type Category = "all" | "education" | "health" | "government";
 
@@ -21,29 +21,11 @@ const categories: { id: Category; label: string; icon: React.ElementType }[] = [
   { id: "government", label: "Government", icon: Landmark },
 ];
 
-export default function Institutions() {
+export default function Institutions({ initialData }: { initialData: SanityInstitution[] }) {
   const [activeCategory, setActiveCategory] = useState<Category>("all");
-  const [institutions, setInstitutions] = useState<SanityInstitution[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [institutions] = useState<SanityInstitution[]>(initialData || []);
 
-  useEffect(() => {
-    async function fetchInstitutions() {
-      setIsLoading(true);
-      try {
-        const result = await sanityClient.fetch<SanityInstitution[]>(
-          '*[_type == "institution"]',
-        );
-        setInstitutions(result);
-      } catch (err) {
-        console.warn("Failed to fetch institutions from Sanity:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchInstitutions();
-  }, []);
-
-  if (isLoading) {
+  if (!institutions || institutions.length === 0) {
     return <div className="py-20 bg-background animate-pulse" />;
   }
 

@@ -1,8 +1,6 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import { Calendar, MapPin, ArrowRight, Clock, Users } from "lucide-react";
-import { sanityClient, SanityEvent } from "../lib/sanity";
+import { SanityEvent } from "../lib/sanity";
+import { resolveImageUrl } from "../sanity/lib/image";
 
 const categoryColors: Record<string, string> = {
   Culture: "bg-pink-100 text-pink-700",
@@ -11,28 +9,10 @@ const categoryColors: Record<string, string> = {
   Sport: "bg-orange-100 text-orange-700",
 };
 
-export default function Events() {
-  const [events, setEvents] = useState<SanityEvent[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+export default function Events({ initialData }: { initialData: SanityEvent[] }) {
+  const events = initialData || [];
 
-  useEffect(() => {
-    async function fetchEvents() {
-      setIsLoading(true);
-      try {
-        const result = await sanityClient.fetch<SanityEvent[]>(
-          '*[_type == "event"]',
-        );
-        setEvents(result);
-      } catch (err) {
-        console.warn("Failed to fetch events from Sanity:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchEvents();
-  }, []);
-
-  if (isLoading) {
+  if (!events || events.length === 0) {
     return <div className="py-20 bg-surface animate-pulse" />;
   }
 
@@ -74,7 +54,7 @@ export default function Events() {
               <div className="relative h-56 sm:h-72 overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={featuredEvent.image}
+                  src={resolveImageUrl(featuredEvent.image)}
                   alt={featuredEvent.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
@@ -137,7 +117,7 @@ export default function Events() {
                 <div className="w-20 h-20 rounded-lg overflow-hidden shrink-0">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={event.image}
+                    src={resolveImageUrl(event.image)}
                     alt={event.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />

@@ -1,6 +1,3 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import {
   Star,
   ArrowRight,
@@ -11,7 +8,8 @@ import {
   Coffee,
   Music,
 } from "lucide-react";
-import { sanityClient, SanityPlace } from "../lib/sanity";
+import { SanityPlace } from "../lib/sanity";
+import { resolveImageUrl } from "../sanity/lib/image";
 
 const categoryMapping = [
   {
@@ -54,28 +52,10 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
-export default function Places() {
-  const [places, setPlaces] = useState<SanityPlace[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+export default function Places({ initialData }: { initialData: SanityPlace[] }) {
+  const places = initialData || [];
 
-  useEffect(() => {
-    async function fetchPlaces() {
-      setIsLoading(true);
-      try {
-        const result = await sanityClient.fetch<SanityPlace[]>(
-          '*[_type == "place"]',
-        );
-        setPlaces(result);
-      } catch (err) {
-        console.warn("Failed to fetch places from Sanity:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchPlaces();
-  }, []);
-
-  if (isLoading) {
+  if (!places || places.length === 0) {
     return <div className="py-20 bg-surface animate-pulse" />;
   }
 
@@ -134,7 +114,7 @@ export default function Places() {
             <article className="md:col-span-2 lg:col-span-2 group relative rounded-2xl overflow-hidden bg-background border border-border hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 min-h-[340px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={featuredLarge.image}
+                src={resolveImageUrl(featuredLarge.image)}
                 alt={featuredLarge.name}
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
@@ -189,7 +169,7 @@ export default function Places() {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={place.image}
+                src={resolveImageUrl(place.image)}
                 alt={place.name}
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />

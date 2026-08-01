@@ -1,4 +1,5 @@
 import { client as liveSanityClient } from "../sanity/lib/client";
+import { sanityFetch as liveSanityFetch } from "../sanity/lib/live";
 
 // ==========================================
 // 1. Sanity Type Interfaces
@@ -523,8 +524,49 @@ const mockEvents: SanityEvent[] = [
 ];
 
 // ==========================================
-// 3. Sanity Client Client-Side Wrapper
+// 3. Query Mock Matcher & Sanity Client Client-Side Wrapper
 // ==========================================
+
+export function getMockDataForQuery(query: string): unknown {
+  if (query.includes('*[_type == "homeHero"')) {
+    if (query.endsWith("[0]") || query.includes("[0]")) {
+      return mockHomeHero;
+    }
+    return [mockHomeHero];
+  }
+
+  if (query.includes('*[_type == "homeAbout"')) {
+    if (query.endsWith("[0]") || query.includes("[0]")) {
+      return mockHomeAbout;
+    }
+    return [mockHomeAbout];
+  }
+
+  if (query.includes('*[_type == "studentGuide"')) {
+    if (query.endsWith("[0]") || query.includes("[0]")) {
+      return mockStudentGuide;
+    }
+    return [mockStudentGuide];
+  }
+
+  if (query.includes('*[_type == "institution"')) {
+    return mockInstitutions;
+  }
+
+  if (query.includes('*[_type == "place"')) {
+    return mockPlaces;
+  }
+
+  if (query.includes('*[_type == "service"')) {
+    return mockServices;
+  }
+
+  if (query.includes('*[_type == "event"')) {
+    return mockEvents;
+  }
+
+  return [];
+}
 
 export class SanityClientWrapper {
   private hasLiveKeys: boolean;
@@ -546,49 +588,28 @@ export class SanityClientWrapper {
         console.warn("Sanity fetch error, falling back to mock data:", error);
       }
     }
-
-    // Mock responses based on GROQ queries
-    if (query.includes('*[_type == "homeHero"')) {
-      // Returns single object or array depending on if [0] is in query
-      if (query.endsWith("[0]") || query.includes("[0]")) {
-        return mockHomeHero as unknown as T;
-      }
-      return [mockHomeHero] as unknown as T;
-    }
-
-    if (query.includes('*[_type == "homeAbout"')) {
-      if (query.endsWith("[0]") || query.includes("[0]")) {
-        return mockHomeAbout as unknown as T;
-      }
-      return [mockHomeAbout] as unknown as T;
-    }
-
-    if (query.includes('*[_type == "studentGuide"')) {
-      if (query.endsWith("[0]") || query.includes("[0]")) {
-        return mockStudentGuide as unknown as T;
-      }
-      return [mockStudentGuide] as unknown as T;
-    }
-
-    if (query.includes('*[_type == "institution"')) {
-      return mockInstitutions as unknown as T;
-    }
-
-    if (query.includes('*[_type == "place"')) {
-      return mockPlaces as unknown as T;
-    }
-
-    if (query.includes('*[_type == "service"')) {
-      return mockServices as unknown as T;
-    }
-
-    if (query.includes('*[_type == "event"')) {
-      return mockEvents as unknown as T;
-    }
-
-    // Default mock response
-    return [] as unknown as T;
+    return getMockDataForQuery(query) as T;
   }
 }
 
 export const sanityClient = new SanityClientWrapper();
+
+export async function safeSanityFetch<T>(
+  query: string,
+  params: Record<string, unknown> = {},
+): Promise<{ data: T }> {
+  const hasLiveKeys =
+    process.env.NEXT_PUBLIC_SANITY_PROJECT_ID !== undefined &&
+    process.env.NEXT_PUBLIC_SANITY_PROJECT_ID !== "mock-project-id";
+
+  if (hasLiveKeys) {
+    try {
+      const response = await liveSanityFetch({ query, params });
+      return { data: response.data as T };
+    } catch (error) {
+      console.warn("Sanity liveFetch error, falling back to mock data:", error);
+    }
+  }
+
+  return { data: getMockDataForQuery(query) as T };
+}
