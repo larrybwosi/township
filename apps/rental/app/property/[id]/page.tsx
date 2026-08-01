@@ -1,11 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMockData } from "../../../context/MockDataContext";
 import Navbar from "../../../components/Navbar";
 import AddPropertyModal from "../../../components/AddPropertyModal";
 import MyBookingsModal from "../../../components/MyBookingsModal";
-import { ArrowLeft, MapPin, Star, Calendar, ShieldCheck, CheckCircle2, MessageSquare, Info } from "lucide-react";
+import {
+  ArrowLeft,
+  MapPin,
+  Star,
+  Calendar,
+  ShieldCheck,
+  CheckCircle2,
+  MessageSquare,
+  Info,
+  Building,
+} from "lucide-react";
 import Link from "next/link";
 
 interface PageProps {
@@ -25,6 +35,7 @@ export default function PropertyDetailPage({ params }: PageProps) {
   // Booking widget form state
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [selectedUnitId, setSelectedUnitId] = useState("");
   const [bookingError, setBookingError] = useState("");
   const [bookingSuccess, setBookingSuccess] = useState("");
 
@@ -36,6 +47,18 @@ export default function PropertyDetailPage({ params }: PageProps) {
 
   // Find target property
   const property = properties.find((p) => p.id === propertyId);
+
+  // Initialize selected unit if multiple units are available
+  useEffect(() => {
+    const currentProperty = property;
+    if (currentProperty && currentProperty.units && currentProperty.units.length > 0) {
+      const firstUnit = currentProperty.units[0];
+      if (firstUnit) {
+        setSelectedUnitId(firstUnit.id);
+      }
+    }
+  }, [property]);
+
   if (!property) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
@@ -66,6 +89,9 @@ export default function PropertyDetailPage({ params }: PageProps) {
       ? parseFloat((propertyReviews.reduce((sum, r) => sum + r.rating, 0) / propertyReviews.length).toFixed(1))
       : 0;
 
+  // Selected unit details
+  const chosenUnit = property.units?.find((u) => u.id === selectedUnitId);
+
   // Active dates calculation for booking price display
   let calculatedNights = 0;
   let subtotal = 0;
@@ -78,7 +104,9 @@ export default function PropertyDetailPage({ params }: PageProps) {
     if (!isNaN(start.getTime()) && !isNaN(end.getTime()) && start < end) {
       const diffTime = Math.abs(end.getTime() - start.getTime());
       calculatedNights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      subtotal = calculatedNights * property.price;
+
+      const activePrice = chosenUnit ? chosenUnit.price : property.price;
+      subtotal = calculatedNights * activePrice;
       serviceFee = Math.round(subtotal * 0.08); // 8% service fee
       grandTotal = subtotal + serviceFee;
     }
@@ -94,7 +122,7 @@ export default function PropertyDetailPage({ params }: PageProps) {
       return setBookingError("Please pick both check-in and check-out dates.");
     }
 
-    const res = bookProperty(property.id, startDate, endDate);
+    const res = bookProperty(property.id, startDate, endDate, selectedUnitId || undefined);
     if (!res.success) {
       setBookingError(res.message);
     } else {
@@ -156,6 +184,9 @@ export default function PropertyDetailPage({ params }: PageProps) {
             <div className="absolute top-4 left-4 bg-dark/85 px-3 py-1.5 rounded-full border border-white/10 text-xs font-bold uppercase tracking-wider text-white">
               {town ? town.name : "Local District"}
             </div>
+            <div className="absolute top-4 right-4 bg-accent px-3.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider text-white shadow-md">
+              {property.category.replace("_", " ")}
+            </div>
           </div>
           <div className="md:col-span-4 hidden md:flex flex-col gap-1 h-[450px]">
             <div className="flex-1 bg-muted relative overflow-hidden">
@@ -184,6 +215,11 @@ export default function PropertyDetailPage({ params }: PageProps) {
             <div className="bg-surface border border-border rounded-xl p-6 md:p-8 space-y-4 shadow-xs">
               {/* Top Row Title & Rating */}
               <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-1 rounded-md text-[10px] uppercase font-black bg-accent/10 text-accent border border-accent/10">
+                    {property.category.replace("_", " ")}
+                  </span>
+                </div>
                 <h1 className="text-2xl md:text-3xl font-black text-foreground leading-tight">
                   {property.title}
                 </h1>
@@ -211,6 +247,52 @@ export default function PropertyDetailPage({ params }: PageProps) {
                 </p>
               </div>
 
+              {/* Multi-unit layout selection and listing */}
+              {property.units && property.units.length > 0 && (
+                <div className="pt-6 border-t border-border space-y-4">
+                  <h3 className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
+                    <Building className="w-4 h-4 text-accent" />
+                    <span>Available Units in Building</span>
+                  </h3>
+                  <div className="grid grid-cols-1 gap-3">
+                    {property.units.map((unit) => {
+                      const isSelected = selectedUnitId === unit.id;
+                      return (
+                        <button
+                          key={unit.id}
+                          onClick={() => setSelectedUnitId(unit.id)}
+                          className={`p-4 rounded-xl border text-left transition flex justify-between items-center ${
+                            isSelected
+                              ? "border-accent bg-accent/5 ring-1 ring-accent"
+                              : "border-border bg-background hover:border-muted"
+                          }`}
+                        >
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2">
+                              <span className="font-extrabold text-foreground text-sm">
+                                {unit.name}
+                              </span>
+                              {isSelected && (
+                                <span className="text-[10px] font-bold text-white bg-accent px-1.5 py-0.5 rounded-full">
+                                  Selected unit
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-xs text-muted">
+                              {unit.rooms} room{unit.rooms > 1 ? "s" : ""} • {unit.description}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <span className="text-base font-black text-primary">${unit.price}</span>
+                            <span className="text-[10px] text-muted font-bold block">PER NIGHT</span>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
               {/* Amenities */}
               <div className="pt-6 border-t border-border">
                 <h3 className="text-sm font-bold text-foreground uppercase tracking-wider mb-3">Amenities & Perks</h3>
@@ -224,6 +306,26 @@ export default function PropertyDetailPage({ params }: PageProps) {
                       <span>{amenity}</span>
                     </div>
                   ))}
+                </div>
+              </div>
+
+              {/* Map Spotlight */}
+              <div className="pt-6 border-t border-border space-y-3">
+                <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">Property Location</h3>
+                <div className="relative overflow-hidden rounded-xl border border-border bg-muted">
+                  <iframe
+                    width="100%"
+                    height="280"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    allowFullScreen
+                    referrerPolicy="no-referrer-when-downgrade"
+                    src={`https://maps.google.com/maps?q=${encodeURIComponent(property.address)}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
+                  ></iframe>
+                </div>
+                <div className="flex items-center gap-1.5 text-xs text-muted">
+                  <MapPin className="w-3.5 h-3.5 text-accent" />
+                  <span>Exact Address: {property.address}</span>
                 </div>
               </div>
 
@@ -363,7 +465,9 @@ export default function PropertyDetailPage({ params }: PageProps) {
             <div className="bg-surface border border-border rounded-xl p-6 shadow-md space-y-4">
               <div className="flex justify-between items-baseline border-b border-border pb-3.5">
                 <div className="leading-none">
-                  <span className="text-2xl font-black text-primary">${property.price}</span>
+                  <span className="text-2xl font-black text-primary">
+                    ${chosenUnit ? chosenUnit.price : property.price}
+                  </span>
                   <span className="text-[10px] text-muted font-bold ml-1.5">/ NIGHT</span>
                 </div>
                 <div className="text-xs font-bold text-muted flex items-center gap-1">
@@ -393,6 +497,26 @@ export default function PropertyDetailPage({ params }: PageProps) {
               )}
 
               <form onSubmit={handleBookingSubmit} className="space-y-4">
+                {/* Unit Selector inside Booking Card if multi-unit */}
+                {property.units && property.units.length > 0 && (
+                  <div>
+                    <label className="block text-[10px] font-bold text-foreground uppercase tracking-wider mb-1">
+                      Choose Unit to Book
+                    </label>
+                    <select
+                      value={selectedUnitId}
+                      onChange={(e) => setSelectedUnitId(e.target.value)}
+                      className="w-full px-2.5 py-2 border border-border rounded-lg text-xs bg-background focus:outline-none focus:ring-1 focus:ring-primary"
+                    >
+                      {property.units.map((u) => (
+                        <option key={u.id} value={u.id}>
+                          {u.name} - ${u.price}/night
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
                 <div className="grid grid-cols-2 gap-2">
                   {/* Check in */}
                   <div>
@@ -432,7 +556,7 @@ export default function PropertyDetailPage({ params }: PageProps) {
                   <div className="bg-background rounded-lg p-3 space-y-2 text-xs border border-border animate-in fade-in duration-200">
                     <div className="flex justify-between font-medium text-foreground-secondary">
                       <span>
-                        ${property.price} x {calculatedNights} nights
+                        ${chosenUnit ? chosenUnit.price : property.price} x {calculatedNights} nights
                       </span>
                       <span>${subtotal}</span>
                     </div>
@@ -460,7 +584,7 @@ export default function PropertyDetailPage({ params }: PageProps) {
               <div className="pt-2 border-t border-border text-center">
                 <p className="text-[10px] text-muted flex items-center justify-center gap-1">
                   <ShieldCheck className="w-3.5 h-3.5 text-green-600" />
-                  <span>Interactive simulation — No real credit card required</span>
+                  <span>Interactive simulation — No credit card required</span>
                 </p>
               </div>
             </div>
