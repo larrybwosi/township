@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useMarketplace } from "../../../context/MarketplaceContext";
 import Navbar from "../../../components/Navbar";
 import Footer from "../../../components/Footer";
+import { resolveImageUrl } from "../../../lib/image";
 import {
   ArrowLeft,
   Info,
@@ -141,7 +142,7 @@ export default function ItemDetailPage({ params }: PageProps) {
               <div className="relative h-[250px] sm:h-[400px] w-full bg-muted rounded-xl overflow-hidden border border-border">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={product.imageUrl}
+                  src={resolveImageUrl(product.imageUrl)}
                   alt={product.title}
                   className="w-full h-full object-cover"
                 />

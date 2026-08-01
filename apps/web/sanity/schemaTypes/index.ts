@@ -9,6 +9,7 @@ import { placeType } from './placeType'
 import { serviceType } from './serviceType'
 import { studentGuideType } from './studentGuideType'
 import { eventType } from './eventType'
+import { productType } from './productType'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -21,5 +22,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     serviceType,
     studentGuideType,
     eventType,
+    productType,
   ],
 }

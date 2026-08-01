@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Navbar from "../../../components/navbar";
 import Footer from "../../../components/footer";
+import { resolveImageUrl } from "../../../sanity/lib/image";
 import {
   Landmark,
   MapPin,
@@ -174,7 +175,7 @@ export default function GovernmentPage() {
                   <div className="w-full lg:w-72 h-48 lg:h-auto shrink-0 relative rounded-lg overflow-hidden bg-background">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={office.image}
+                      src={resolveImageUrl(office.image)}
                       alt={office.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />

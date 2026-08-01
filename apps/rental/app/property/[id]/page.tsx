@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useMockData } from "../../../context/MockDataContext";
 import Navbar from "../../../components/Navbar";
 import AddPropertyModal from "../../../components/AddPropertyModal";
+import { resolveImageUrl } from "../../../lib/image";
 import MyBookingsModal from "../../../components/MyBookingsModal";
 import {
   ArrowLeft,
@@ -195,7 +196,7 @@ export default function PropertyDetailPage({ params }: PageProps) {
           <div className="md:col-span-8 relative h-[300px] md:h-[450px] bg-muted">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={property.imageUrl}
+              src={resolveImageUrl(property.imageUrl)}
               alt={property.title}
               className="w-full h-full object-cover"
             />

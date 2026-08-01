@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useMarketplace, DeliveryDetails } from "../../context/MarketplaceContext";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import { resolveImageUrl } from "../../lib/image";
 import {
   Trash2,
   ShoppingCart,
@@ -144,7 +145,7 @@ export default function CartPage() {
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={item.product.imageUrl}
+                    src={resolveImageUrl(item.product.imageUrl)}
                     alt={item.product.title}
                     className="w-16 h-16 object-cover rounded-lg bg-muted shrink-0 border border-border"
                   />

@@ -42,8 +42,11 @@ export const placeType = defineType({
     }),
     defineField({
       name: 'image',
-      title: 'Image URL',
-      type: 'url',
+      title: 'Place Image',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
     }),
     defineField({
       name: 'tags',
