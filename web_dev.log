@@ -1,0 +1,144 @@
+
+> web@0.1.0 dev /app/apps/web
+> next dev --port 3000
+
+▲ Next.js 16.2.0 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
+✓ Ready in 566ms
+
+○ Compiling / ...
+No `serverToken` provided to `defineLive`. This means that only published content will be fetched and respond to live events. You can silence this warning by setting `serverToken: false`.
+No `browserToken` provided to `defineLive`. This means that live previewing drafts will only work when using the Presentation Tool in your Sanity Studio. To support live previewing drafts stand-alone, provide a `browserToken`. It is shared with the browser so it should only have Viewer rights or lower. You can silence this warning by setting `browserToken: false`.
+ GET / 200 in 12.3s (next.js: 10.1s, application-code: 2.2s)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HTTPAccessFallbackBoundary notFound={{...}} forbidden={undefined} unauthorized={undefined}>
+      <HTTPAccessFallbackErrorBoundary pathname="/" notFound={{...}} forbidden={undefined} unauthorized={undefined} ...>
+        <RedirectBoundary>
+          <RedirectErrorBoundary router={{...}}>
+            <InnerLayoutRouter url="/" tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} segmentPath={[...]} ...>
+              <SegmentViewNode type="page" pagePath="page.tsx">
+                <SegmentTrieNode>
+                <Home>
+                  <Navbar>
+                  <main>
+                    <Hero>
+                      <section className="relative m..." aria-label="Welcome to...">
+                        <img>
+                        <div>
+                        <div>
+                        <div className="relative z...">
+                          <div className="max-w-3xl">
+                            <div>
+                            <h1>
+                            <p>
+                            <div className="flex flex-...">
+                              <div className="relative f...">
+                                <svg>
+                                <input
+                                  type="text"
+                                  placeholder="Search places, institutions, services..."
+                                  className="w-full pl-11 pr-4 py-3.5 bg-white/10 border border-white/20 rounded-lg te..."
+                                  aria-label="Search"
+-                                 style={{caret-color:"transparent"}}
+                                >
+                              ...
+                            ...
+                          ...
+                    ...
+                  <Footer>
+                    <footer className="bg-dark" aria-label="Site footer">
+                      <div className="border-b b...">
+                        <div className="max-w-7xl ...">
+                          <div className="flex flex-...">
+                            <div>
+                            <form className="flex flex-..." onSubmit={function onSubmit}>
+                              <label>
+                              <input
+                                id="footer-email"
+                                type="email"
+                                placeholder="Enter your email address"
+                                className="flex-1 px-4 py-3 bg-white/10 border border-white/15 rounded-lg text-white p..."
+                                required={true}
+-                               style={{caret-color:"transparent"}}
+                              >
+                              ...
+                      ...
+              ...
+            ...
+
+[browser] <SanityLive> is attempting to reconnect
+[browser] <SanityLive> is attempting to reconnect
+ GET /institutions 200 in 1828ms (next.js: 1629ms, application-code: 198ms)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <InnerScrollAndFocusHandlerOld focusAndScrollRef={{scrollRef:null, ...}} cacheNode={{rsc:{...}, ...}}>
+      <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+        <LoadingBoundary name="institutions/" loading={null}>
+          <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+            <RedirectBoundary>
+              <RedirectErrorBoundary router={{...}}>
+                <InnerLayoutRouter url="/institutions" tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} ...>
+                  <SegmentViewNode type="page" pagePath="institutio...">
+                    <SegmentTrieNode>
+                    <InstitutionsLandingPage>
+                      <InstitutionsLandingClient initialInstitutions={[...]}>
+                        <Navbar>
+                        <main className="bg-backgro...">
+                          <div>
+                          <div className="max-w-7xl ...">
+                            <div className="flex flex-...">
+                              <div>
+                              <div className="relative w...">
+                                <Search>
+                                <input
+                                  type="text"
+                                  placeholder="Search institutions..."
+                                  value=""
+                                  onChange={function onChange}
+                                  className="w-full pl-9 pr-4 py-2 rounded-md border border-border bg-surface text-sm ..."
+-                                 style={{caret-color:"transparent"}}
+                                >
+                            ...
+                        ...
+                          <div className="border-b b...">
+                            <div className="max-w-7xl ...">
+                              <div className="flex flex-...">
+                                <div>
+                                <form className="flex flex-..." onSubmit={function onSubmit}>
+                                  <label>
+                                  <input
+                                    id="footer-email"
+                                    type="email"
+                                    placeholder="Enter your email address"
+                                    className="flex-1 px-4 py-3 bg-white/10 border border-white/15 rounded-lg text-whi..."
+                                    required={true}
+-                                   style={{caret-color:"transparent"}}
+                                  >
+                                  ...
+                  ...
+                ...
+      ...
