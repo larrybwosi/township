@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Navbar from "../../components/navbar";
 import Footer from "../../components/footer";
+import { resolveImageUrl } from "../../sanity/lib/image";
 import {
   GraduationCap,
   Stethoscope,
@@ -243,7 +244,7 @@ export default function InstitutionsLanding() {
                   <div className="relative h-48 overflow-hidden bg-background">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={inst.image}
+                      src={resolveImageUrl(inst.image)}
                       alt={`${inst.name} building`}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />

@@ -33,8 +33,11 @@ export const homeAboutType = defineType({
     }),
     defineField({
       name: 'imageUrl',
-      title: 'Featured Image URL',
-      type: 'url',
+      title: 'Featured Image',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
     }),
     defineField({
       name: 'floatingCardValue',

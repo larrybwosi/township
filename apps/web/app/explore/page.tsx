@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "../../components/navbar";
 import Footer from "../../components/footer";
+import { resolveImageUrl } from "../../sanity/lib/image";
 import {
   Star,
   ArrowRight,
@@ -247,7 +248,7 @@ export default function ExploreLanding() {
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={place.image}
+                    src={resolveImageUrl(place.image)}
                     alt={place.name}
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />

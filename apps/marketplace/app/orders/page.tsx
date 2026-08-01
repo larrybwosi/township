@@ -4,6 +4,7 @@ import React from "react";
 import { useMarketplace } from "../../context/MarketplaceContext";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import { resolveImageUrl } from "../../lib/image";
 import {
   Package,
   Clock,
@@ -100,7 +101,7 @@ export default function OrdersPage() {
                       <div key={item.product._id} className="flex gap-3 items-center">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                          src={item.product.imageUrl}
+                          src={resolveImageUrl(item.product.imageUrl)}
                           alt={item.product.title}
                           className="w-12 h-12 object-cover rounded-md bg-background border border-border shrink-0"
                         />

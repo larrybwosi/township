@@ -32,8 +32,11 @@ export const homeHeroType = defineType({
     }),
     defineField({
       name: 'backgroundImageUrl',
-      title: 'Background Image URL',
-      type: 'url',
+      title: 'Background Image',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
     }),
     defineField({
       name: 'quickLinks',

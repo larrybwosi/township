@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Users, HelpCircle } from "lucide-react";
 import * as Icons from "lucide-react";
 import { sanityClient, SanityHomeAbout } from "../lib/sanity";
+import { resolveImageUrl } from "../sanity/lib/image";
 
 function getIcon(iconName: string): React.ElementType {
   const Icon = (Icons as unknown as Record<string, React.ElementType>)[iconName];
@@ -92,7 +93,7 @@ export default function About() {
             <div className="relative rounded-2xl overflow-hidden aspect-4/3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={data.imageUrl}
+                src={resolveImageUrl(data.imageUrl)}
                 alt="Township town centre"
                 className="w-full h-full object-cover"
               />

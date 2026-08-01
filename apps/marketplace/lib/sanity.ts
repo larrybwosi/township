@@ -15,7 +15,7 @@ export const sanityProductSchema = {
     { name: "price", title: "Price", type: "number" },
     { name: "deposit", title: "Required Deposit", type: "number" },
     { name: "category", title: "Category", type: "string" },
-    { name: "imageUrl", title: "Image URL", type: "url" },
+    { name: "imageUrl", title: "Product Image", type: "image" },
     { name: "stock", title: "Available Stock", type: "number" },
     {
       name: "specs",

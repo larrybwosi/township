@@ -31,7 +31,7 @@ export const sanityPropertySchema = {
     },
     { name: "townId", title: "Town ID", type: "string" },
     { name: "ownerId", title: "Owner ID", type: "string" },
-    { name: "imageUrl", title: "Image URL", type: "url" },
+    { name: "imageUrl", title: "Property Image", type: "image" },
     {
       name: "amenities",
       title: "Amenities",

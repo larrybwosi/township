@@ -52,8 +52,11 @@ export const propertyType = defineType({
     }),
     defineField({
       name: 'imageUrl',
-      title: 'Image URL',
-      type: 'url',
+      title: 'Property Image',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
     }),
     defineField({
       name: 'amenities',

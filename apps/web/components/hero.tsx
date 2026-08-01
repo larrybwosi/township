@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Search, ArrowRight, HelpCircle } from "lucide-react";
 import * as Icons from "lucide-react";
 import { sanityClient, SanityHomeHero } from "../lib/sanity";
+import { resolveImageUrl } from "../sanity/lib/image";
 
 function getIcon(iconName: string): React.ElementType {
   const Icon = (Icons as unknown as Record<string, React.ElementType>)[iconName];
@@ -41,7 +42,7 @@ export default function Hero() {
       {/* Background image */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={data.backgroundImageUrl}
+        src={resolveImageUrl(data.backgroundImageUrl)}
         alt="Aerial view of Township"
         className="absolute inset-0 w-full h-full object-cover"
         aria-hidden="true"

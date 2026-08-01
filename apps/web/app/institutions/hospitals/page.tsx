@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Navbar from "../../../components/navbar";
 import Footer from "../../../components/footer";
+import { resolveImageUrl } from "../../../sanity/lib/image";
 import {
   Stethoscope,
   MapPin,
@@ -179,7 +180,7 @@ export default function HospitalsPage() {
                   <div className="w-full lg:w-72 h-48 lg:h-auto shrink-0 relative rounded-lg overflow-hidden bg-background">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={hosp.image}
+                      src={resolveImageUrl(hosp.image)}
                       alt={hosp.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />

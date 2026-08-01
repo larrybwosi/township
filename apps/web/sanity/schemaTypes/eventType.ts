@@ -45,8 +45,11 @@ export const eventType = defineType({
     }),
     defineField({
       name: 'image',
-      title: 'Image URL',
-      type: 'url',
+      title: 'Event Image',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
     }),
     defineField({
       name: 'desc',

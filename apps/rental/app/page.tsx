@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useMockData } from "../context/MockDataContext";
 import Navbar from "../components/Navbar";
 import AddPropertyModal from "../components/AddPropertyModal";
+import { resolveImageUrl } from "../lib/image";
 import MyBookingsModal from "../components/MyBookingsModal";
 import {
   Search,
@@ -301,7 +302,7 @@ export default function BrowsePage() {
                   <div className="relative h-56 w-full overflow-hidden bg-muted">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={prop.imageUrl}
+                      src={resolveImageUrl(prop.imageUrl)}
                       alt={prop.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
