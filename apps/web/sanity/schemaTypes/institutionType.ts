@@ -49,8 +49,11 @@ export const institutionType = defineType({
     }),
     defineField({
       name: 'image',
-      title: 'Image URL',
-      type: 'url',
+      title: 'Institution Image',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
     }),
     defineField({
       name: 'tags',

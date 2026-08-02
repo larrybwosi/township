@@ -1,31 +1,15 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import { Search, ArrowRight, HelpCircle } from "lucide-react";
 import * as Icons from "lucide-react";
-import { sanityClient, SanityHomeHero } from "../lib/sanity";
+import { SanityHomeHero } from "../lib/sanity";
+import { resolveImageUrl } from "../sanity/lib/image";
 
 function getIcon(iconName: string): React.ElementType {
   const Icon = (Icons as unknown as Record<string, React.ElementType>)[iconName];
   return Icon || HelpCircle;
 }
 
-export default function Hero() {
-  const [data, setData] = useState<SanityHomeHero | null>(null);
-
-  useEffect(() => {
-    async function fetchHero() {
-      try {
-        const result = await sanityClient.fetch<SanityHomeHero>(
-          '*[_type == "homeHero"][0]',
-        );
-        setData(result);
-      } catch (err) {
-        console.warn("Failed to fetch hero from Sanity:", err);
-      }
-    }
-    fetchHero();
-  }, []);
+export default function Hero({ initialData }: { initialData: SanityHomeHero }) {
+  const data = initialData;
 
   if (!data) {
     return (
@@ -41,7 +25,7 @@ export default function Hero() {
       {/* Background image */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={data.backgroundImageUrl}
+        src={resolveImageUrl(data.backgroundImageUrl)}
         alt="Aerial view of Township"
         className="absolute inset-0 w-full h-full object-cover"
         aria-hidden="true"

@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createImageUrlBuilder, type SanityImageSource } from '@sanity/image-url'
+import { createImageUrlBuilder } from '@sanity/image-url'
 
-import { dataset, projectId } from '../env'
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "mock-project-id"
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production"
 
-// https://www.sanity.io/docs/image-url
-const builder = createImageUrlBuilder({ projectId: projectId || 'mock-project-id', dataset: dataset || 'production' })
+const builder = createImageUrlBuilder({ projectId, dataset })
 
-export const urlFor = (source: SanityImageSource) => {
+export const urlFor = (source: any) => {
   return builder.image(source)
 }
 

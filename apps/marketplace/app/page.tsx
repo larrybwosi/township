@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useMarketplace } from "../context/MarketplaceContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { resolveImageUrl } from "../lib/image";
 import {
   Search,
   Compass,
@@ -198,7 +199,7 @@ export default function BrowsePage() {
                   <div className="relative h-56 w-full overflow-hidden bg-muted">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={prod.imageUrl}
+                      src={resolveImageUrl(prod.imageUrl)}
                       alt={prod.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />

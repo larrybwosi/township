@@ -26,6 +26,8 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+import { SanityLive } from "../sanity/lib/live";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -33,7 +35,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="bg-background scroll-smooth">
-      <body className={`${inter.className} antialiased`}>{children}</body>
+      <body className={`${inter.className} antialiased`}>
+        {children}
+        <SanityLive />
+      </body>
     </html>
   );
 }

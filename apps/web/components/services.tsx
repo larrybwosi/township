@@ -1,10 +1,6 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import { HelpCircle, ArrowRight, BookOpen, Phone } from "lucide-react";
 import * as Icons from "lucide-react";
 import {
-  sanityClient,
   SanityService,
   SanityStudentGuide,
 } from "../lib/sanity";
@@ -14,33 +10,17 @@ function getIcon(iconName: string): React.ElementType {
   return Icon || HelpCircle;
 }
 
-export default function Services() {
-  const [services, setServices] = useState<SanityService[]>([]);
-  const [studentGuide, setStudentGuide] = useState<SanityStudentGuide | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+export default function Services({
+  initialServices,
+  initialGuide,
+}: {
+  initialServices: SanityService[];
+  initialGuide: SanityStudentGuide;
+}) {
+  const services = initialServices || [];
+  const studentGuide = initialGuide;
 
-  useEffect(() => {
-    async function fetchData() {
-      setIsLoading(true);
-      try {
-        const fetchedServices = await sanityClient.fetch<SanityService[]>(
-          '*[_type == "service"]',
-        );
-        const fetchedGuide = await sanityClient.fetch<SanityStudentGuide>(
-          '*[_type == "studentGuide"][0]',
-        );
-        setServices(fetchedServices);
-        setStudentGuide(fetchedGuide);
-      } catch (err) {
-        console.warn("Failed to fetch services content:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchData();
-  }, []);
-
-  if (isLoading || !studentGuide) {
+  if (!studentGuide) {
     return <div className="py-20 bg-background animate-pulse" />;
   }
 
