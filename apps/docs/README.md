@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/create-next-app).
+# Township Documentation Portal
 
-## Getting Started
+This is the developer and system documentation portal for **Township**, built with **Next.js** and **React**.
 
-First, run the development server:
+## 🚀 Features
+
+- **Developer Guides**: API structures, workflow integration instructions, and database model documentations.
+- **System Design Map**: Outlines the architectural guidelines for the NestJS API monolith, Turborepo tasks, and the Next.js apps.
+- **Port Mapping**: Runs on port **3001** to prevent conflicts with other frontend services.
+
+---
+
+## 🏃 Run the Application
+
+Execute commands from the root of the monorepo:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Start development server on port 3001
+pnpm --filter docs dev
+
+# Production build
+pnpm --filter docs build
+
+# Start production server
+pnpm --filter docs start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🧪 Testing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load Inter, a custom Google Font.
+Unified tests are executed with **Vitest**:
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+pnpm --filter docs test
+```

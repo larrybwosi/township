@@ -1,159 +1,137 @@
-# Turborepo starter
+# Township
 
-This Turborepo starter is maintained by the Turborepo core team.
+Welcome to **Township**! Township is an advanced, high-performance web platform designed to handle town management, properties, rentals, and marketplaces in a single, cohesive ecosystem.
 
-## Using this example
+## 🏗️ Architecture & Stack Overview
 
-Run the following command:
+Township is managed as a high-performance monorepo utilizing **Turborepo** and **pnpm** workspaces, built entirely with **TypeScript**.
 
-```sh
-npx create-turbo@latest
+### Applications (`apps/`)
+
+- **`api`** (NestJS): The unified, in-process monolithic backend.
+  - Consolidates all core services: authentication (JWT-based + RBAC), user management, town data, real estate listings, and the marketplace.
+  - Connects directly to PostgreSQL via Prisma.
+  - Employs Rest controllers registered locally within specific feature modules.
+- **`web`** (Next.js): The main public homepage and portal.
+  - Implements Tailwind CSS v4 and integrates with Sanity CMS for dynamic CMS content.
+  - Utilizes `<SanityLive />` for real-time visual editing and server-side fetching with offline fallbacks.
+  - Runs on port **3000**.
+- **`docs`** (Next.js): The documentation and developer portal.
+  - Guides engineers through the Township framework and APIs.
+  - Runs on port **3001**.
+- **`rental`** (Next.js): The Interactive Rental Hub.
+  - Features real-time property browsing, booking management, and user reviews.
+  - Runs on port **3002**.
+- **`marketplace`** (Next.js): The community local Marketplace.
+  - Serves local listings, listings creation, and search.
+  - Runs on port **3003**.
+
+### Shared Packages (`packages/`)
+
+- **`database`**: Centralized database layer using **Prisma** and **PostgreSQL**.
+- **`ui`**: Shared UI component library styled with **Tailwind CSS v4** and built on modern primitive elements.
+- **`eslint-config`**: Standardized ESLint rule configurations.
+- **`typescript-config`**: Standardized TypeScript compiler options (`tsconfig.json`) used across the workspace.
+
+---
+
+## 🛠️ Getting Started
+
+To set up, run, and develop the Township ecosystem locally, follow these steps.
+
+### Prerequisites
+
+Ensure you have **Node.js >= 18** and **pnpm >= 9.0.0** installed.
+
+### Installation
+
+Run the installation command from the **root** of the monorepo:
+
+```bash
+pnpm install
 ```
 
-## What's inside?
+> ⚠️ **Important:** Always run `pnpm install` from the root of the workspace rather than inside subdirectories to avoid pruning workspace lockfile dependencies.
 
-This Turborepo includes the following packages/apps:
+### Database Setup
 
-### Apps and Packages
+To generate the Prisma client with the correct Prisma schema definitions:
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo build
+```bash
+pnpm --filter @repo/database exec prisma generate
 ```
 
-Without global `turbo`, use your package manager:
+To deploy database migrations:
 
-```sh
-cd my-turborepo
-npx turbo build
-pnpm dlx turbo build
-pnpm exec turbo build
+```bash
+pnpm --filter @repo/database exec prisma migrate deploy
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+---
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+## 🚀 Running the Project
 
-```sh
-turbo build --filter=docs
+You can run individual apps or the entire monorepo simultaneously using Turborepo.
+
+### Run All Applications in Development Mode
+
+```bash
+pnpm dev
 ```
 
-Without global `turbo`:
+This starts all the microservices/applications in parallel:
+- **`api`**: [http://localhost:3000/api](http://localhost:3000/api) (or backend port)
+- **`web`**: [http://localhost:3000](http://localhost:3000)
+- **`docs`**: [http://localhost:3001](http://localhost:3001)
+- **`rental`**: [http://localhost:3002](http://localhost:3002)
+- **`marketplace`**: [http://localhost:3003](http://localhost:3003)
 
-```sh
-npx turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+### Run a Specific Application
+
+To develop a specific app (e.g., `rental`), run:
+
+```bash
+pnpm --filter rental dev
 ```
 
-### Develop
+---
 
-To develop all apps and packages, run the following command:
+## 🧪 Testing
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+Testing is unified across the monorepo under **Vitest**, providing fast and efficient testing.
 
-```sh
-cd my-turborepo
-turbo dev
+### Run All Workspace Tests
+
+```bash
+pnpm test
 ```
 
-Without global `turbo`, use your package manager:
+### Run Tests with Coverage
 
-```sh
-cd my-turborepo
-npx turbo dev
-pnpm exec turbo dev
-pnpm exec turbo dev
+```bash
+pnpm test:cov
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+### Run Tests for a Specific Application/Package
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo dev --filter=web
+```bash
+pnpm --filter api test
 ```
 
-Without global `turbo`:
+---
 
-```sh
-npx turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+## 📦 Building for Production
+
+To build all apps and packages in the monorepo:
+
+```bash
+pnpm build
 ```
 
-### Remote Caching
+The apps are containerized using optimized multi-stage Dockerfiles utilizing `turbo prune` based on the `node:22-slim` image.
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+---
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+## 🔄 Versioning & Release
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-pnpm exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-pnpm exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+Township uses `@changesets/cli` at the workspace level for automated version bumping and release management. Package versions are synchronized under a single unified version scheme. Git tagging and GitHub releases are managed under a single, unified `v$VERSION` release tag.

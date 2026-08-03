@@ -1,10 +1,37 @@
 # Township Rental Hub
 
-This is the Rental Hub web application, built with Next.js, React, and Tailwind CSS.
-It functions as an interactive portal for browsing properties, checking details, managing dynamic bookings, and leaving reviews.
+This is the Interactive Rental Hub portal for **Township**, built with **Next.js**, **React**, and styled with **Tailwind CSS v4**.
 
-## Scripts
+## 🚀 Features
 
-- `pnpm dev`: Runs the app locally on port `3002`.
-- `pnpm build`: Builds the production bundle.
-- `pnpm test`: Runs Vitest unit and integration tests.
+- **Interactive Property Search**: Property browsing, dynamic pricing info, and direct booking details.
+- **Sanity CMS Data Binding**: Pulls listings dynamically from Sanity CMS with custom offline mock datasets as fallbacks to ensure unconfigured build environments never fail.
+- **Port Mapping**: Configured to run on port **3002** in both development and production.
+- **Review System**: Allows renters to read and submit reviews for listed accommodations.
+
+---
+
+## 🏃 Run the Application
+
+Execute commands from the root of the monorepo:
+
+```bash
+# Start development server on port 3002
+pnpm --filter rental dev
+
+# Production build
+pnpm --filter rental build
+
+# Start production server on port 3002
+pnpm --filter rental start
+```
+
+---
+
+## 🧪 Testing
+
+Unit and integration tests are handled via **Vitest**:
+
+```bash
+pnpm --filter rental test
+```
