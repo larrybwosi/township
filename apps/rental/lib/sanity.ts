@@ -375,22 +375,34 @@ const mockProperties: SanityProperty[] = [
 // 4. Sanity Client Client-Side Wrapper
 // ==========================================
 
-export class SanityClientWrapper {
-  private hasLiveKeys: boolean;
+export const getLiveSanityClient = () => {
+  const pId = typeof window !== "undefined" ? ((window as typeof window & { __ENV?: Record<string, string> }).__ENV?.NEXT_PUBLIC_SANITY_PROJECT_ID) : process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+  const dSet = typeof window !== "undefined" ? ((window as typeof window & { __ENV?: Record<string, string> }).__ENV?.NEXT_PUBLIC_SANITY_DATASET) : process.env.NEXT_PUBLIC_SANITY_DATASET;
+  const token = process.env.SANITY_API_TOKEN || "";
+  return createClient({
+    projectId: pId || "mock-project-id",
+    dataset: dSet || "production",
+    apiVersion: "2025-02-25",
+    useCdn: true,
+    token,
+    ignoreBrowserTokenWarning: true,
+  });
+};
 
-  constructor() {
-    this.hasLiveKeys =
-      process.env.NEXT_PUBLIC_SANITY_PROJECT_ID !== undefined &&
-      process.env.NEXT_PUBLIC_SANITY_PROJECT_ID !== "mock-project-id";
+export class SanityClientWrapper {
+  getHasLiveKeys(): boolean {
+    const pId = typeof window !== "undefined" ? ((window as typeof window & { __ENV?: Record<string, string> }).__ENV?.NEXT_PUBLIC_SANITY_PROJECT_ID) : process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+    return pId !== undefined && pId !== "mock-project-id" && pId !== "";
   }
 
   async fetch<T>(
     query: string,
     params: Record<string, unknown> = {},
   ): Promise<T> {
-    if (this.hasLiveKeys) {
+    if (this.getHasLiveKeys()) {
       try {
-        return await liveSanityClient.fetch<T>(query, params);
+        const clientInstance = getLiveSanityClient();
+        return await clientInstance.fetch<T>(query, params);
       } catch (error) {
         console.warn("Sanity fetch error, falling back to mock data:", error);
       }
