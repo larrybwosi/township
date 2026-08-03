@@ -46,5 +46,29 @@ services:
     depends_on:
       - api
 
+  rental:
+    build:
+      context: .
+      dockerfile: apps/rental/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: "http://localhost:3001"
+    environment:
+      NEXT_PUBLIC_API_URL: "http://localhost:3001"
+      PORT: "3002"
+    depends_on:
+      - api
+
+  marketplace:
+    build:
+      context: .
+      dockerfile: apps/marketplace/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: "http://localhost:3001"
+    environment:
+      NEXT_PUBLIC_API_URL: "http://localhost:3001"
+      PORT: "3003"
+    depends_on:
+      - api
+
 volumes:
   postgres_data:
