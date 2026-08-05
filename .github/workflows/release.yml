@@ -78,24 +78,16 @@ jobs:
 
           # Commit and push version changes to main (preventing CI loop with [skip ci])
           git add .
-          git commit -m "chore: release v$API_VERSION / v$WEB_VERSION [skip ci]" || true
+          git commit -m "chore: release v$API_VERSION [skip ci]" || true
           git push origin main
 
-          # Create and push git tags only if they do not exist
-          if ! git rev-parse "api@$API_VERSION" >/dev/null 2>&1; then
-            echo "Creating and pushing tag api@$API_VERSION"
-            git tag "api@$API_VERSION"
-            git push origin "api@$API_VERSION"
+          # Create and push unified git tag only if it does not exist
+          if ! git rev-parse "v$API_VERSION" >/dev/null 2>&1; then
+            echo "Creating and pushing tag v$API_VERSION"
+            git tag "v$API_VERSION"
+            git push origin "v$API_VERSION"
           else
-            echo "Tag api@$API_VERSION already exists, skipping tag creation"
-          fi
-
-          if ! git rev-parse "web@$WEB_VERSION" >/dev/null 2>&1; then
-            echo "Creating and pushing tag web@$WEB_VERSION"
-            git tag "web@$WEB_VERSION"
-            git push origin "web@$WEB_VERSION"
-          else
-            echo "Tag web@$WEB_VERSION already exists, skipping tag creation"
+            echo "Tag v$API_VERSION already exists, skipping tag creation"
           fi
 
       - name: Log in to GHCR
@@ -133,16 +125,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if ! gh release view "api@$API_VERSION" >/dev/null 2>&1; then
-            echo "Creating release for api@$API_VERSION"
-            gh release create "api@$API_VERSION" --title "api@$API_VERSION" --notes "Release api@$API_VERSION" || true
+          if ! gh release view "v$API_VERSION" >/dev/null 2>&1; then
+            echo "Creating release for v$API_VERSION"
+            gh release create "v$API_VERSION" --title "v$API_VERSION" --notes "Release v$API_VERSION" || true
           else
-            echo "Release api@$API_VERSION already exists, skipping"
-          fi
-
-          if ! gh release view "web@$WEB_VERSION" >/dev/null 2>&1; then
-            echo "Creating release for web@$WEB_VERSION"
-            gh release create "web@$WEB_VERSION" --title "web@$WEB_VERSION" --notes "Release web@$WEB_VERSION" || true
-          else
-            echo "Release web@$WEB_VERSION already exists, skipping"
+            echo "Release v$API_VERSION already exists, skipping"
           fi
