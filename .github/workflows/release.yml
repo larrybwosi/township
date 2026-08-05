@@ -69,12 +69,16 @@ jobs:
           # Run changeset version to consume changesets and bump versions
           pnpm exec changeset version
 
-          # Read new versions of api and web
+          # Read new versions of api, web, rental and marketplace
           API_VERSION=$(node -p "require('./apps/api/package.json').version")
           WEB_VERSION=$(node -p "require('./apps/web/package.json').version")
+          RENTAL_VERSION=$(node -p "require('./apps/rental/package.json').version")
+          MARKETPLACE_VERSION=$(node -p "require('./apps/marketplace/package.json').version")
 
           echo "API_VERSION=$API_VERSION" >> $GITHUB_ENV
           echo "WEB_VERSION=$WEB_VERSION" >> $GITHUB_ENV
+          echo "RENTAL_VERSION=$RENTAL_VERSION" >> $GITHUB_ENV
+          echo "MARKETPLACE_VERSION=$MARKETPLACE_VERSION" >> $GITHUB_ENV
 
           # Commit and push version changes to main (preventing CI loop with [skip ci])
           git add .
@@ -116,9 +120,37 @@ jobs:
           context: .
           file: apps/web/Dockerfile
           push: true
+          build-args: |
+            NEXT_PUBLIC_API_URL=http://localhost:3001
           tags: |
             ghcr.io/${{ env.OWNER_LC }}/web:latest
             ghcr.io/${{ env.OWNER_LC }}/web:${{ env.WEB_VERSION }}
+
+      - name: Build and push rental Docker image
+        if: steps.check-changesets.outputs.has_changesets == 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/rental/Dockerfile
+          push: true
+          build-args: |
+            NEXT_PUBLIC_API_URL=http://localhost:3001
+          tags: |
+            ghcr.io/${{ env.OWNER_LC }}/rental:latest
+            ghcr.io/${{ env.OWNER_LC }}/rental:${{ env.RENTAL_VERSION }}
+
+      - name: Build and push marketplace Docker image
+        if: steps.check-changesets.outputs.has_changesets == 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/marketplace/Dockerfile
+          push: true
+          build-args: |
+            NEXT_PUBLIC_API_URL=http://localhost:3001
+          tags: |
+            ghcr.io/${{ env.OWNER_LC }}/marketplace:latest
+            ghcr.io/${{ env.OWNER_LC }}/marketplace:${{ env.MARKETPLACE_VERSION }}
 
       - name: Create GitHub Releases
         if: steps.check-changesets.outputs.has_changesets == 'true'
