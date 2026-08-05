@@ -816,7 +816,7 @@ async function main() {
     token,
   });
 
-  const documents = [
+  const documents: any[] = [
     mockHomeHero,
     mockHomeAbout,
     mockStudentGuide,
