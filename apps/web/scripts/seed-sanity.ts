@@ -816,7 +816,13 @@ async function main() {
     token,
   });
 
-  const documents: any[] = [
+  interface SeederDocument {
+    _id: string;
+    _type: string;
+    [key: string]: unknown;
+  }
+
+  const documents: SeederDocument[] = [
     mockHomeHero,
     mockHomeAbout,
     mockStudentGuide,
