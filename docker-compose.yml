@@ -20,9 +20,7 @@ services:
       RABBITMQ_DEFAULT_PASS: guest
 
   api:
-    build:
-      context: .
-      dockerfile: apps/api/Dockerfile
+    image: ghcr.io/larrybwosi/api:latest
     environment:
       DATABASE_URL: "postgresql://user:password@postgres:5432/township?schema=public"
       JWT_SECRET: "mySuperSecretKey"
@@ -35,11 +33,7 @@ services:
         condition: service_started
 
   web:
-    build:
-      context: .
-      dockerfile: apps/web/Dockerfile
-      args:
-        NEXT_PUBLIC_API_URL: "http://localhost:3001"
+    image: ghcr.io/larrybwosi/web:latest
     environment:
       NEXT_PUBLIC_API_URL: "http://localhost:3001"
       PORT: "3000"
@@ -47,11 +41,7 @@ services:
       - api
 
   rental:
-    build:
-      context: .
-      dockerfile: apps/rental/Dockerfile
-      args:
-        NEXT_PUBLIC_API_URL: "http://localhost:3001"
+    image: ghcr.io/larrybwosi/rental:latest
     environment:
       NEXT_PUBLIC_API_URL: "http://localhost:3001"
       PORT: "3002"
@@ -59,11 +49,7 @@ services:
       - api
 
   marketplace:
-    build:
-      context: .
-      dockerfile: apps/marketplace/Dockerfile
-      args:
-        NEXT_PUBLIC_API_URL: "http://localhost:3001"
+    image: ghcr.io/larrybwosi/marketplace:latest
     environment:
       NEXT_PUBLIC_API_URL: "http://localhost:3001"
       PORT: "3003"
