@@ -1,5 +1,7 @@
 import React from "react";
 import { MarketplaceProvider } from "../context/MarketplaceContext";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import "./globals.css";
 
 export const dynamic = "force-dynamic";
@@ -29,7 +31,13 @@ export default function RootLayout({
       </head>
       <body className="bg-background text-foreground min-h-screen flex flex-col">
         <MarketplaceProvider>
-          {children}
+          <div className="flex flex-col min-h-screen">
+            <Navbar />
+            <div className="flex-1 flex flex-col">
+              {children}
+            </div>
+            <Footer />
+          </div>
         </MarketplaceProvider>
       </body>
     </html>

@@ -18,6 +18,12 @@ export const sanityProductSchema = {
     { name: "imageUrl", title: "Product Image", type: "image" },
     { name: "stock", title: "Available Stock", type: "number" },
     {
+      name: "images",
+      title: "Multiple Images",
+      type: "array",
+      of: [{ type: "image" }],
+    },
+    {
       name: "specs",
       title: "Specifications",
       type: "array",
@@ -73,6 +79,7 @@ export interface SanityProduct {
   category: "furniture" | "local-goods" | "home-appliances" | "services";
   imageUrl: string;
   stock: number; // Stock count or slot count for services
+  images?: string[]; // Optional additional images
   specs: SanityProductSpec[];
   createdAt: string;
 }
@@ -91,6 +98,12 @@ const mockProducts: SanityProduct[] = [
     stock: 3,
     imageUrl:
       "https://images.unsplash.com/photo-1577140917170-285929fb55b7?auto=format&fit=crop&q=80&w=1000",
+    images: [
+      "https://images.unsplash.com/photo-1577140917170-285929fb55b7?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1615066390971-03e4e1c36ddf?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1604014237800-1c9102c219da?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1530018607912-eff2df114fbe?auto=format&fit=crop&q=80&w=1000"
+    ],
     specs: [
       { name: "Material", value: "Solid White Oak" },
       { name: "Dimensions", value: "200cm x 90cm x 75cm" },
@@ -111,6 +124,12 @@ const mockProducts: SanityProduct[] = [
     stock: 5,
     imageUrl:
       "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&q=80&w=1000",
+    images: [
+      "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1592078615290-033ee584e267?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&q=80&w=1000"
+    ],
     specs: [
       { name: "Material", value: "Velvet Upholstery, Solid Birch Wood" },
       { name: "Color", value: "Royal Emerald Green" },
@@ -133,6 +152,11 @@ const mockProducts: SanityProduct[] = [
     stock: 2,
     imageUrl:
       "https://images.unsplash.com/photo-1571175432244-5f29906666cf?auto=format&fit=crop&q=80&w=1000",
+    images: [
+      "https://images.unsplash.com/photo-1571175432244-5f29906666cf?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&q=80&w=1000"
+    ],
     specs: [
       { name: "Capacity", value: "24 cubic feet" },
       { name: "Energy Star Rating", value: "5 Stars (Ultra-Efficient)" },
@@ -153,6 +177,11 @@ const mockProducts: SanityProduct[] = [
     stock: 12,
     imageUrl:
       "https://images.unsplash.com/photo-1621972750749-0fbb1abb7736?auto=format&fit=crop&q=80&w=1000",
+    images: [
+      "https://images.unsplash.com/photo-1621972750749-0fbb1abb7736?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1544233726-9f1d2b27be8b?auto=format&fit=crop&q=80&w=1000"
+    ],
     specs: [
       { name: "Capacity", value: "8.5 Liters" },
       { name: "Power Output", value: "1800 Watts" },
@@ -174,6 +203,11 @@ const mockProducts: SanityProduct[] = [
     stock: 25,
     imageUrl:
       "https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&q=80&w=1000",
+    images: [
+      "https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1471193945509-9ad0617afabf?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&q=80&w=1000"
+    ],
     specs: [
       { name: "Flavors Included", value: "Wildflower, Linden Blossom, Forest Fir" },
       { name: "Net Weight", value: "3 x 250g Jars" },
@@ -193,6 +227,11 @@ const mockProducts: SanityProduct[] = [
     stock: 8,
     imageUrl:
       "https://images.unsplash.com/photo-1580301762395-21ce84d00bc6?auto=format&fit=crop&q=80&w=1000",
+    images: [
+      "https://images.unsplash.com/photo-1580301762395-21ce84d00bc6?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=1000"
+    ],
     specs: [
       { name: "Material", value: "80% Alpaca Wool, 20% Organic Cotton Warp" },
       { name: "Dimensions", value: "130cm x 170cm" },
@@ -215,6 +254,11 @@ const mockProducts: SanityProduct[] = [
     stock: 4, // Represents available expert service slots today
     imageUrl:
       "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80&w=1000",
+    images: [
+      "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&q=80&w=1000"
+    ],
     specs: [
       { name: "Service Provider", value: "Township Maintenance Core" },
       { name: "Duration Included", value: "Up to 2 Hours (Labor)" },
@@ -235,6 +279,11 @@ const mockProducts: SanityProduct[] = [
     stock: 6,
     imageUrl:
       "https://images.unsplash.com/photo-1621905252507-b354bc25edac?auto=format&fit=crop&q=80&w=1000",
+    images: [
+      "https://images.unsplash.com/photo-1621905252507-b354bc25edac?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1527689368864-3a821dbccc34?auto=format&fit=crop&q=80&w=1000"
+    ],
     specs: [
       { name: "Applicable Units", value: "Central AC, Heat Pumps, Furnaces" },
       { name: "Includes", value: "Safety Inspection, Air Flow Adjustments, Coil Cleaning" },
