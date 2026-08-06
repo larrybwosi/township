@@ -12,9 +12,16 @@ permissions:
   packages: write
 
 jobs:
-  release:
-    name: Release
+  version:
+    name: Version and Tag
     runs-on: ubuntu-latest
+    outputs:
+      has_changesets: ${{ steps.check-changesets.outputs.has_changesets }}
+      owner_lc: ${{ steps.owner.outputs.owner_lc }}
+      api_version: ${{ steps.version-packages.outputs.api_version }}
+      web_version: ${{ steps.version-packages.outputs.web_version }}
+      rental_version: ${{ steps.version-packages.outputs.rental_version }}
+      marketplace_version: ${{ steps.version-packages.outputs.marketplace_version }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -30,7 +37,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -50,11 +57,13 @@ jobs:
           fi
 
       - name: Set lower case owner name
+        id: owner
         if: steps.check-changesets.outputs.has_changesets == 'true'
         run: |
-          echo "OWNER_LC=${OWNER,,}" >> ${GITHUB_ENV}
+          OWNER_LC="${OWNER,,}"
+          echo "owner_lc=$OWNER_LC" >> "$GITHUB_OUTPUT"
         env:
-          OWNER: '${{ github.repository_owner }}'
+          OWNER: "${{ github.repository_owner }}"
 
       - name: Version Packages, Commit and Tag
         id: version-packages
@@ -75,10 +84,10 @@ jobs:
           RENTAL_VERSION=$(node -p "require('./apps/rental/package.json').version")
           MARKETPLACE_VERSION=$(node -p "require('./apps/marketplace/package.json').version")
 
-          echo "API_VERSION=$API_VERSION" >> $GITHUB_ENV
-          echo "WEB_VERSION=$WEB_VERSION" >> $GITHUB_ENV
-          echo "RENTAL_VERSION=$RENTAL_VERSION" >> $GITHUB_ENV
-          echo "MARKETPLACE_VERSION=$MARKETPLACE_VERSION" >> $GITHUB_ENV
+          echo "api_version=$API_VERSION" >> "$GITHUB_OUTPUT"
+          echo "web_version=$WEB_VERSION" >> "$GITHUB_OUTPUT"
+          echo "rental_version=$RENTAL_VERSION" >> "$GITHUB_OUTPUT"
+          echo "marketplace_version=$MARKETPLACE_VERSION" >> "$GITHUB_OUTPUT"
 
           # Commit and push version changes to main (preventing CI loop with [skip ci])
           git add .
@@ -94,72 +103,66 @@ jobs:
             echo "Tag v$API_VERSION already exists, skipping tag creation"
           fi
 
-      - name: Log in to GHCR
-        if: steps.check-changesets.outputs.has_changesets == 'true'
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push api Docker image
-        if: steps.check-changesets.outputs.has_changesets == 'true'
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: apps/api/Dockerfile
-          push: true
-          tags: |
-            ghcr.io/${{ env.OWNER_LC }}/api:latest
-            ghcr.io/${{ env.OWNER_LC }}/api:${{ env.API_VERSION }}
-
-      - name: Build and push web Docker image
-        if: steps.check-changesets.outputs.has_changesets == 'true'
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: apps/web/Dockerfile
-          push: true
-          build-args: |
-            NEXT_PUBLIC_API_URL=http://localhost:3001
-          tags: |
-            ghcr.io/${{ env.OWNER_LC }}/web:latest
-            ghcr.io/${{ env.OWNER_LC }}/web:${{ env.WEB_VERSION }}
-
-      - name: Build and push rental Docker image
-        if: steps.check-changesets.outputs.has_changesets == 'true'
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: apps/rental/Dockerfile
-          push: true
-          build-args: |
-            NEXT_PUBLIC_API_URL=http://localhost:3001
-          tags: |
-            ghcr.io/${{ env.OWNER_LC }}/rental:latest
-            ghcr.io/${{ env.OWNER_LC }}/rental:${{ env.RENTAL_VERSION }}
-
-      - name: Build and push marketplace Docker image
-        if: steps.check-changesets.outputs.has_changesets == 'true'
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: apps/marketplace/Dockerfile
-          push: true
-          build-args: |
-            NEXT_PUBLIC_API_URL=http://localhost:3001
-          tags: |
-            ghcr.io/${{ env.OWNER_LC }}/marketplace:latest
-            ghcr.io/${{ env.OWNER_LC }}/marketplace:${{ env.MARKETPLACE_VERSION }}
-
-      - name: Create GitHub Releases
+      - name: Create GitHub Release
         if: steps.check-changesets.outputs.has_changesets == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          API_VERSION="${{ steps.version-packages.outputs.api_version }}"
           if ! gh release view "v$API_VERSION" >/dev/null 2>&1; then
             echo "Creating release for v$API_VERSION"
             gh release create "v$API_VERSION" --title "v$API_VERSION" --notes "Release v$API_VERSION" || true
           else
             echo "Release v$API_VERSION already exists, skipping"
           fi
+
+  build:
+    name: Build and Push (${{ matrix.app }})
+    needs: version
+    if: needs.version.outputs.has_changesets == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - app: api
+            dockerfile: apps/api/Dockerfile
+            version: ${{ needs.version.outputs.api_version }}
+            build_args: ""
+          - app: web
+            dockerfile: apps/web/Dockerfile
+            version: ${{ needs.version.outputs.web_version }}
+            build_args: "NEXT_PUBLIC_API_URL=http://localhost:3001"
+          - app: rental
+            dockerfile: apps/rental/Dockerfile
+            version: ${{ needs.version.outputs.rental_version }}
+            build_args: "NEXT_PUBLIC_API_URL=http://localhost:3001"
+          - app: marketplace
+            dockerfile: apps/marketplace/Dockerfile
+            version: ${{ needs.version.outputs.marketplace_version }}
+            build_args: "NEXT_PUBLIC_API_URL=http://localhost:3001"
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          # Build from the tag the version job just pushed, so the Docker
+          # build context matches the versioned commit.
+          ref: v${{ needs.version.outputs.api_version }}
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push ${{ matrix.app }} Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          push: true
+          build-args: ${{ matrix.build_args }}
+          tags: |
+            ghcr.io/${{ needs.version.outputs.owner_lc }}/${{ matrix.app }}:latest
+            ghcr.io/${{ needs.version.outputs.owner_lc }}/${{ matrix.app }}:${{ matrix.version }}

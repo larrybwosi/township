@@ -12,15 +12,13 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-
   rabbitmq:
     image: rabbitmq:3-management
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
-
   api:
-    image: ghcr.io/larrybwosi/api:latest
+    image: ghcr.io/larrybwosi/api:${VERSION:-latest}
     environment:
       DATABASE_URL: "postgresql://user:password@postgres:5432/township?schema=public"
       JWT_SECRET: "mySuperSecretKey"
@@ -31,31 +29,27 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_started
-
   web:
-    image: ghcr.io/larrybwosi/web:latest
+    image: ghcr.io/larrybwosi/web:${VERSION:-latest}
     environment:
       NEXT_PUBLIC_API_URL: "http://localhost:3001"
       PORT: "3000"
     depends_on:
       - api
-
   rental:
-    image: ghcr.io/larrybwosi/rental:latest
+    image: ghcr.io/larrybwosi/rental:${VERSION:-latest}
     environment:
       NEXT_PUBLIC_API_URL: "http://localhost:3001"
       PORT: "3002"
     depends_on:
       - api
-
   marketplace:
-    image: ghcr.io/larrybwosi/marketplace:latest
+    image: ghcr.io/larrybwosi/marketplace:${VERSION:-latest}
     environment:
       NEXT_PUBLIC_API_URL: "http://localhost:3001"
       PORT: "3003"
     depends_on:
       - api
-
   sanity-seeder:
     build:
       context: .
@@ -65,6 +59,5 @@ services:
       NEXT_PUBLIC_SANITY_DATASET: "${NEXT_PUBLIC_SANITY_DATASET:-production}"
       SANITY_API_TOKEN: "${SANITY_API_TOKEN}"
     restart: "no"
-
 volumes:
   postgres_data:
