@@ -1,5 +1,15 @@
 # docs
 
+## 1.3.0
+
+### Minor Changes
+
+- 3a02a4c: Update
+
+### Patch Changes
+
+- @repo/ui@1.3.0
+
 ## 1.2.0
 
 ### Minor Changes
