@@ -12,28 +12,28 @@ const navLinks = [
     label: "Institutions",
     href: "#institutions",
     children: [
-      { label: "Universities & Colleges", href: "#universities" },
-      { label: "Hospitals & Clinics", href: "#hospitals" },
-      { label: "Government Offices", href: "#government" },
+      { label: "Universities & Colleges", href: "/intitutions/universities" },
+      { label: "Hospitals & Clinics", href: "/intitutions/hospitals" },
+      { label: "Government Offices", href: "/intitutions/government" },
     ],
   },
   {
     label: "Explore",
     href: "#places",
     children: [
-      { label: "Dining & Restaurants", href: "#dining" },
-      { label: "Shopping", href: "#shopping" },
-      { label: "Parks & Recreation", href: "#parks" },
-      { label: "Accommodation", href: "#accommodation" },
+      { label: "Dining & Restaurants", href: "/explore/dining" },
+      { label: "Shopping", href: "/explore/shopping" },
+      { label: "Parks & Recreation", href: "/explore/parks" },
+      { label: "Accommodation", href: "/explore/accommodation" },
     ],
   },
   {
     label: "Services",
-    href: "#services",
+    href: "/services",
   },
   {
     label: "Events",
-    href: "#events",
+    href: "/events",
   },
 ];
 
