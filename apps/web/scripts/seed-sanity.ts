@@ -1,0 +1,858 @@
+/* eslint-disable turbo/no-undeclared-env-vars */
+import { createClient } from "next-sanity";
+
+// Read environment variables using bracket notation to satisfy linter rules
+const projectId = process.env["NEXT_PUBLIC_SANITY_PROJECT_ID"];
+const dataset = process.env["NEXT_PUBLIC_SANITY_DATASET"] || "production";
+const token = process.env["SANITY_API_TOKEN"];
+
+// ==========================================
+// Mock Data Definitions
+// ==========================================
+
+const mockHomeHero = {
+  _id: "h-hero",
+  _type: "homeHero",
+  badge: "Official City Portal",
+  headline: "Welcome to",
+  accentText: "Township",
+  description: "Whether you're a student arriving for the first time or a local looking to explore more — your complete guide to institutions, dining, services, and community life is right here.",
+  searchPlaceholder: "Search places, institutions, services...",
+  backgroundImageUrl: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1920&q=80",
+  quickLinks: [
+    {
+      _key: "ql-1",
+      label: "Student Guide",
+      desc: "First time here? Start here.",
+      href: "#institutions",
+      accent: true,
+      iconName: "GraduationCap",
+    },
+    {
+      _key: "ql-2",
+      label: "Institutions",
+      desc: "Universities, hospitals & offices",
+      href: "#institutions",
+      accent: false,
+      iconName: "Building2",
+    },
+    {
+      _key: "ql-3",
+      label: "Explore Places",
+      desc: "Dining, parks & activities",
+      href: "#places",
+      accent: false,
+      iconName: "MapPin",
+    },
+  ],
+};
+
+const mockHomeAbout = {
+  _id: "h-about",
+  _type: "homeAbout",
+  badge: "About Our Town",
+  title: "A town built for people — locals and visitors alike",
+  paragraphs: [
+    "Township is more than a place — it's a living community shaped by decades of growth, culture, and collective ambition. Home to leading universities, bustling markets, top healthcare facilities, and a rich calendar of cultural events, our town has become a destination for students, professionals, and families.",
+    "Whether you're enrolling at one of our institutions, setting up home for the first time, or simply exploring — this portal is your front door to everything Township has to offer.",
+  ],
+  buttonText: "Explore Institutions",
+  buttonHref: "#institutions",
+  imageUrl: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=800&q=80",
+  floatingCardValue: "30,000+",
+  floatingCardLabel: "Students enrolled annually",
+  highlights: [
+    {
+      _key: "hl-1",
+      iconName: "TrendingUp",
+      title: "Fastest-Growing Student Hub",
+      desc: "Over 30,000 students from across the region choose Township as their academic home each year.",
+    },
+    {
+      _key: "hl-2",
+      iconName: "Award",
+      title: "Award-Winning Infrastructure",
+      desc: "Recognised for its public transport, connectivity, and modern civic facilities supporting daily life.",
+    },
+    {
+      _key: "hl-3",
+      iconName: "Building",
+      title: "Economic & Cultural Centre",
+      desc: "A vibrant mix of businesses, markets, arts, and traditions that make our town uniquely alive.",
+    },
+  ],
+  stats: [
+    {
+      _key: "st-1",
+      iconName: "Users",
+      value: "120,000+",
+      label: "Residents",
+      desc: "Growing community",
+    },
+    {
+      _key: "st-2",
+      iconName: "Building",
+      value: "14",
+      label: "Institutions",
+      desc: "Universities & colleges",
+    },
+    {
+      _key: "st-3",
+      iconName: "MapPin",
+      value: "60+",
+      label: "Venues",
+      desc: "Places to discover",
+    },
+    {
+      _key: "st-4",
+      iconName: "Calendar",
+      value: "200+",
+      label: "Events/Year",
+      desc: "Year-round activities",
+    },
+  ],
+};
+
+const mockStudentGuide = {
+  _id: "st-guide",
+  _type: "studentGuide",
+  badge: "New Student Guide",
+  headline: "Just arrived in Township? Here's your starter checklist.",
+  description: "We know settling into a new place can be overwhelming. This guide walks you through the essential steps to get set up, stay safe, and make the most of your time here.",
+  buttonText: "View Starter Guide",
+  buttonHref: "#",
+  checklist: [
+    "Find student accommodation near campus",
+    "Open bank accounts as a new resident",
+    "Register at a local health clinic",
+    "Get your transport card",
+    "Access internet & connectivity services",
+    "Report noise or neighbourhood issues",
+  ],
+  contactLabel: "Contact the Welcome Desk",
+  contactHref: "#",
+};
+
+const mockInstitutions = [
+  {
+    _id: "inst-1",
+    _type: "institution",
+    name: "Township University",
+    category: "education",
+    type: "Public University",
+    desc: "The flagship university of the region offering undergraduate and postgraduate programmes across sciences, arts, and engineering.",
+    address: "1 University Drive, North Campus",
+    phone: "+1 (555) 200-0100",
+    hours: "Mon–Fri: 7:30am – 5:00pm",
+    image: "https://images.unsplash.com/photo-1562774053-701939374585?w=600&q=80",
+    tags: ["University", "Research", "Student Services"],
+    featured: true,
+  },
+  {
+    _id: "inst-2",
+    _type: "institution",
+    name: "Township College of Technology",
+    category: "education",
+    type: "Technical College",
+    desc: "Specialising in applied sciences, engineering technology, and vocational programmes with strong industry partnerships.",
+    address: "45 Tech Avenue, East District",
+    phone: "+1 (555) 200-0200",
+    hours: "Mon–Fri: 8:00am – 4:30pm",
+    image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&q=80",
+    tags: ["College", "Engineering", "Vocational"],
+    featured: false,
+  },
+  {
+    _id: "inst-3",
+    _type: "institution",
+    name: "St. Mary Academy",
+    category: "education",
+    type: "Secondary School",
+    desc: "A well-established secondary institution known for academic excellence and a broad extracurricular programme.",
+    address: "12 Oak Lane, Central Township",
+    phone: "+1 (555) 200-0300",
+    hours: "Mon–Fri: 7:00am – 3:00pm",
+    image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=80",
+    tags: ["Secondary", "Academy"],
+    featured: false,
+  },
+  {
+    _id: "inst-4",
+    _type: "institution",
+    name: "Township General Hospital",
+    category: "health",
+    type: "Public Hospital",
+    desc: "The primary regional hospital providing emergency care, specialist services, and in-patient treatment for the entire district.",
+    address: "Hospital Road, Medical Quarter",
+    phone: "+1 (555) 200-0911",
+    hours: "24 Hours / 7 Days",
+    image: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=600&q=80",
+    tags: ["Emergency", "Specialist Care", "In-Patient"],
+    featured: true,
+  },
+  {
+    _id: "inst-5",
+    _type: "institution",
+    name: "Wellness Community Clinic",
+    category: "health",
+    type: "Public Clinic",
+    desc: "Free and subsidised primary healthcare, vaccinations, and health screenings for residents and students.",
+    address: "22 Main Street, Town Centre",
+    phone: "+1 (555) 200-0500",
+    hours: "Mon–Sat: 8:00am – 6:00pm",
+    image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=600&q=80",
+    tags: ["Primary Care", "Free Services", "Vaccinations"],
+    featured: false,
+  },
+  {
+    _id: "inst-6",
+    _type: "institution",
+    name: "Township Municipal Hall",
+    category: "government",
+    type: "Local Government",
+    desc: "The central office for permits, licenses, ID documents, and local government services. Online services available.",
+    address: "City Hall Square, Township Centre",
+    phone: "+1 (555) 200-0001",
+    hours: "Mon–Fri: 8:00am – 4:00pm",
+    image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80",
+    tags: ["Permits", "Licensing", "ID Documents"],
+    featured: false,
+  },
+];
+
+const mockPlaces = [
+  {
+    _id: "place-1",
+    _type: "place",
+    name: "The Central Market",
+    category: "Dining",
+    rating: 4.8,
+    reviews: 1240,
+    desc: "A vibrant open-air market at the heart of town, offering fresh produce, street food, and artisan goods from local vendors.",
+    image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80",
+    tags: ["Street Food", "Local Produce", "Artisan"],
+    openNow: true,
+    span: "large",
+    link: "/explore/dining",
+  },
+  {
+    _id: "place-2",
+    _type: "place",
+    name: "Riverside Walk & Park",
+    category: "Parks",
+    rating: 4.9,
+    reviews: 890,
+    desc: "A beautiful riverside green space perfect for morning runs, picnics, and weekend relaxation.",
+    image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80",
+    tags: ["Outdoor", "Family-Friendly", "Free"],
+    openNow: true,
+    span: "small",
+    link: "/explore/parks",
+  },
+  {
+    _id: "place-3",
+    _type: "place",
+    name: "Township Mall",
+    category: "Shopping",
+    rating: 4.5,
+    reviews: 2100,
+    desc: "The region's premier shopping destination with over 150 stores, a food court, and entertainment facilities.",
+    image: "https://images.unsplash.com/photo-1567449303078-57ad995bd17a?w=600&q=80",
+    tags: ["Shopping", "Food Court", "Entertainment"],
+    openNow: true,
+    span: "small",
+    link: "/explore/shopping",
+  },
+  {
+    _id: "place-4",
+    _type: "place",
+    name: "Brewed — Specialty Coffee",
+    category: "Cafes",
+    rating: 4.7,
+    reviews: 620,
+    desc: "A student favourite for its single-origin brews, strong Wi-Fi, and calm working atmosphere open from early morning.",
+    image: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=80",
+    tags: ["Coffee", "Wi-Fi", "Study Spot"],
+    openNow: true,
+    span: "small",
+    link: "/explore/dining",
+  },
+  {
+    _id: "place-5",
+    _type: "place",
+    name: "The Grand Township Hotel",
+    category: "Stay",
+    rating: 4.6,
+    reviews: 450,
+    desc: "Elegant accommodation steps from the university campus and town centre, ideal for visiting families and academic guests.",
+    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80",
+    tags: ["4-Star", "Conference Rooms", "Family"],
+    openNow: false,
+    span: "small",
+    link: "/explore/accommodation",
+  },
+  {
+    _id: "place-6",
+    _type: "place",
+    name: "Culture & Arts Quarter",
+    category: "Nightlife",
+    rating: 4.6,
+    reviews: 380,
+    desc: "An after-dark hub of live music venues, independent cinemas, bars, and pop-up events that keep Township buzzing.",
+    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&q=80",
+    tags: ["Live Music", "Cinema", "Bars"],
+    openNow: true,
+    span: "small",
+    link: "/explore/nightlife",
+  },
+];
+
+const mockServices = [
+  {
+    _id: "srv-1",
+    _type: "service",
+    title: "Public Transport",
+    desc: "Bus routes, timetables, student travel cards, and real-time updates across the township network.",
+    link: "#",
+    color: "bg-blue-50 text-blue-600",
+    iconName: "Bus",
+  },
+  {
+    _id: "srv-2",
+    _type: "service",
+    title: "Free Wi-Fi Zones",
+    desc: "Over 40 free public Wi-Fi hotspots across parks, libraries, and public squares in Township.",
+    link: "#",
+    color: "bg-indigo-50 text-indigo-600",
+    iconName: "Wifi",
+  },
+  {
+    _id: "srv-3",
+    _type: "service",
+    title: "Safety & Emergency",
+    desc: "Local police contacts, emergency protocols, safe walk initiatives, and safety resources for students.",
+    link: "#",
+    color: "bg-red-50 text-red-600",
+    iconName: "ShieldCheck",
+  },
+  {
+    _id: "srv-4",
+    _type: "service",
+    title: "Libraries & Learning",
+    desc: "Access to public libraries, online learning portals, and academic resources available to all residents.",
+    link: "#",
+    color: "bg-emerald-50 text-emerald-600",
+    iconName: "BookOpen",
+  },
+  {
+    _id: "srv-5",
+    _type: "service",
+    title: "Waste & Recycling",
+    desc: "Collection schedules, recycling drop points, and green initiative programmes for a cleaner town.",
+    link: "#",
+    color: "bg-lime-50 text-lime-700",
+    iconName: "Trash2",
+  },
+  {
+    _id: "srv-6",
+    _type: "service",
+    title: "Water & Utilities",
+    desc: "Water service contacts, billing support, and infrastructure maintenance reporting for residents.",
+    link: "#",
+    color: "bg-cyan-50 text-cyan-600",
+    iconName: "Droplets",
+  },
+];
+
+const mockEvents = [
+  {
+    _id: "evt-1",
+    _type: "event",
+    title: "Township Cultural Festival 2025",
+    category: "Culture",
+    date: "Aug 14–16, 2025",
+    time: "10:00 AM – 10:00 PM",
+    location: "Civic Park, Town Centre",
+    attendees: "5,000+",
+    image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=700&q=80",
+    desc: "Three days of music, food, traditional crafts, and performances celebrating the heritage and diversity of our community.",
+    featured: true,
+  },
+  {
+    _id: "evt-2",
+    _type: "event",
+    title: "University Open Day",
+    category: "Education",
+    date: "Jul 28, 2025",
+    time: "9:00 AM – 3:00 PM",
+    location: "Township University, Main Campus",
+    attendees: "1,200+",
+    image: "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=600&q=80",
+    desc: "Prospective students and families are invited to tour the campus, meet faculty, and learn about programmes.",
+    featured: false,
+  },
+  {
+    _id: "evt-3",
+    _type: "event",
+    title: "Farmers & Artisans Market",
+    category: "Community",
+    date: "Every Saturday",
+    time: "7:00 AM – 1:00 PM",
+    location: "Market Square, Central Township",
+    attendees: "800+",
+    image: "https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=600&q=80",
+    desc: "Weekly market showcasing fresh seasonal produce, homemade goods, and handcrafted items from local producers.",
+    featured: false,
+  },
+  {
+    _id: "evt-4",
+    _type: "event",
+    title: "Township Half Marathon",
+    category: "Sport",
+    date: "Sep 5, 2025",
+    time: "6:30 AM",
+    location: "Starting at Riverside Park",
+    attendees: "2,500+",
+    image: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=600&q=80",
+    desc: "Annual running event winding through the town's scenic routes. Open to all skill levels with a fun run option.",
+    featured: false,
+  },
+];
+
+const mockTowns = [
+  {
+    _id: "t-1",
+    _type: "town",
+    id: "t-1",
+    name: "Greenwood",
+    description: "A lush, peaceful suburb with beautiful parks and historic homes.",
+  },
+  {
+    _id: "t-2",
+    _type: "town",
+    id: "t-2",
+    name: "Riverdale",
+    description: "Vibrant riverside district featuring rich local culture and dining.",
+  },
+  {
+    _id: "t-3",
+    _type: "town",
+    id: "t-3",
+    name: "Oakwood",
+    description: "Upscale wooded neighborhood known for absolute tranquility and scenery.",
+  },
+  {
+    _id: "t-4",
+    _type: "town",
+    id: "t-4",
+    name: "Lakeside",
+    description: "Breathtaking views and cozy lakefront cabins perfect for weekend escapes.",
+  },
+];
+
+const mockProperties = [
+  {
+    _id: "p-1",
+    _type: "property",
+    title: "Charming Lakeside Cottage with Private Dock",
+    description: "Enjoy a relaxing getaway in this beautifully appointed cottage right on the shores of Lake Serene. Features an expansive deck, fully equipped gourmet kitchen, and private boat dock. Perfect for swimming, kayaking, and sunset viewing.",
+    price: 240,
+    address: "412 Lakeview Dr, Lakeside",
+    category: "house",
+    townId: "t-4",
+    ownerId: "u-2",
+    amenities: [
+      "Lake View",
+      "Private Dock",
+      "Wifi",
+      "Kitchen",
+      "Fireplace",
+      "Kayaks Included",
+      "Air Conditioning",
+    ],
+    imageUrl: "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&q=80&w=1000",
+    createdAt: "2025-01-10T12:00:00.000Z",
+  },
+  {
+    _id: "p-2",
+    _type: "property",
+    title: "Modern Greenwood Townhouse with Rooftop Deck",
+    description: "Sleek and contemporary 3-story townhouse in the heart of Greenwood. Features brand-new high-end appliances, floor-to-ceiling windows, and a massive private rooftop terrace with views of the sunset.",
+    price: 185,
+    address: "88 Maple Ave, Greenwood",
+    category: "apartment_single",
+    townId: "t-1",
+    ownerId: "u-2",
+    amenities: [
+      "Rooftop Terrace",
+      "Wifi",
+      "Modern Kitchen",
+      "Dedicated Workspace",
+      "Smart TV",
+      "Washer & Dryer",
+    ],
+    imageUrl: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1000",
+    createdAt: "2025-01-15T09:30:00.000Z",
+  },
+  {
+    _id: "p-3",
+    _type: "property",
+    title: "Grand Riverside Apartment Complex",
+    description: "An elegant, multi-unit apartment building located in the heart of Riverdale. Featuring individual luxury units to suit any size. Rent individual apartments with access to shared premium amenities like a rooftop fitness center, secure garages, and a concierge.",
+    price: 150,
+    address: "102 Boardwalk Way, Riverdale",
+    category: "apartment_building",
+    townId: "t-2",
+    ownerId: "u-2",
+    amenities: [
+      "Gym Access",
+      "Wifi",
+      "Elevator",
+      "Secure Parking",
+      "Concierge",
+      "Pet Friendly",
+    ],
+    imageUrl: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80&w=1000",
+    createdAt: "2025-01-18T15:45:00.000Z",
+    units: [
+      {
+        _key: "u-1",
+        id: "u-3-studio",
+        name: "Studio Suite (102A)",
+        price: 120,
+        rooms: 1,
+        description: "Compact studio suite overlooking the garden with a fully fitted kitchenette.",
+      },
+      {
+        _key: "u-2",
+        id: "u-3-deluxe",
+        name: "Deluxe 1-Bedroom (102B)",
+        price: 180,
+        rooms: 2,
+        description: "Spacious 1-bedroom suite with a separate dining hall and private balcony.",
+      },
+      {
+        _key: "u-3",
+        id: "u-3-penthouse",
+        name: "Rooftop Penthouse (102C)",
+        price: 350,
+        rooms: 4,
+        description: "Magnificent luxury penthouse with panoramic city & river views.",
+      },
+    ],
+  },
+  {
+    _id: "p-4",
+    _type: "property",
+    title: "Cozy Redwood Cabin in Oakwood Hills",
+    description: "Nestled among towering redwood trees, this romantic cabin offers the ultimate peaceful forest escape. Melt away stress in the outdoor cedar hot tub, cozy up by the stone fireplace, or explore miles of hiking trails.",
+    price: 195,
+    address: "740 Forest Glen Rd, Oakwood",
+    category: "guesthouse",
+    townId: "t-3",
+    ownerId: "u-3",
+    amenities: [
+      "Outdoor Hot Tub",
+      "Wood Fireplace",
+      "Mountain Views",
+      "Hiking Trails",
+      "Wifi",
+      "BBQ Grill",
+    ],
+    imageUrl: "https://images.unsplash.com/photo-1449034446853-66c86144b0ad?auto=format&fit=crop&q=80&w=1000",
+    createdAt: "2025-01-20T08:00:00.000Z",
+  },
+  {
+    _id: "p-5",
+    _type: "property",
+    title: "Starlight Resort & Motel",
+    description: "A beautifully renovated roadside motel on the outskirts of Lakeside, offering convenient stay options and individual units. Perfect for overnight travelers and weekend roadtrippers alike.",
+    price: 85,
+    address: "109 State Hwy 4, Lakeside",
+    category: "motel",
+    townId: "t-4",
+    ownerId: "u-2",
+    amenities: [
+      "Pool",
+      "Free Parking",
+      "Wifi",
+      "Cable TV",
+      "Air Conditioning",
+      "24/7 Desk",
+    ],
+    imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1000",
+    createdAt: "2025-01-22T10:15:00.000Z",
+    units: [
+      {
+        _key: "u-1",
+        id: "u-5-standard",
+        name: "Standard Queen Room",
+        price: 85,
+        rooms: 1,
+        description: "Comfortable room featuring one queen bed, refrigerator, and desk space.",
+      },
+      {
+        _key: "u-2",
+        id: "u-5-double",
+        name: "Double Double Room",
+        price: 110,
+        rooms: 2,
+        description: "Spacious layout with two double beds, ideal for families or group travelers.",
+      },
+    ],
+  },
+  {
+    _id: "p-6",
+    _type: "property",
+    title: "The Greenwood Grand Plaza Hotel",
+    description: "A premier five-star hotel offering unmatched luxurious service, executive conference rooms, exquisite dining halls, and multi-room luxury suites. Perfect for corporate stays or high-end travelers visiting the beautiful Greenwood.",
+    price: 250,
+    address: "1 Plaza Blvd, Greenwood",
+    category: "hotel",
+    townId: "t-1",
+    ownerId: "u-3",
+    amenities: [
+      "Spa",
+      "Room Service",
+      "Bar & Restaurant",
+      "Wifi",
+      "Air Conditioning",
+      "Valet Parking",
+      "Fitness Center",
+    ],
+    imageUrl: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&q=80&w=1000",
+    createdAt: "2025-01-25T11:00:00.000Z",
+    units: [
+      {
+        _key: "u-1",
+        id: "u-6-exec",
+        name: "Executive King Suite",
+        price: 250,
+        rooms: 1,
+        description: "Premium suite with king bed, marble bath, and dedicated work study.",
+      },
+      {
+        _key: "u-2",
+        id: "u-6-presidential",
+        name: "Presidential Suite",
+        price: 600,
+        rooms: 3,
+        description: "Our grandest suite featuring personal butler service, dynamic acoustics, and unmatched views.",
+      },
+    ],
+  },
+];
+
+const mockProducts = [
+  {
+    _id: "prod-1",
+    _type: "product",
+    title: "Handcrafted Oak Dining Table",
+    description: "A gorgeous, solid oak dining table, lovingly handmade by local artisans in Greenwood. Comfortably seats six to eight people. Featuring a robust oil-wax finish to preserve natural wood grains and protect against spills.",
+    price: 650,
+    deposit: 150,
+    category: "furniture",
+    stock: 3,
+    imageUrl: "https://images.unsplash.com/photo-1577140917170-285929fb55b7?auto=format&fit=crop&q=80&w=1000",
+    specs: [
+      { _key: "sp-1", name: "Material", value: "Solid White Oak" },
+      { _key: "sp-2", name: "Dimensions", value: "200cm x 90cm x 75cm" },
+      { _key: "sp-3", name: "Weight", value: "48 kg" },
+      { _key: "sp-4", name: "Seating Capacity", value: "6 - 8 people" },
+      { _key: "sp-5", name: "Origin", value: "Greenwood Artisan Guild" },
+    ],
+    createdAt: "2025-01-10T10:00:00.000Z",
+  },
+  {
+    _id: "prod-2",
+    _type: "product",
+    title: "Premium Velvet Tufted Armchair",
+    description: "Sink into luxury with this mid-century modern velvet armchair. Equipped with high-density foam padding and sturdy tapered walnut-stained legs, it serves as the ultimate accent piece for any classy living room or home office study.",
+    price: 299,
+    category: "furniture",
+    stock: 5,
+    imageUrl: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&q=80&w=1000",
+    specs: [
+      { _key: "sp-1", name: "Material", value: "Velvet Upholstery, Solid Birch Wood" },
+      { _key: "sp-2", name: "Color", value: "Royal Emerald Green" },
+      { _key: "sp-3", name: "Dimensions", value: "85cm x 82cm x 90cm" },
+      { _key: "sp-4", name: "Weight Limit", value: "135 kg" },
+    ],
+    createdAt: "2025-01-12T14:30:00.000Z",
+  },
+  {
+    _id: "prod-3",
+    _type: "product",
+    title: "Smart Double-Door Refrigerator",
+    description: "High efficiency, multi-flow cooling refrigerator with built-in Wi-Fi and interactive LED panel. Includes special localized vegetable crispers and high-speed ice/water dispensers. Certified Energy Star rating.",
+    price: 1200,
+    deposit: 300,
+    category: "home-appliances",
+    stock: 2,
+    imageUrl: "https://images.unsplash.com/photo-1571175432244-5f29906666cf?auto=format&fit=crop&q=80&w=1000",
+    specs: [
+      { _key: "sp-1", name: "Capacity", value: "24 cubic feet" },
+      { _key: "sp-2", name: "Energy Star Rating", value: "5 Stars (Ultra-Efficient)" },
+      { _key: "sp-3", name: "Smart Features", value: "Wi-Fi, Internal Camera, Temperature Alarm" },
+      { _key: "sp-4", name: "Dimensions", value: "178cm x 91cm x 85cm" },
+      { _key: "sp-5", name: "Voltage", value: "220-240V" },
+    ],
+    createdAt: "2025-01-15T09:15:00.000Z",
+  },
+  {
+    _id: "prod-4",
+    _type: "product",
+    title: "Multi-Function Air Fryer Oven",
+    description: "Crisp, bake, dehydrate, and roast your favorite delicacies with up to 85% less oil than traditional deep frying. Features 12 easy touch-screen presets and a dual-heating element for perfectly even, fast cooking.",
+    price: 149,
+    category: "home-appliances",
+    stock: 12,
+    imageUrl: "https://images.unsplash.com/photo-1621972750749-0fbb1abb7736?auto=format&fit=crop&q=80&w=1000",
+    specs: [
+      { _key: "sp-1", name: "Capacity", value: "8.5 Liters" },
+      { _key: "sp-2", name: "Power Output", value: "1800 Watts" },
+      { _key: "sp-3", name: "Temperature Range", value: "40°C - 230°C" },
+      { _key: "sp-4", name: "Dishwasher Safe", value: "Yes (Basket and Tray)" },
+    ],
+    createdAt: "2025-01-18T16:00:00.000Z",
+  },
+  {
+    _id: "prod-5",
+    _type: "product",
+    title: "Premium Forest Honey Trio",
+    description: "A collection of three pure, raw, unpasteurized wild honeys sourced from the deep woods of Lakeside and Riverdale. Flavors include Wildflower, Linden Blossom, and Forest Fir Honey. Highly rich in healthy antioxidants.",
+    price: 35,
+    category: "local-goods",
+    stock: 25,
+    imageUrl: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&q=80&w=1000",
+    specs: [
+      { _key: "sp-1", name: "Flavors Included", value: "Wildflower, Linden Blossom, Forest Fir" },
+      { _key: "sp-2", name: "Net Weight", value: "3 x 250g Jars" },
+      { _key: "sp-3", name: "Process", value: "Raw, Unfiltered, Cold-Extracted" },
+      { _key: "sp-4", name: "Allergen Info", value: "Gluten-Free, Contains Natural Pollens" },
+    ],
+    createdAt: "2025-01-20T11:00:00.000Z",
+  },
+  {
+    _id: "prod-6",
+    _type: "product",
+    title: "Artisanal Alpaca Wool Throw Blanket",
+    description: "Woven with incredibly soft, premium-grade alpaca fibers from the township farm. Extremely lightweight, yet provides superb thermal insulation. Perfect for draping over sofas or keeping cozy on cool Lakeside evenings.",
+    price: 85,
+    category: "local-goods",
+    stock: 8,
+    imageUrl: "https://images.unsplash.com/photo-1580301762395-21ce84d00bc6?auto=format&fit=crop&q=80&w=1000",
+    specs: [
+      { _key: "sp-1", name: "Material", value: "80% Alpaca Wool, 20% Organic Cotton Warp" },
+      { _key: "sp-2", name: "Dimensions", value: "130cm x 170cm" },
+      { _key: "sp-3", name: "Care Instructions", value: "Dry Clean Only" },
+      { _key: "sp-4", name: "Weave Style", value: "Classic Herringbone" },
+    ],
+    createdAt: "2025-01-22T08:00:00.000Z",
+  },
+  {
+    _id: "prod-7",
+    _type: "product",
+    title: "Professional Plumbing Inspection & Repair",
+    description: "Need a fix? Book a certified professional plumber for inspections, leakage rectifications, pipe replacements, or clogged drain servicing. Service covers up to 2 hours of labor. Material parts invoiced separately.",
+    price: 120,
+    deposit: 40,
+    category: "services",
+    stock: 4,
+    imageUrl: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80&w=1000",
+    specs: [
+      { _key: "sp-1", name: "Service Provider", value: "Township Maintenance Core" },
+      { _key: "sp-2", name: "Duration Included", value: "Up to 2 Hours (Labor)" },
+      { _key: "sp-3", name: "Availability", value: "Mon - Sat, 8:00 AM - 6:00 PM" },
+      { _key: "sp-4", name: "Certification", value: "Licensed & Insured Plumbing Technicians" },
+    ],
+    createdAt: "2025-01-25T13:00:00.000Z",
+  },
+  {
+    _id: "prod-8",
+    _type: "product",
+    title: "Full-Home HVAC Tuning & Maintenance",
+    description: "Prepare your air heating and cooling systems for the seasons. Covers filter swap-out, coil vacuum cleaning, coolant level measurement, system safety diagnostics, and optimal efficiency configuration.",
+    price: 160,
+    deposit: 50,
+    category: "services",
+    stock: 6,
+    imageUrl: "https://images.unsplash.com/photo-1621905252507-b354bc25edac?auto=format&fit=crop&q=80&w=1000",
+    specs: [
+      { _key: "sp-1", name: "Applicable Units", value: "Central AC, Heat Pumps, Furnaces" },
+      { _key: "sp-2", name: "Includes", value: "Safety Inspection, Air Flow Adjustments, Coil Cleaning" },
+      { _key: "sp-3", name: "Est. Duration", value: "1.5 - 2 Hours" },
+      { _key: "sp-4", name: "Recommended Frequency", value: "Bi-annually (Spring / Autumn)" },
+    ],
+    createdAt: "2025-01-28T09:00:00.000Z",
+  },
+];
+
+// ==========================================
+// Seeding Logic
+// ==========================================
+
+async function main() {
+  console.log("=== Sanity Data Seeder ===");
+  console.log(`Project ID: ${projectId || "undefined"}`);
+  console.log(`Dataset: ${dataset}`);
+  console.log(`Token provided: ${token ? "Yes" : "No"}`);
+
+  if (!projectId || projectId === "mock-project-id") {
+    console.warn("WARNING: NEXT_PUBLIC_SANITY_PROJECT_ID is not set or is 'mock-project-id'. Skipping seeding.");
+    process.exit(0);
+  }
+
+  if (!token) {
+    console.warn("WARNING: SANITY_API_TOKEN is not set. Skipping seeding.");
+    process.exit(0);
+  }
+
+  const client = createClient({
+    projectId,
+    dataset,
+    apiVersion: "2025-02-25",
+    useCdn: false,
+    token,
+  });
+
+  interface SeederDocument {
+    _id: string;
+    _type: string;
+    [key: string]: unknown;
+  }
+
+  const documents: SeederDocument[] = [
+    mockHomeHero,
+    mockHomeAbout,
+    mockStudentGuide,
+    ...mockInstitutions,
+    ...mockPlaces,
+    ...mockServices,
+    ...mockEvents,
+    ...mockTowns,
+    ...mockProperties,
+    ...mockProducts,
+  ];
+
+  console.log(`\nStarting seeding of ${documents.length} documents...`);
+
+  for (const doc of documents) {
+    try {
+      console.log(`Seeding ${doc._type} (ID: ${doc._id})...`);
+      await client.createOrReplace(doc);
+      console.log(`Successfully seeded ${doc._type} (ID: ${doc._id})`);
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      console.error(`Failed to seed ${doc._type} (ID: ${doc._id}):`, errorMessage);
+      process.exit(1);
+    }
+  }
+
+  console.log("\nSeeding completed successfully!");
+}
+
+main().catch((err) => {
+  console.error("Unhandled error during seeding:", err);
+  process.exit(1);
+});
