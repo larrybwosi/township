@@ -28,6 +28,8 @@ export const viewport: Viewport = {
 
 import { SanityLive } from "../sanity/lib/live";
 
+import { frontendEnv } from "@repo/env";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -39,9 +41,9 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `window.__ENV = {
-              NEXT_PUBLIC_SANITY_PROJECT_ID: ${JSON.stringify(process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "")},
-              NEXT_PUBLIC_SANITY_DATASET: ${JSON.stringify(process.env.NEXT_PUBLIC_SANITY_DATASET || "")},
-              NEXT_PUBLIC_API_URL: ${JSON.stringify(process.env.NEXT_PUBLIC_API_URL || "")}
+              NEXT_PUBLIC_SANITY_PROJECT_ID: ${JSON.stringify(frontendEnv.NEXT_PUBLIC_SANITY_PROJECT_ID)},
+              NEXT_PUBLIC_SANITY_DATASET: ${JSON.stringify(frontendEnv.NEXT_PUBLIC_SANITY_DATASET)},
+              NEXT_PUBLIC_API_URL: ${JSON.stringify(frontendEnv.NEXT_PUBLIC_API_URL)}
             };`
           }}
         />

@@ -34,6 +34,9 @@ services:
     environment:
       NEXT_PUBLIC_API_URL: "http://localhost:3001"
       PORT: "3000"
+      NEXT_PUBLIC_SANITY_PROJECT_ID: "${NEXT_PUBLIC_SANITY_PROJECT_ID}"
+      NEXT_PUBLIC_SANITY_DATASET: "${NEXT_PUBLIC_SANITY_DATASET}"
+      SANITY_API_TOKEN: "${SANITY_API_TOKEN}"
     depends_on:
       - api
   rental:
@@ -41,6 +44,9 @@ services:
     environment:
       NEXT_PUBLIC_API_URL: "http://localhost:3001"
       PORT: "3002"
+      NEXT_PUBLIC_SANITY_PROJECT_ID: "${NEXT_PUBLIC_SANITY_PROJECT_ID}"
+      NEXT_PUBLIC_SANITY_DATASET: "${NEXT_PUBLIC_SANITY_DATASET}"
+      SANITY_API_TOKEN: "${SANITY_API_TOKEN}"
     depends_on:
       - api
   marketplace:
@@ -48,6 +54,9 @@ services:
     environment:
       NEXT_PUBLIC_API_URL: "http://localhost:3001"
       PORT: "3003"
+      NEXT_PUBLIC_SANITY_PROJECT_ID: "${NEXT_PUBLIC_SANITY_PROJECT_ID}"
+      NEXT_PUBLIC_SANITY_DATASET: "${NEXT_PUBLIC_SANITY_DATASET}"
+      SANITY_API_TOKEN: "${SANITY_API_TOKEN}"
     depends_on:
       - api
   # sanity-seeder:

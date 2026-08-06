@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
+import { apiEnv } from '@repo/env';
 
 import { PrismaModule } from './prisma.module';
 import { UsersModule } from './users/users.module';
@@ -16,7 +17,7 @@ import { MarketplaceModule } from './marketplace/marketplace.module';
   imports: [
     PassportModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'secretKey',
+      secret: apiEnv.JWT_SECRET,
       signOptions: { expiresIn: '60m' },
     }),
     PrismaModule,
