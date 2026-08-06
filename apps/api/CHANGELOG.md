@@ -1,5 +1,15 @@
 # api
 
+## 1.2.0
+
+### Minor Changes
+
+- 4c706a4: Update
+
+### Patch Changes
+
+- @repo/database@1.2.0
+
 ## 1.1.0
 
 ### Minor Changes
