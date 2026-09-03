@@ -1,15 +1,36 @@
 import React from "react";
+import type { Metadata } from "next";
 import { MarketplaceProvider } from "../context/MarketplaceContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "./globals.css";
+import { getSiteMetadata } from "../lib/sanity";
+import { resolveImageUrl } from "../lib/image";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = {
-  title: "Township Marketplace",
-  description: "Browse local goods, furniture, home appliances, and services.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const siteMeta = await getSiteMetadata("marketplace");
+  const ogImageUrl = siteMeta.ogImage ? resolveImageUrl(siteMeta.ogImage) : undefined;
+
+  return {
+    title: siteMeta.title || "Township Marketplace",
+    description: siteMeta.description || "Browse local goods, furniture, home appliances, and services.",
+    keywords: siteMeta.keywords || ["township", "marketplace", "local goods"],
+    openGraph: {
+      title: siteMeta.title,
+      description: siteMeta.description,
+      siteName: siteMeta.siteName || "Township Marketplace",
+      images: ogImageUrl ? [{ url: ogImageUrl }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: siteMeta.title,
+      description: siteMeta.description,
+      images: ogImageUrl ? [ogImageUrl] : [],
+    },
+  };
+}
 
 import { frontendEnv } from "@repo/env";
 

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { useMarketplace } from "../../../context/MarketplaceContext";
 import { resolveImageUrl } from "../../../lib/image";
 import {
@@ -140,11 +141,13 @@ export default function ItemDetailPage({ params }: PageProps) {
             <div className="space-y-4">
               {/* Main Image view */}
               <div className="relative h-[250px] sm:h-[450px] w-full bg-muted rounded-xl overflow-hidden border border-border group/main-img">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={resolveImageUrl(productImages[selectedImageIndex])}
                   alt={`${product.title} - View ${selectedImageIndex + 1}`}
-                  className="w-full h-full object-cover transition-all duration-300 group-hover/main-img:scale-[1.02]"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover transition-all duration-300 group-hover/main-img:scale-[1.02]"
                 />
               </div>
 
@@ -168,11 +171,12 @@ export default function ItemDetailPage({ params }: PageProps) {
                           }`}
                           title={`View Product Image ${index + 1}`}
                         >
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
+                          <Image
                             src={resolveImageUrl(imageSource)}
                             alt={`${product.title} thumbnail ${index + 1}`}
-                            className="w-full h-full object-cover"
+                            fill
+                            sizes="80px"
+                            className="object-cover"
                           />
                           {isSelected && (
                             <div className="absolute inset-0 bg-emerald-500/10 flex items-center justify-center">

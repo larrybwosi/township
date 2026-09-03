@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Navbar from "../../../components/navbar";
 import Footer from "../../../components/footer";
 import { resolveImageUrl } from "../../../sanity/lib/image";
@@ -107,11 +108,12 @@ export default function GovernmentClient({
                 >
                   {/* Left Column: Image */}
                   <div className="w-full lg:w-72 h-48 lg:h-auto shrink-0 relative rounded-lg overflow-hidden bg-background">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <Image
                       src={resolveImageUrl(office.image)}
                       alt={office.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 288px"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     {office.featured && (
                       <span className="absolute top-3 left-3 bg-purple-700 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded shadow">

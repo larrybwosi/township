@@ -312,6 +312,29 @@ export const getLiveSanityClient = () => {
   });
 };
 
+export interface SanitySiteMetadata {
+  _id: string;
+  _type: "siteMetadata";
+  appIdentifier: string;
+  siteName?: string;
+  title: string;
+  description: string;
+  keywords?: string[];
+  ogImage?: string | Record<string, unknown>;
+  themeColor?: string;
+}
+
+export const mockSiteMetadataMarketplace: SanitySiteMetadata = {
+  _id: "site-meta-marketplace",
+  _type: "siteMetadata",
+  appIdentifier: "marketplace",
+  siteName: "Township Marketplace",
+  title: "Township Marketplace — Local Goods, Furniture & Services",
+  description: "Browse local goods, furniture, home appliances, and services in your township community.",
+  keywords: ["township", "marketplace", "local goods", "furniture", "appliances", "services"],
+  themeColor: "#1a3a5c",
+};
+
 export class SanityClientWrapper {
   getHasLiveKeys(): boolean {
     const pId = typeof window !== "undefined" ? ((window as typeof window & { __ENV?: Record<string, string> }).__ENV?.NEXT_PUBLIC_SANITY_PROJECT_ID) : process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
@@ -331,6 +354,9 @@ export class SanityClientWrapper {
       }
     }
 
+    if (query.includes('*[_type == "siteMetadata"')) {
+      return (query.includes("[0]") ? mockSiteMetadataMarketplace : [mockSiteMetadataMarketplace]) as unknown as T;
+    }
     if (query.includes('*[_type == "product"')) {
       return mockProducts as unknown as T;
     }
@@ -340,3 +366,9 @@ export class SanityClientWrapper {
 }
 
 export const sanityClient = new SanityClientWrapper();
+
+export async function getSiteMetadata(appIdentifier = "marketplace"): Promise<SanitySiteMetadata> {
+  const query = `*[_type == "siteMetadata" && appIdentifier == "${appIdentifier}"][0]`;
+  const data = await sanityClient.fetch<SanitySiteMetadata>(query);
+  return data || mockSiteMetadataMarketplace;
+}

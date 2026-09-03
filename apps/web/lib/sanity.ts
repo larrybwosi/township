@@ -1,5 +1,4 @@
 import { client as liveSanityClient } from "../sanity/lib/client";
-import { sanityFetch as liveSanityFetch } from "../sanity/lib/live";
 
 // ==========================================
 // 1. Sanity Type Interfaces
@@ -118,6 +117,18 @@ export interface SanityEvent {
   image: string;
   desc: string;
   featured: boolean;
+}
+
+export interface SanitySiteMetadata {
+  _id: string;
+  _type: "siteMetadata";
+  appIdentifier: string;
+  siteName?: string;
+  title: string;
+  description: string;
+  keywords?: string[];
+  ogImage?: string | Record<string, unknown>;
+  themeColor?: string;
 }
 
 // ==========================================
@@ -303,6 +314,39 @@ const mockInstitutions: SanityInstitution[] = [
     featured: false,
   },
 ];
+
+export const mockSiteMetadataWeb: SanitySiteMetadata = {
+  _id: "site-meta-web",
+  _type: "siteMetadata",
+  appIdentifier: "web",
+  siteName: "Township",
+  title: "Township — Your City Guide",
+  description: "Discover everything about our town — institutions, places of interest, local services and events. Your complete guide for students and locals alike.",
+  keywords: ["township", "city guide", "students", "local services", "institutions"],
+  themeColor: "#1a3a5c",
+};
+
+export const mockSiteMetadataRental: SanitySiteMetadata = {
+  _id: "site-meta-rental",
+  _type: "siteMetadata",
+  appIdentifier: "rental",
+  siteName: "Township Rental Hub",
+  title: "Township Rental Hub — Find Your Next Home",
+  description: "Browse, discover, and book perfect rental properties in our gorgeous towns. The ultimate rental finder and host portal.",
+  keywords: ["township", "rental properties", "apartments", "cabins", "booking"],
+  themeColor: "#1a3a5c",
+};
+
+export const mockSiteMetadataMarketplace: SanitySiteMetadata = {
+  _id: "site-meta-marketplace",
+  _type: "siteMetadata",
+  appIdentifier: "marketplace",
+  siteName: "Township Marketplace",
+  title: "Township Marketplace — Local Goods, Furniture & Services",
+  description: "Browse local goods, furniture, home appliances, and services in your township community.",
+  keywords: ["township", "marketplace", "local goods", "furniture", "appliances", "services"],
+  themeColor: "#1a3a5c",
+};
 
 const mockPlaces: SanityPlace[] = [
   {
@@ -528,6 +572,18 @@ const mockEvents: SanityEvent[] = [
 // ==========================================
 
 export function getMockDataForQuery(query: string): unknown {
+  if (query.includes('*[_type == "siteMetadata"')) {
+    if (query.includes('rental') || query.includes('appIdentifier == "rental"')) {
+      return query.includes('[0]') ? mockSiteMetadataRental : [mockSiteMetadataRental];
+    }
+    if (query.includes('marketplace') || query.includes('appIdentifier == "marketplace"')) {
+      return query.includes('[0]') ? mockSiteMetadataMarketplace : [mockSiteMetadataMarketplace];
+    }
+    if (query.endsWith("[0]") || query.includes("[0]")) {
+      return mockSiteMetadataWeb;
+    }
+    return [mockSiteMetadataWeb, mockSiteMetadataRental, mockSiteMetadataMarketplace];
+  }
   if (query.includes('*[_type == "homeHero"')) {
     if (query.endsWith("[0]") || query.includes("[0]")) {
       return mockHomeHero;
@@ -604,12 +660,21 @@ export async function safeSanityFetch<T>(
 
   if (hasLiveKeys) {
     try {
+      const { sanityFetch: liveSanityFetch } = await import("../sanity/lib/live");
       const response = await liveSanityFetch({ query, params });
-      return { data: response.data as T };
+      if (response.data) {
+        return { data: response.data as T };
+      }
     } catch (error) {
       console.warn("Sanity liveFetch error, falling back to mock data:", error);
     }
   }
 
   return { data: getMockDataForQuery(query) as T };
+}
+
+export async function getSiteMetadata(appIdentifier = "web"): Promise<SanitySiteMetadata> {
+  const query = `*[_type == "siteMetadata" && appIdentifier == "${appIdentifier}"][0]`;
+  const res = await safeSanityFetch<SanitySiteMetadata>(query, { appId: appIdentifier });
+  return res.data || (appIdentifier === "rental" ? mockSiteMetadataRental : appIdentifier === "marketplace" ? mockSiteMetadataMarketplace : mockSiteMetadataWeb);
 }

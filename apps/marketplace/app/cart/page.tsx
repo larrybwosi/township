@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { useMarketplace, DeliveryDetails } from "../../context/MarketplaceContext";
 import { resolveImageUrl } from "../../lib/image";
 import {
@@ -138,12 +139,15 @@ export default function CartPage() {
                 key={item.product._id}
                 className="bg-surface border border-border rounded-xl p-4 flex gap-4 items-center hover:shadow-xs transition"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={resolveImageUrl(item.product.imageUrl)}
-                  alt={item.product.title}
-                  className="w-16 h-16 object-cover rounded-lg bg-muted shrink-0 border border-border"
-                />
+                <div className="w-16 h-16 relative rounded-lg bg-muted shrink-0 border border-border overflow-hidden">
+                  <Image
+                    src={resolveImageUrl(item.product.imageUrl)}
+                    alt={item.product.title}
+                    fill
+                    sizes="64px"
+                    className="object-cover"
+                  />
+                </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-extrabold text-foreground text-sm truncate">
                     {item.product.title}

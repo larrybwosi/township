@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Calendar, MapPin, ArrowRight, Clock, Users } from "lucide-react";
 import { SanityEvent } from "../lib/sanity";
 import { resolveImageUrl } from "../sanity/lib/image";
@@ -52,11 +53,12 @@ export default function Events({ initialData }: { initialData: SanityEvent[] }) 
           {featuredEvent && (
             <article className="lg:col-span-2 group bg-background border border-border rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
               <div className="relative h-56 sm:h-72 overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={resolveImageUrl(featuredEvent.image)}
                   alt={featuredEvent.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 66vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute top-4 left-4 flex items-center gap-2">
                   {featuredEvent.category && (
@@ -114,12 +116,13 @@ export default function Events({ initialData }: { initialData: SanityEvent[] }) 
                 key={event._id}
                 className="group flex gap-4 bg-background border border-border rounded-xl p-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-200"
               >
-                <div className="w-20 h-20 rounded-lg overflow-hidden shrink-0">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                <div className="w-20 h-20 relative rounded-lg overflow-hidden shrink-0">
+                  <Image
                     src={resolveImageUrl(event.image)}
                     alt={event.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    fill
+                    sizes="80px"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
                 <div className="flex-1 min-w-0">

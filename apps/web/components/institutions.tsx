@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import {
   GraduationCap,
   Stethoscope,
@@ -11,6 +12,7 @@ import {
   Clock,
 } from "lucide-react";
 import { SanityInstitution } from "../lib/sanity";
+import { resolveImageUrl } from "../sanity/lib/image";
 
 type Category = "all" | "education" | "health" | "government";
 
@@ -99,11 +101,12 @@ export default function Institutions({ initialData }: { initialData: SanityInsti
             >
               {/* Image */}
               <div className="relative h-44 overflow-hidden bg-background">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={inst.image}
+                <Image
+                  src={resolveImageUrl(inst.image)}
                   alt={`${inst.name} building`}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 {/* Category chip */}
                 <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 shadow-sm">
