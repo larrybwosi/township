@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { useMarketplace } from "../../context/MarketplaceContext";
 import { resolveImageUrl } from "../../lib/image";
 import {
@@ -94,12 +95,15 @@ export default function OrdersPage() {
                   </h4>
                   {order.items.map((item) => (
                     <div key={item.product._id} className="flex gap-3 items-center">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={resolveImageUrl(item.product.imageUrl)}
-                        alt={item.product.title}
-                        className="w-12 h-12 object-cover rounded-md bg-background border border-border shrink-0"
-                      />
+                      <div className="w-12 h-12 relative rounded-md bg-background border border-border shrink-0 overflow-hidden">
+                        <Image
+                          src={resolveImageUrl(item.product.imageUrl)}
+                          alt={item.product.title}
+                          fill
+                          sizes="48px"
+                          className="object-cover"
+                        />
+                      </div>
                       <div className="min-w-0 flex-1">
                         <p className="text-xs font-bold text-foreground truncate">
                           {item.product.title}

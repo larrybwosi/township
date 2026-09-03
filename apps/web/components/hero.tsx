@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Search, ArrowRight, HelpCircle } from "lucide-react";
 import * as Icons from "lucide-react";
 import { SanityHomeHero } from "../lib/sanity";
@@ -23,12 +24,13 @@ export default function Hero({ initialData }: { initialData: SanityHomeHero }) {
       aria-label="Welcome to Township"
     >
       {/* Background image */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src={resolveImageUrl(data.backgroundImageUrl)}
         alt="Aerial view of Township"
-        className="absolute inset-0 w-full h-full object-cover"
-        aria-hidden="true"
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover"
       />
 
       {/* Dark overlay */}

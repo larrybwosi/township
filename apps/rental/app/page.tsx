@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { useMockData } from "../context/MockDataContext";
 import Navbar from "../components/Navbar";
 import AddPropertyModal from "../components/AddPropertyModal";
@@ -300,11 +301,12 @@ export default function BrowsePage() {
                 >
                   {/* Image banner */}
                   <div className="relative h-56 w-full overflow-hidden bg-muted">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <Image
                       src={resolveImageUrl(prop.imageUrl)}
                       alt={prop.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute top-3 left-3 bg-dark/85 backdrop-blur-xs px-2.5 py-1 rounded-full border border-white/10 text-[10px] uppercase font-bold tracking-wider text-white">
                       {town ? town.name : "Municipal"}

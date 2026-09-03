@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   Star,
   ArrowRight,
@@ -112,11 +113,12 @@ export default function Places({ initialData }: { initialData: SanityPlace[] }) 
           {/* Featured large card */}
           {featuredLarge && (
             <article className="md:col-span-2 lg:col-span-2 group relative rounded-2xl overflow-hidden bg-background border border-border hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 min-h-[340px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={resolveImageUrl(featuredLarge.image)}
                 alt={featuredLarge.name}
-                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                fill
+                sizes="(max-width: 1024px) 100vw, 66vw"
+                className="object-cover group-hover:scale-105 transition-transform duration-700"
               />
               <div
                 className="absolute inset-0"
@@ -167,11 +169,12 @@ export default function Places({ initialData }: { initialData: SanityPlace[] }) 
               key={place._id}
               className="group relative rounded-2xl overflow-hidden bg-background border border-border hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 min-h-[220px]"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={resolveImageUrl(place.image)}
                 alt={place.name}
-                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-cover group-hover:scale-105 transition-transform duration-700"
               />
               <div
                 className="absolute inset-0"

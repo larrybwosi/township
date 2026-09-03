@@ -389,6 +389,29 @@ export const getLiveSanityClient = () => {
   });
 };
 
+export interface SanitySiteMetadata {
+  _id: string;
+  _type: "siteMetadata";
+  appIdentifier: string;
+  siteName?: string;
+  title: string;
+  description: string;
+  keywords?: string[];
+  ogImage?: string | Record<string, unknown>;
+  themeColor?: string;
+}
+
+export const mockSiteMetadataRental: SanitySiteMetadata = {
+  _id: "site-meta-rental",
+  _type: "siteMetadata",
+  appIdentifier: "rental",
+  siteName: "Township Rental Hub",
+  title: "Township Rental Hub — Find Your Next Home",
+  description: "Browse, discover, and book perfect rental properties in our gorgeous towns. The ultimate rental finder and host portal.",
+  keywords: ["township", "rental properties", "apartments", "cabins", "booking"],
+  themeColor: "#1a3a5c",
+};
+
 export class SanityClientWrapper {
   getHasLiveKeys(): boolean {
     const pId = typeof window !== "undefined" ? ((window as typeof window & { __ENV?: Record<string, string> }).__ENV?.NEXT_PUBLIC_SANITY_PROJECT_ID) : process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
@@ -409,6 +432,9 @@ export class SanityClientWrapper {
     }
 
     // Mock implementation of basic GROQ query filters
+    if (query.includes('*[_type == "siteMetadata"')) {
+      return (query.includes("[0]") ? mockSiteMetadataRental : [mockSiteMetadataRental]) as unknown as T;
+    }
     if (query.includes('*[_type == "property"')) {
       return mockProperties as unknown as T;
     }
@@ -422,3 +448,9 @@ export class SanityClientWrapper {
 }
 
 export const sanityClient = new SanityClientWrapper();
+
+export async function getSiteMetadata(appIdentifier = "rental"): Promise<SanitySiteMetadata> {
+  const query = `*[_type == "siteMetadata" && appIdentifier == "${appIdentifier}"][0]`;
+  const data = await sanityClient.fetch<SanitySiteMetadata>(query);
+  return data || mockSiteMetadataRental;
+}

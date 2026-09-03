@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { useMockData, PropertyCategory } from "../context/MockDataContext";
 import { X, Plus, Info } from "lucide-react";
 
@@ -285,11 +286,12 @@ export default function AddPropertyModal({
                           : "border-transparent opacity-70 hover:opacity-100"
                       }`}
                     >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
+                      <Image
                         src={img}
                         alt={`Preset ${i + 1}`}
-                        className="w-full h-full object-cover"
+                        fill
+                        sizes="96px"
+                        className="object-cover"
                       />
                     </button>
                   ))}

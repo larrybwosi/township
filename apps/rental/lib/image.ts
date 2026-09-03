@@ -18,7 +18,7 @@ export const resolveImageUrl = (image: any): string => {
   if (!image) return '';
   if (typeof image === 'string') return image;
   try {
-    return urlFor(image).format('webp').url();
+    return urlFor(image).auto('format').fit('max').quality(80).url();
   } catch (err) {
     console.error("Error building image URL", err);
     return '';

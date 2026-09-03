@@ -133,6 +133,39 @@ const mockStudentGuide = {
   contactHref: "#",
 };
 
+const mockSiteMetadataWeb = {
+  _id: "site-meta-web",
+  _type: "siteMetadata",
+  appIdentifier: "web",
+  siteName: "Township",
+  title: "Township — Your City Guide",
+  description: "Discover everything about our town — institutions, places of interest, local services and events. Your complete guide for students and locals alike.",
+  keywords: ["township", "city guide", "students", "local services", "institutions"],
+  themeColor: "#1a3a5c",
+};
+
+const mockSiteMetadataRental = {
+  _id: "site-meta-rental",
+  _type: "siteMetadata",
+  appIdentifier: "rental",
+  siteName: "Township Rental Hub",
+  title: "Township Rental Hub — Find Your Next Home",
+  description: "Browse, discover, and book perfect rental properties in our gorgeous towns. The ultimate rental finder and host portal.",
+  keywords: ["township", "rental properties", "apartments", "cabins", "booking"],
+  themeColor: "#1a3a5c",
+};
+
+const mockSiteMetadataMarketplace = {
+  _id: "site-meta-marketplace",
+  _type: "siteMetadata",
+  appIdentifier: "marketplace",
+  siteName: "Township Marketplace",
+  title: "Township Marketplace — Local Goods, Furniture & Services",
+  description: "Browse local goods, furniture, home appliances, and services in your township community.",
+  keywords: ["township", "marketplace", "local goods", "furniture", "appliances", "services"],
+  themeColor: "#1a3a5c",
+};
+
 const mockInstitutions = [
   {
     _id: "inst-1",
@@ -826,6 +859,9 @@ async function main() {
     mockHomeHero,
     mockHomeAbout,
     mockStudentGuide,
+    mockSiteMetadataWeb,
+    mockSiteMetadataRental,
+    mockSiteMetadataMarketplace,
     ...mockInstitutions,
     ...mockPlaces,
     ...mockServices,

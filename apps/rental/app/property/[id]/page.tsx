@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { useMockData } from "../../../context/MockDataContext";
 import Navbar from "../../../components/Navbar";
 import AddPropertyModal from "../../../components/AddPropertyModal";
@@ -194,11 +195,13 @@ export default function PropertyDetailPage({ params }: PageProps) {
         {/* Hero Banner Grid */}
         <div className="bg-surface rounded-2xl overflow-hidden border border-border shadow-xs grid grid-cols-1 md:grid-cols-12 gap-1 mb-8">
           <div className="md:col-span-8 relative h-[300px] md:h-[450px] bg-muted">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={resolveImageUrl(property.imageUrl)}
               alt={property.title}
-              className="w-full h-full object-cover"
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 66vw"
+              className="object-cover"
             />
             <div className="absolute top-4 left-4 bg-dark/85 px-3 py-1.5 rounded-full border border-white/10 text-xs font-bold uppercase tracking-wider text-white">
               {town ? town.name : "Local District"}
@@ -209,19 +212,21 @@ export default function PropertyDetailPage({ params }: PageProps) {
           </div>
           <div className="md:col-span-4 hidden md:flex flex-col gap-1 h-[450px]">
             <div className="flex-1 bg-muted relative overflow-hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=500"
                 alt="Room Preset 2"
-                className="w-full h-full object-cover opacity-80 hover:opacity-100 transition duration-300"
+                fill
+                sizes="33vw"
+                className="object-cover opacity-80 hover:opacity-100 transition duration-300"
               />
             </div>
             <div className="flex-1 bg-muted relative overflow-hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=500"
                 alt="Room Preset 3"
-                className="w-full h-full object-cover opacity-80 hover:opacity-100 transition duration-300"
+                fill
+                sizes="33vw"
+                className="object-cover opacity-80 hover:opacity-100 transition duration-300"
               />
             </div>
           </div>

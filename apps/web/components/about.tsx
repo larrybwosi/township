@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Users, HelpCircle } from "lucide-react";
 import * as Icons from "lucide-react";
 import { SanityHomeAbout } from "../lib/sanity";
@@ -74,11 +75,12 @@ export default function About({ initialData }: { initialData: SanityHomeAbout })
           {/* Right: Images */}
           <div className="relative hidden lg:block">
             <div className="relative rounded-2xl overflow-hidden aspect-4/3">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={resolveImageUrl(data.imageUrl)}
                 alt="Township town centre"
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
               />
             </div>
             {/* Floating mini card */}
