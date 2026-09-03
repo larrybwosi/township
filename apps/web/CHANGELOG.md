@@ -1,5 +1,16 @@
 # web
 
+## 1.5.0
+
+### Minor Changes
+
+- 1f56fa7: Update
+
+### Patch Changes
+
+- @repo/ui@1.5.0
+- @repo/env@1.2.0
+
 ## 1.4.0
 
 ### Minor Changes
