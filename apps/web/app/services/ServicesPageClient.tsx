@@ -1,0 +1,200 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import Navbar from "../../components/navbar";
+import Footer from "../../components/footer";
+import {
+  HelpCircle,
+  ArrowRight,
+  BookOpen,
+  Phone,
+  Search,
+  CheckCircle2,
+  Building,
+} from "lucide-react";
+import * as Icons from "lucide-react";
+import { SanityService, SanityStudentGuide } from "../../lib/sanity";
+
+function getIcon(iconName: string): React.ElementType {
+  const Icon = (Icons as unknown as Record<string, React.ElementType>)[iconName];
+  return Icon || HelpCircle;
+}
+
+export default function ServicesPageClient({
+  initialServices,
+  initialGuide,
+}: {
+  initialServices: SanityService[];
+  initialGuide: SanityStudentGuide;
+}) {
+  const [searchQuery, setSearchQuery] = useState("");
+  const services = initialServices || [];
+  const studentGuide = initialGuide;
+
+  const filteredServices = services.filter(
+    (s) =>
+      s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      s.desc.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
+  return (
+    <>
+      <Navbar />
+      <main className="bg-background min-h-screen">
+        {/* Hero Header */}
+        <div className="bg-[#0d2238] text-white pt-24 pb-16 lg:pt-32 lg:pb-24">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav className="text-white/60 text-sm mb-4" aria-label="Breadcrumb">
+              <Link href="/" className="hover:text-white transition-colors">
+                Home
+              </Link>
+              <span className="mx-2">/</span>
+              <span className="text-white">Services</span>
+            </nav>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2.5 bg-accent/20 rounded-lg text-accent">
+                <Building className="w-8 h-8" />
+              </div>
+              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
+                City Services & Utilities
+              </h1>
+            </div>
+            <p className="text-white/70 max-w-2xl text-lg leading-relaxed">
+              Explore public transport, municipal utilities, safety resources, public Wi-Fi hotspots, and essential services for Township residents.
+            </p>
+          </div>
+        </div>
+
+        {/* Content Container */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          {/* Search Header */}
+          <div className="flex flex-col sm:flex-row gap-4 items-center justify-between border-b border-border pb-6 mb-8">
+            <h2 className="text-2xl font-bold text-foreground">
+              Available Public Services ({filteredServices.length})
+            </h2>
+            <div className="relative w-full sm:w-80">
+              <Search
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted"
+                aria-hidden="true"
+              />
+              <input
+                type="text"
+                placeholder="Search transport, wifi, safety..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-4 py-2 rounded-md border border-border bg-surface text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors"
+              />
+            </div>
+          </div>
+
+          {/* Services Grid */}
+          {filteredServices.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+              {filteredServices.map(({ title, desc, link, color, iconName }) => {
+                const Icon = getIcon(iconName);
+                return (
+                  <div
+                    key={title}
+                    className="group bg-surface border border-border rounded-xl p-6 hover:shadow-lg hover:-translate-y-0.5 hover:border-primary/20 transition-all duration-200 flex flex-col justify-between"
+                  >
+                    <div>
+                      <div
+                        className={`w-12 h-12 rounded-xl ${color} flex items-center justify-center mb-4 shadow-sm`}
+                      >
+                        <Icon className="w-6 h-6" aria-hidden="true" />
+                      </div>
+                      <h3 className="text-foreground font-bold text-lg mb-2">
+                        {title}
+                      </h3>
+                      <p className="text-muted text-sm leading-relaxed mb-6">
+                        {desc}
+                      </p>
+                    </div>
+
+                    <a
+                      href={link || "#"}
+                      className="inline-flex items-center gap-2 text-sm font-semibold text-primary group-hover:text-accent transition-colors duration-150"
+                    >
+                      Access Service Details
+                      <ArrowRight
+                        className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-150"
+                        aria-hidden="true"
+                      />
+                    </a>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="text-center py-12 bg-surface rounded-xl border border-border mb-16">
+              <p className="text-muted text-base">
+                No services found matching your query.
+              </p>
+              <button
+                onClick={() => setSearchQuery("")}
+                className="mt-3 text-sm font-semibold text-primary hover:text-accent transition-colors duration-150"
+              >
+                Clear filter
+              </button>
+            </div>
+          )}
+
+          {/* Student Starter Guide Banner */}
+          {studentGuide && (
+            <div className="bg-primary rounded-2xl overflow-hidden shadow-xl">
+              <div className="grid grid-cols-1 lg:grid-cols-2">
+                {/* Left content */}
+                <div className="p-8 lg:p-12">
+                  <div className="inline-flex items-center gap-2 bg-white/10 text-white/90 text-xs font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full mb-6 border border-white/10">
+                    <BookOpen className="w-3.5 h-3.5" aria-hidden="true" />
+                    {studentGuide.badge}
+                  </div>
+                  <h3 className="text-white font-bold text-2xl sm:text-3xl text-balance leading-tight mb-4">
+                    {studentGuide.headline}
+                  </h3>
+                  <p className="text-white/70 text-sm leading-relaxed mb-8">
+                    {studentGuide.description}
+                  </p>
+                  <a
+                    href={studentGuide.buttonHref || "#"}
+                    className="inline-flex items-center gap-2 px-6 py-3.5 bg-accent hover:bg-accent-hover text-white text-sm font-semibold rounded-lg transition-colors duration-150 shadow-md"
+                  >
+                    {studentGuide.buttonText}
+                    <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                  </a>
+                </div>
+
+                {/* Right checklist */}
+                <div className="bg-[#111e2e] p-8 lg:p-12 flex flex-col justify-between">
+                  <div>
+                    <h4 className="text-white/60 text-xs font-semibold uppercase tracking-widest mb-6">
+                      Resident & Student Checklist
+                    </h4>
+                    <ul className="flex flex-col gap-3.5">
+                      {studentGuide.checklist?.map((item) => (
+                        <li key={item} className="flex items-start gap-3">
+                          <CheckCircle2 className="w-5 h-5 text-accent shrink-0 mt-0.5" />
+                          <span className="text-white/80 text-sm">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <a
+                    href={studentGuide.contactHref || "#"}
+                    className="inline-flex items-center gap-2 mt-8 text-sm font-semibold text-accent hover:text-white transition-colors duration-150"
+                  >
+                    <Phone className="w-4 h-4" aria-hidden="true" />
+                    {studentGuide.contactLabel}
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </main>
+      <Footer />
+    </>
+  );
+}

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   MapPin,
   Phone,
@@ -13,32 +14,32 @@ import {
 
 const footerLinks = {
   Explore: [
-    { label: "About Township", href: "#about" },
-    { label: "Places of Interest", href: "#places" },
-    { label: "Events Calendar", href: "#events" },
-    { label: "Dining & Restaurants", href: "#" },
-    { label: "Parks & Recreation", href: "#" },
+    { label: "About Township", href: "/#about" },
+    { label: "Places of Interest", href: "/explore" },
+    { label: "Events Calendar", href: "/events" },
+    { label: "Dining & Restaurants", href: "/explore/dining" },
+    { label: "Parks & Recreation", href: "/explore/parks" },
   ],
   Institutions: [
-    { label: "Universities & Colleges", href: "#institutions" },
-    { label: "Hospitals & Clinics", href: "#institutions" },
-    { label: "Government Offices", href: "#institutions" },
-    { label: "Schools & Academies", href: "#" },
-    { label: "Research Centres", href: "#" },
+    { label: "Universities & Colleges", href: "/institutions/universities" },
+    { label: "Hospitals & Clinics", href: "/institutions/hospitals" },
+    { label: "Government Offices", href: "/institutions/government" },
+    { label: "Schools & Academies", href: "/institutions" },
+    { label: "Research Centres", href: "/institutions" },
   ],
   Services: [
-    { label: "Public Transport", href: "#services" },
-    { label: "Free Wi-Fi Zones", href: "#services" },
-    { label: "Libraries", href: "#services" },
-    { label: "Safety & Emergency", href: "#services" },
-    { label: "Waste & Recycling", href: "#services" },
+    { label: "Public Transport", href: "/services" },
+    { label: "Free Wi-Fi Zones", href: "/services" },
+    { label: "Libraries", href: "/services" },
+    { label: "Safety & Emergency", href: "/services" },
+    { label: "Waste & Recycling", href: "/services" },
   ],
   "For Students": [
-    { label: "Visitor Guide", href: "#guide" },
-    { label: "Find Accommodation", href: "#" },
-    { label: "Student Discounts", href: "#" },
-    { label: "Transport Card", href: "#" },
-    { label: "Register at a Clinic", href: "#" },
+    { label: "Visitor Guide", href: "/#guide" },
+    { label: "Find Accommodation", href: "/explore/accommodation" },
+    { label: "Student Discounts", href: "/services" },
+    { label: "Transport Card", href: "/services" },
+    { label: "Register at a Clinic", href: "/institutions/hospitals" },
   ],
 };
 
@@ -96,7 +97,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
           {/* Brand column */}
           <div className="lg:col-span-1">
-            <a href="#" className="flex items-center gap-2 mb-4">
+            <Link href="/" className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 rounded-md bg-accent flex items-center justify-center shrink-0">
                 <MapPin className="w-4 h-4 text-white" aria-hidden="true" />
               </div>
@@ -108,7 +109,7 @@ export default function Footer() {
                   City Portal
                 </span>
               </div>
-            </a>
+            </Link>
             <p className="text-white/50 text-sm leading-relaxed mb-6">
               Your official guide to everything Township — designed for
               students, locals, and visitors alike.

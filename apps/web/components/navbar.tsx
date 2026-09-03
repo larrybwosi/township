@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Menu, X, MapPin, ChevronDown } from "lucide-react";
 
 const navLinks = [
@@ -10,11 +11,11 @@ const navLinks = [
   },
   {
     label: "Institutions",
-    href: "#institutions",
+    href: "/institutions",
     children: [
-      { label: "Universities & Colleges", href: "/intitutions/universities" },
-      { label: "Hospitals & Clinics", href: "/intitutions/hospitals" },
-      { label: "Government Offices", href: "/intitutions/government" },
+      { label: "Universities & Colleges", href: "/institutions/universities" },
+      { label: "Hospitals & Clinics", href: "/institutions/hospitals" },
+      { label: "Government Offices", href: "/institutions/government" },
     ],
   },
   {
@@ -61,7 +62,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2 group">
+          <Link href="/" className="flex items-center gap-2 group">
             <div className="w-8 h-8 rounded-md bg-accent flex items-center justify-center shrink-0">
               <MapPin className="w-4 h-4 text-white" aria-hidden="true" />
             </div>
@@ -73,7 +74,7 @@ export default function Navbar() {
                 City Portal
               </span>
             </div>
-          </a>
+          </Link>
 
           {/* Desktop Nav */}
           <nav
