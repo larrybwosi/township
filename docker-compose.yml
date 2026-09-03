@@ -59,14 +59,14 @@ services:
       SANITY_API_TOKEN: "${SANITY_API_TOKEN}"
     depends_on:
       - api
-  # sanity-seeder:
-  #   build:
-  #     context: .
-  #     dockerfile: apps/web/Dockerfile.seeder
-  #   environment:
-  #     NEXT_PUBLIC_SANITY_PROJECT_ID: "${NEXT_PUBLIC_SANITY_PROJECT_ID:-mock-project-id}"
-  #     NEXT_PUBLIC_SANITY_DATASET: "${NEXT_PUBLIC_SANITY_DATASET:-production}"
-  #     SANITY_API_TOKEN: "${SANITY_API_TOKEN}"
-  #   restart: "no"
+  sanity-seeder:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile.seeder
+    environment:
+      NEXT_PUBLIC_SANITY_PROJECT_ID: "${NEXT_PUBLIC_SANITY_PROJECT_ID:-mock-project-id}"
+      NEXT_PUBLIC_SANITY_DATASET: "${NEXT_PUBLIC_SANITY_DATASET:-production}"
+      SANITY_API_TOKEN: "${SANITY_API_TOKEN}"
+    restart: "no"
 volumes:
   postgres_data:
